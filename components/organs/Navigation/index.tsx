@@ -2,10 +2,10 @@ import React from "react";
 import Link from "next/link";
 import styled from "styled-components";
 
-import HomeIcon from "../../assets/icons/HomeIcon";
-import UserIcon from "../../assets/icons/UserIcon";
-import SearchIcon from "../../assets/icons/SearchIcon";
-import LanguageIcon from "../../assets/icons/LanguageIcon";
+import HomeIcon from "../../../assets/icons/HomeIcon";
+import UserIcon from "../../../assets/icons/UserIcon";
+import SearchIcon from "../../../assets/icons/SearchIcon";
+import Translation from "../../molecules/Translation";
 
 const NavigationContainer = styled.div`
   width: 100%;
@@ -36,7 +36,7 @@ const Navigation: React.FC<INavigationProps> = ({ ...props }) => {
           <SearchIcon />
         </a>
       </Link>
-      <LanguageIcon />
+      <Translation />
     </NavigationContainer>
   );
 };
