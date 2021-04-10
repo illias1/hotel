@@ -1,11 +1,10 @@
 import React from "react";
-import { StyledIcon } from "./HomeIcon";
+import { IconProps, StyledIcon } from "./shared";
 
-type IHomeIconProps = {};
-
-const HomeIcon: React.FC<IHomeIconProps> = ({ ...props }) => {
+const SearchIcon: React.FC<IconProps> = ({ active }) => {
   return (
     <StyledIcon
+      active={active}
       aria-hidden="true"
       focusable="false"
       data-prefix="fas"
@@ -23,4 +22,4 @@ const HomeIcon: React.FC<IHomeIconProps> = ({ ...props }) => {
   );
 };
 
-export default HomeIcon;
+export default SearchIcon;

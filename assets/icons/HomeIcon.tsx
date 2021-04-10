@@ -1,16 +1,10 @@
 import React from "react";
-import styled from "styled-components";
+import { StyledIcon, IconProps } from "./shared";
 
-export const StyledIcon = styled.svg`
-  width: 50px;
-  height: 50px;
-`;
-
-type IHomeIconProps = {};
-
-const HomeIcon: React.FC<IHomeIconProps> = ({ ...props }) => {
+const HomeIcon: React.FC<IconProps> = ({ active }) => {
   return (
     <StyledIcon
+      active={active}
       aria-hidden="true"
       focusable="false"
       data-prefix="fas"
