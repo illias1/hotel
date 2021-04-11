@@ -1,0 +1,25 @@
+type Room
+  @model
+  @key(name: "byRoomType", fields: ["roomtypeID"])
+  @auth(rules: [{ allow: public }]) {
+  id: ID!
+  roomtypeID: ID!
+  images: [String!]
+}
+
+type RoomType @model @auth(rules: [{ allow: public }]) @key(name: "byHotel", fields: ["hotelID"]) {
+  id: ID!
+  name: String!
+  price: Int!
+  peopleCount: Int!
+  hotelID: ID!
+  Rooms: [Room!] @connection(keyName: "byRoomType", fields: ["id"])
+}
+
+type Hotel @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  images: [AWSURL!]
+  name: String
+  address: String
+  RoomTypes: [RoomType!] @connection(keyName: "byHotel", fields: ["id"])
+}
