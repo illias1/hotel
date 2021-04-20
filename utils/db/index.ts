@@ -11,7 +11,8 @@ export interface IIncompleteRoomType {
   id: string;
   name: string;
 
-  price: number;
+  priceRegular: string;
+  priceWeekend: string;
   deposit?: number;
   cleaningFee?: number;
 

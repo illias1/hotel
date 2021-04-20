@@ -21,7 +21,8 @@ export const ifach: IIncompleteHotel = {
     {
       id: "ifach_2_bunk",
       name: "Double room 1",
-      price: 39,
+      priceRegular: "price_1Ihy5SJbqXJxe7z31XcJvLrG",
+      priceWeekend: "price_1IhxW0JbqXJxe7z3IQfU3toX",
       peopleCount: 2,
       images: [],
       rooms: [
@@ -44,7 +45,8 @@ export const ifach: IIncompleteHotel = {
     {
       id: "ifach_2_double",
       name: "Double room 2",
-      price: 39,
+      priceRegular: "price_1Ihy7FJbqXJxe7z3gQnCS1Rq",
+      priceWeekend: "price_1Ihy7FJbqXJxe7z3lzBa5CSX",
       peopleCount: 2,
       images: [],
       rooms: [
@@ -59,7 +61,8 @@ export const ifach: IIncompleteHotel = {
     {
       id: "ifach_2_single_disabled",
       name: "Double room 3",
-      price: 39,
+      priceRegular: "price_1Ihy8tJbqXJxe7z3W3L6vJ5X",
+      priceWeekend: "price_1Ihy8tJbqXJxe7z3Vpw25OfI",
       peopleCount: 2,
       images: [],
       rooms: [
@@ -73,8 +76,9 @@ export const ifach: IIncompleteHotel = {
     },
     {
       id: "ifach_triple",
-      name: "Double room 3",
-      price: 42,
+      name: "Triple room",
+      priceRegular: "price_1IhyArJbqXJxe7z3XcLVGKqX",
+      priceWeekend: "price_1IhyArJbqXJxe7z3qFKM764T",
       peopleCount: 3,
       images: [],
       rooms: [
@@ -89,7 +93,8 @@ export const ifach: IIncompleteHotel = {
     {
       id: "ifach_quadruple",
       name: "Quadruple room 1",
-      price: 45,
+      priceRegular: "price_1IhyCfJbqXJxe7z3xviGVWRp",
+      priceWeekend: "price_1IhyCfJbqXJxe7z3TZ6M5Tio",
       peopleCount: 3,
       images: [],
       rooms: [

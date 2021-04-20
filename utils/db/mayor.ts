@@ -23,7 +23,8 @@ export const mayor: IIncompleteHotel = {
     {
       id: "mayor_1_a",
       name: "Double room 1",
-      price: 60,
+      priceRegular: "price_1IhyFFJbqXJxe7z3j1Q9gZFC",
+      priceWeekend: "price_1IhyFFJbqXJxe7z3MIF6o7jh",
       deposit: 100,
       cleaningFee: 40,
       peopleCount: 4,
@@ -40,7 +41,8 @@ export const mayor: IIncompleteHotel = {
     {
       id: "mayor_2_b",
       name: "Double room 1",
-      price: 50,
+      priceRegular: "price_1IhyGOJbqXJxe7z3SCz7YrE3",
+      priceWeekend: "price_1IhyGOJbqXJxe7z30iynCvjP",
       deposit: 100,
       cleaningFee: 40,
       peopleCount: 5,
@@ -57,7 +59,8 @@ export const mayor: IIncompleteHotel = {
     {
       id: "mayor_3_b",
       name: "Double room 1",
-      price: 55,
+      priceRegular: "price_1IhyHfJbqXJxe7z3EmuV3MOC",
+      priceWeekend: "price_1IhyHfJbqXJxe7z3lL8k2771",
       deposit: 100,
       cleaningFee: 40,
       peopleCount: 5,
