@@ -24,7 +24,6 @@ type ITranslationProps = {};
 const Translation: React.FC<ITranslationProps> = ({ ...props }) => {
   const router = useRouter();
   const { t, i18n } = useTranslation();
-  console.log("router", router);
 
   const [visible, setVisible] = React.useState<boolean>(false);
   const handleVisibleChange = (visible: boolean) => setVisible(visible);
@@ -32,7 +31,7 @@ const Translation: React.FC<ITranslationProps> = ({ ...props }) => {
   const content = (
     <>
       {LANGUAGES.map((language) => (
-        <li>
+        <li key={language.code}>
           <Margin>
             <Link href={router.pathname} locale={language.code}>
               {language.label}

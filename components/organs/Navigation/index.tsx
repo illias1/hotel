@@ -21,10 +21,6 @@ type INavigationProps = {};
 
 const Navigation: React.FC<INavigationProps> = ({ ...props }) => {
   const router = useRouter();
-  console.log(
-    "router.pathname.includes(path.href.substring(1))",
-    router.pathname.includes("/search".substring(1))
-  );
 
   return (
     <NavigationContainer>
