@@ -1,8 +1,5 @@
 {
-  "providers": [
-    "awscloudformation"
-  ],
-  "projectName": "alquileres",
+  "projectName": "hotel",
   "version": "3.1",
   "frontend": "javascript",
   "javascript": {
@@ -10,8 +7,11 @@
     "config": {
       "SourceDir": "src",
       "DistributionDir": "build",
-      "BuildCommand": "npm run build",
+      "BuildCommand": "yarn build",
       "StartCommand": "yarn start"
     }
-  }
+  },
+  "providers": [
+    "awscloudformation"
+  ]
 }

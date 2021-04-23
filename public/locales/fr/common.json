@@ -1,3 +1,7 @@
 {
-  "test": "francais"
+  "input": {
+    "date": {
+      "placeholder": "Date"
+    }
+  }
 }

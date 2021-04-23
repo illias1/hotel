@@ -1,15 +1,20 @@
 {
-  "staging": {
+  "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-alquileres-staging-142430-authRole",
-      "UnauthRoleArn": "arn:aws:iam::931061368577:role/amplify-alquileres-staging-142430-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::931061368577:role/amplify-alquileres-staging-142430-authRole",
+      "AuthRoleName": "amplify-hotel-dev-115959-authRole",
+      "UnauthRoleArn": "arn:aws:iam::931061368577:role/amplify-hotel-dev-115959-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::931061368577:role/amplify-hotel-dev-115959-authRole",
       "Region": "ap-northeast-2",
-      "DeploymentBucketName": "amplify-alquileres-staging-142430-deployment",
-      "UnauthRoleName": "amplify-alquileres-staging-142430-unauthRole",
-      "StackName": "amplify-alquileres-staging-142430",
-      "StackId": "arn:aws:cloudformation:ap-northeast-2:931061368577:stack/amplify-alquileres-staging-142430/76a569e0-9a08-11eb-9f96-02db7691dd9c",
-      "AmplifyAppId": "dl4eqls0u4xrx"
+      "DeploymentBucketName": "amplify-hotel-dev-115959-deployment",
+      "UnauthRoleName": "amplify-hotel-dev-115959-unauthRole",
+      "StackName": "amplify-hotel-dev-115959",
+      "StackId": "arn:aws:cloudformation:ap-northeast-2:931061368577:stack/amplify-hotel-dev-115959/2bf17ac0-9ff2-11eb-9b7e-069cee6874f2",
+      "AmplifyAppId": "dwomauwsuh9jp"
+    },
+    "categories": {
+      "auth": {
+        "hotel7fcfebe5": {}
+      }
     }
   }
 }

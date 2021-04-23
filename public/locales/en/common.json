@@ -1,3 +1,36 @@
 {
-  "test": "english"
+  "input": {
+    "date": {
+      "placeholder": "Date"
+    },
+    "password": {
+      "placeholder": "Password"
+    },
+    "email": {
+      "placeholder": "Email"
+    }
+  },
+  "pages": {
+    "authenticator": {
+      "signIn": "Sign In",
+      "signUp": "Sign Up",
+      "signOut": "Sign out",
+      "confirmSignUp": "Confirm Sign Up",
+      "signInInstead": "Sign In instead",
+      "signUpInstead": "Sign Up instead",
+      "forgotPassword": "Forgot Password",
+      "codeVerified": "Your code was verified, logging you in ...",
+      "sendAgain": "Send verification code again",
+      "emailNotVerified": "Your email is not verified."
+    },
+    "home": {
+      "title": "Find perfect place to stay in Calpe",
+      "buttons": {
+        "search": "Search"
+      }
+    },
+    "checkout": {
+      "policies": "Room 1 Superior Lake Double Room \n Guarantee Policy \n GUARANTEE CREDIT CARD 100PCT STAY \n Cancel Policy \n Cancellation is possible free of charge up to 3 days before arrival. A later cancellation of the stay, no-show or later changes will however result in a 100 percent charge of the booked stay. CHF 590.00 effective July 12, 2021, 3 PM (hotel local time) \n Room 2 Superior Lake Double Room \n Guarantee Policy \n GUARANTEE CREDIT CARD 100PCT STAY \n Cancel Policy \n Cancellation is possible free of charge up to 3 days before arrival. A later cancellation of the stay, no-show or later changes will however result in a 100 percent charge of the booked stay. CHF 585.00 effective July 12, 2021, 3 PM (hotel local time)"
+    }
+  }
 }
