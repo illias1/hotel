@@ -2,6 +2,9 @@ import React from "react";
 import { Auth } from "aws-amplify";
 import AuthenticatorUI from "./UI";
 
+type IAuthenticator = {
+  loginCallback?: (user: any) => void;
+};
 export type IAmplifyError = {
   name: string;
   message: string;
@@ -35,7 +38,7 @@ export type IAuthenticationState =
   | "forgotPassword"
   | "forgotPasswordSubmit";
 
-const Authenticator: React.FC = ({ children }) => {
+const Authenticator: React.FC<IAuthenticator> = ({ children, loginCallback }) => {
   const [inputData, setInputData] = React.useState<IAuthenticationInputData>(
     initialAuthenticationData
   );
@@ -54,6 +57,7 @@ const Authenticator: React.FC = ({ children }) => {
       console.log("user:", user);
       if (user) {
         setAuthenticationState("signedIn");
+        loginCallback(user);
       } else {
         setAuthenticationState("signUp");
       }
@@ -100,9 +104,10 @@ const Authenticator: React.FC = ({ children }) => {
 
   const signIn = async () => {
     try {
-      await Auth.signIn(inputData.email, inputData.password);
+      const user = await Auth.signIn(inputData.email, inputData.password);
       /* Once the user successfully signs in, update the form state to show the signed in state */
       setAuthenticationState("signedIn");
+      loginCallback(user);
     } catch (err) {
       console.error({ err });
     }

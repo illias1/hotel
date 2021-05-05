@@ -9,6 +9,12 @@ export const createReservation = /* GraphQL */ `
   ) {
     createReservation(input: $input, condition: $condition) {
       id
+      customerID
+      isPaid
+      note
+      createdAt
+      updatedAt
+      owner
       RoomBookings {
         items {
           reservationID
@@ -25,44 +31,6 @@ export const createReservation = /* GraphQL */ `
         }
         nextToken
       }
-      customerID
-      isPaid
-      note
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const updateReservation = /* GraphQL */ `
-  mutation UpdateReservation(
-    $input: UpdateReservationInput!
-    $condition: ModelReservationConditionInput
-  ) {
-    updateReservation(input: $input, condition: $condition) {
-      id
-      RoomBookings {
-        items {
-          reservationID
-          roomID
-          roomTypeId
-          id
-          checkIn
-          checkOut
-          people
-          status
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
-      customerID
-      isPaid
-      note
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -73,6 +41,12 @@ export const deleteReservation = /* GraphQL */ `
   ) {
     deleteReservation(input: $input, condition: $condition) {
       id
+      customerID
+      isPaid
+      note
+      createdAt
+      updatedAt
+      owner
       RoomBookings {
         items {
           reservationID
@@ -89,12 +63,6 @@ export const deleteReservation = /* GraphQL */ `
         }
         nextToken
       }
-      customerID
-      isPaid
-      note
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -118,12 +86,12 @@ export const createRoomBooking = /* GraphQL */ `
     }
   }
 `;
-export const updateRoomBooking = /* GraphQL */ `
-  mutation UpdateRoomBooking(
-    $input: UpdateRoomBookingInput!
+export const deleteRoomBooking = /* GraphQL */ `
+  mutation DeleteRoomBooking(
+    $input: DeleteRoomBookingInput!
     $condition: ModelRoomBookingConditionInput
   ) {
-    updateRoomBooking(input: $input, condition: $condition) {
+    deleteRoomBooking(input: $input, condition: $condition) {
       reservationID
       roomID
       roomTypeId
@@ -138,12 +106,44 @@ export const updateRoomBooking = /* GraphQL */ `
     }
   }
 `;
-export const deleteRoomBooking = /* GraphQL */ `
-  mutation DeleteRoomBooking(
-    $input: DeleteRoomBookingInput!
+export const updateReservation = /* GraphQL */ `
+  mutation UpdateReservation(
+    $input: UpdateReservationInput!
+    $condition: ModelReservationConditionInput
+  ) {
+    updateReservation(input: $input, condition: $condition) {
+      id
+      customerID
+      isPaid
+      note
+      createdAt
+      updatedAt
+      owner
+      RoomBookings {
+        items {
+          reservationID
+          roomID
+          roomTypeId
+          id
+          checkIn
+          checkOut
+          people
+          status
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const updateRoomBooking = /* GraphQL */ `
+  mutation UpdateRoomBooking(
+    $input: UpdateRoomBookingInput!
     $condition: ModelRoomBookingConditionInput
   ) {
-    deleteRoomBooking(input: $input, condition: $condition) {
+    updateRoomBooking(input: $input, condition: $condition) {
       reservationID
       roomID
       roomTypeId

@@ -18,6 +18,7 @@ const HotelPage: React.FC<IHotelProps> = ({ hotel, error }) => {
   return (
     <div>
       {hotel.name} page
+      <p>{hotel.description}</p>
       {hotel.roomTypes.map((roomType) => (
         <div key={roomType.id}>
           {roomType.name}

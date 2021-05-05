@@ -1,7 +1,7 @@
 import React from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
-
+import Link from "next/link";
 import { API } from "aws-amplify";
 import { DatePicker } from "antd";
 
@@ -15,6 +15,7 @@ import { StyledRangePicker } from "../../../../components/atoms/RangePicker";
 import { buildCheckoutUrl } from "../../../../utils/parseCheckoutUrl";
 import { getRoomTypeById } from "../../../../utils/db/utils";
 import { addRoomBookingToLocalStorage } from "../../../../utils/reservation/addBooking";
+import Navigation from "../../../../components/organs/Navigation";
 
 type IRoomProps = {
   roomType?: IRoomType;
@@ -41,7 +42,7 @@ const HotelPage: React.FC<IRoomProps> = ({ availabilities, roomType, error, pric
   const [checkDates, setCheckDates] = React.useState<ICheckDates>(initialCheckDates);
   const [bookingForm, setBookingForm] = React.useState<any>({});
   const router = useRouter();
-  
+
   const bookRoom = async () => {
     const reservation = {
       roomTypeId: roomType.id,
@@ -50,18 +51,25 @@ const HotelPage: React.FC<IRoomProps> = ({ availabilities, roomType, error, pric
       checkOut: checkDates.checkOut,
       people: bookingForm.people || 2,
       reservationID: "",
+      hotelId: roomType.hotelId,
     };
     addRoomBookingToLocalStorage(reservation, (reservations) => {
       router.push(buildCheckoutUrl(reservations));
     });
   };
-
+  console.log("router", router);
   if (error) {
     return <div>Error happened {error}</div>;
   }
 
   return (
     <>
+      <p>
+        <span>hotel </span>
+        <Link href={router.pathname}>
+          <a>{router.query.id}</a>
+        </Link>
+      </p>
       <div>Room type page: {roomType.name}</div>
       <ul>
         {roomType.attributes.map((attr) => (
@@ -76,6 +84,7 @@ const HotelPage: React.FC<IRoomProps> = ({ availabilities, roomType, error, pric
       />
       <div>price</div>
       <div>{price} euro?</div>
+      <Navigation />
     </>
   );
 };

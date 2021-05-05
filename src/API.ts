@@ -84,13 +84,13 @@ export type ModelStringInput = {
 export type Reservation = {
   __typename: "Reservation",
   id?: string,
-  RoomBookings?: ModelRoomBookingConnection,
   customerID?: string,
   isPaid?: boolean,
   note?: string | null,
   createdAt?: string,
   updatedAt?: string,
   owner?: string | null,
+  RoomBookings?: ModelRoomBookingConnection,
 };
 
 export type ModelRoomBookingConnection = {
@@ -120,13 +120,6 @@ export enum BookingStatus {
   CANCELED = "CANCELED",
 }
 
-
-export type UpdateReservationInput = {
-  id: string,
-  customerID?: string | null,
-  isPaid?: boolean | null,
-  note?: string | null,
-};
 
 export type DeleteReservationInput = {
   id?: string | null,
@@ -173,6 +166,17 @@ export type ModelBookingStatusInput = {
   ne?: BookingStatus | null,
 };
 
+export type DeleteRoomBookingInput = {
+  id?: string | null,
+};
+
+export type UpdateReservationInput = {
+  id: string,
+  customerID?: string | null,
+  isPaid?: boolean | null,
+  note?: string | null,
+};
+
 export type UpdateRoomBookingInput = {
   reservationID?: string | null,
   roomID?: string | null,
@@ -182,10 +186,6 @@ export type UpdateRoomBookingInput = {
   checkOut?: string | null,
   people?: number | null,
   status?: BookingStatus | null,
-};
-
-export type DeleteRoomBookingInput = {
-  id?: string | null,
 };
 
 export type ModelReservationFilterInput = {
@@ -227,6 +227,12 @@ export type CreateReservationMutation = {
   createReservation?:  {
     __typename: "Reservation",
     id: string,
+    customerID: string,
+    isPaid: boolean,
+    note?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
     RoomBookings?:  {
       __typename: "ModelRoomBookingConnection",
       items?:  Array< {
@@ -245,48 +251,6 @@ export type CreateReservationMutation = {
       } | null > | null,
       nextToken?: string | null,
     } | null,
-    customerID: string,
-    isPaid: boolean,
-    note?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
-  } | null,
-};
-
-export type UpdateReservationMutationVariables = {
-  input?: UpdateReservationInput,
-  condition?: ModelReservationConditionInput | null,
-};
-
-export type UpdateReservationMutation = {
-  updateReservation?:  {
-    __typename: "Reservation",
-    id: string,
-    RoomBookings?:  {
-      __typename: "ModelRoomBookingConnection",
-      items?:  Array< {
-        __typename: "RoomBooking",
-        reservationID: string,
-        roomID: string,
-        roomTypeId: string,
-        id: string,
-        checkIn: string,
-        checkOut: string,
-        people: number,
-        status?: BookingStatus | null,
-        createdAt: string,
-        updatedAt: string,
-        owner?: string | null,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
-    customerID: string,
-    isPaid: boolean,
-    note?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -299,6 +263,12 @@ export type DeleteReservationMutation = {
   deleteReservation?:  {
     __typename: "Reservation",
     id: string,
+    customerID: string,
+    isPaid: boolean,
+    note?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
     RoomBookings?:  {
       __typename: "ModelRoomBookingConnection",
       items?:  Array< {
@@ -317,12 +287,6 @@ export type DeleteReservationMutation = {
       } | null > | null,
       nextToken?: string | null,
     } | null,
-    customerID: string,
-    isPaid: boolean,
-    note?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -333,28 +297,6 @@ export type CreateRoomBookingMutationVariables = {
 
 export type CreateRoomBookingMutation = {
   createRoomBooking?:  {
-    __typename: "RoomBooking",
-    reservationID: string,
-    roomID: string,
-    roomTypeId: string,
-    id: string,
-    checkIn: string,
-    checkOut: string,
-    people: number,
-    status?: BookingStatus | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
-  } | null,
-};
-
-export type UpdateRoomBookingMutationVariables = {
-  input?: UpdateRoomBookingInput,
-  condition?: ModelRoomBookingConditionInput | null,
-};
-
-export type UpdateRoomBookingMutation = {
-  updateRoomBooking?:  {
     __typename: "RoomBooking",
     reservationID: string,
     roomID: string,
@@ -392,14 +334,21 @@ export type DeleteRoomBookingMutation = {
   } | null,
 };
 
-export type GetReservationQueryVariables = {
-  id?: string,
+export type UpdateReservationMutationVariables = {
+  input?: UpdateReservationInput,
+  condition?: ModelReservationConditionInput | null,
 };
 
-export type GetReservationQuery = {
-  getReservation?:  {
+export type UpdateReservationMutation = {
+  updateReservation?:  {
     __typename: "Reservation",
     id: string,
+    customerID: string,
+    isPaid: boolean,
+    note?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
     RoomBookings?:  {
       __typename: "ModelRoomBookingConnection",
       items?:  Array< {
@@ -418,12 +367,63 @@ export type GetReservationQuery = {
       } | null > | null,
       nextToken?: string | null,
     } | null,
+  } | null,
+};
+
+export type UpdateRoomBookingMutationVariables = {
+  input?: UpdateRoomBookingInput,
+  condition?: ModelRoomBookingConditionInput | null,
+};
+
+export type UpdateRoomBookingMutation = {
+  updateRoomBooking?:  {
+    __typename: "RoomBooking",
+    reservationID: string,
+    roomID: string,
+    roomTypeId: string,
+    id: string,
+    checkIn: string,
+    checkOut: string,
+    people: number,
+    status?: BookingStatus | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type GetReservationQueryVariables = {
+  id?: string,
+};
+
+export type GetReservationQuery = {
+  getReservation?:  {
+    __typename: "Reservation",
+    id: string,
     customerID: string,
     isPaid: boolean,
     note?: string | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
+    RoomBookings?:  {
+      __typename: "ModelRoomBookingConnection",
+      items?:  Array< {
+        __typename: "RoomBooking",
+        reservationID: string,
+        roomID: string,
+        roomTypeId: string,
+        id: string,
+        checkIn: string,
+        checkOut: string,
+        people: number,
+        status?: BookingStatus | null,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      } | null > | null,
+      nextToken?: string | null,
+    } | null,
   } | null,
 };
 
@@ -439,16 +439,16 @@ export type ListReservationsQuery = {
     items?:  Array< {
       __typename: "Reservation",
       id: string,
-      RoomBookings?:  {
-        __typename: "ModelRoomBookingConnection",
-        nextToken?: string | null,
-      } | null,
       customerID: string,
       isPaid: boolean,
       note?: string | null,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
+      RoomBookings?:  {
+        __typename: "ModelRoomBookingConnection",
+        nextToken?: string | null,
+      } | null,
     } | null > | null,
     nextToken?: string | null,
   } | null,
@@ -510,6 +510,12 @@ export type OnCreateReservationSubscription = {
   onCreateReservation?:  {
     __typename: "Reservation",
     id: string,
+    customerID: string,
+    isPaid: boolean,
+    note?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
     RoomBookings?:  {
       __typename: "ModelRoomBookingConnection",
       items?:  Array< {
@@ -528,12 +534,6 @@ export type OnCreateReservationSubscription = {
       } | null > | null,
       nextToken?: string | null,
     } | null,
-    customerID: string,
-    isPaid: boolean,
-    note?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -545,6 +545,12 @@ export type OnUpdateReservationSubscription = {
   onUpdateReservation?:  {
     __typename: "Reservation",
     id: string,
+    customerID: string,
+    isPaid: boolean,
+    note?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
     RoomBookings?:  {
       __typename: "ModelRoomBookingConnection",
       items?:  Array< {
@@ -563,12 +569,6 @@ export type OnUpdateReservationSubscription = {
       } | null > | null,
       nextToken?: string | null,
     } | null,
-    customerID: string,
-    isPaid: boolean,
-    note?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -580,6 +580,12 @@ export type OnDeleteReservationSubscription = {
   onDeleteReservation?:  {
     __typename: "Reservation",
     id: string,
+    customerID: string,
+    isPaid: boolean,
+    note?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
     RoomBookings?:  {
       __typename: "ModelRoomBookingConnection",
       items?:  Array< {
@@ -598,12 +604,6 @@ export type OnDeleteReservationSubscription = {
       } | null > | null,
       nextToken?: string | null,
     } | null,
-    customerID: string,
-    isPaid: boolean,
-    note?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 

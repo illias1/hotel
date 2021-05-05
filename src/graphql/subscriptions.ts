@@ -6,6 +6,12 @@ export const onCreateReservation = /* GraphQL */ `
   subscription OnCreateReservation($owner: String) {
     onCreateReservation(owner: $owner) {
       id
+      customerID
+      isPaid
+      note
+      createdAt
+      updatedAt
+      owner
       RoomBookings {
         items {
           reservationID
@@ -22,12 +28,6 @@ export const onCreateReservation = /* GraphQL */ `
         }
         nextToken
       }
-      customerID
-      isPaid
-      note
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -35,6 +35,12 @@ export const onUpdateReservation = /* GraphQL */ `
   subscription OnUpdateReservation($owner: String) {
     onUpdateReservation(owner: $owner) {
       id
+      customerID
+      isPaid
+      note
+      createdAt
+      updatedAt
+      owner
       RoomBookings {
         items {
           reservationID
@@ -51,12 +57,6 @@ export const onUpdateReservation = /* GraphQL */ `
         }
         nextToken
       }
-      customerID
-      isPaid
-      note
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -64,6 +64,12 @@ export const onDeleteReservation = /* GraphQL */ `
   subscription OnDeleteReservation($owner: String) {
     onDeleteReservation(owner: $owner) {
       id
+      customerID
+      isPaid
+      note
+      createdAt
+      updatedAt
+      owner
       RoomBookings {
         items {
           reservationID
@@ -80,12 +86,6 @@ export const onDeleteReservation = /* GraphQL */ `
         }
         nextToken
       }
-      customerID
-      isPaid
-      note
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;

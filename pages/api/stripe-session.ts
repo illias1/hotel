@@ -1,11 +1,20 @@
-import { withSSRContext } from "aws-amplify";
+import assert from "assert";
+
+import { graphqlOperation, withSSRContext } from "aws-amplify";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import StripeType from "stripe";
 const Stripe = require("stripe");
 
-import { GetReservationQuery, GetReservationQueryVariables } from "../../src/API";
-import { getReservation } from "../../src/graphql/queries";
+import {
+  BookingStatus,
+  CreateReservationMutation,
+  CreateReservationMutationVariables,
+  CreateRoomBookingInput,
+  CreateRoomBookingMutation,
+  CreateRoomBookingMutationVariables,
+} from "../../src/API";
+import { createReservation, createRoomBooking } from "../../src/graphql/mutations";
 
 import callGraphQL from "../../utils/api";
 import { DATA } from "../../utils/db";
@@ -14,55 +23,98 @@ import { getCheckoutLineItems } from "../../utils/payment";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
-    const { API, Auth } = withSSRContext({ req });
-
-    const reservationID: string = req.body;
-    console.log("reservation", reservationID);
     try {
+      const { API, Auth } = withSSRContext({ req });
+
+      const bookings = JSON.parse(req.body) as CreateRoomBookingInput[];
+      const APP_URL = process.env.DOMAIN;
+      const STRIPE_SECRET = process.env.STRIPE_SECRET_KEY;
+
+      assert(APP_URL && STRIPE_SECRET, "Environment variables undefined");
+      assert(
+        Array.isArray(bookings) &&
+          bookings.every(
+            (el) => "roomID" in el && "roomTypeId" in el && "checkIn" in el && "checkOut" in el
+          ),
+        "body is malformed"
+      );
+
       const user = await Auth.currentAuthenticatedUser();
       if (!user) {
-        throw new Error("You are not authenticated");
+        return res.status(405).end("You are not authenticated");
       }
+
+      const stripe = Stripe(STRIPE_SECRET);
 
       const { attributes } = user;
-      const stripeCustomerId = attributes["custom:stripeId"];
+      const { email, name } = attributes;
+      const phone = attributes["custom:phone"];
+      let stripeCustomerId = attributes["custom:stripeId"];
+
       if (!stripeCustomerId) {
-        throw new Error("Stripe customer id does not exist");
+        console.log("Entered customer creation");
+        const stripeCustomer = (await stripe.customers.create({
+          email,
+          name,
+          phone,
+        })) as StripeType.Customer;
+        await Auth.updateUserAttributes(user, {
+          "custom:stripeId": stripeCustomer.id,
+        });
+        stripeCustomerId = stripeCustomer.id
       }
 
-      const { data } = await API.graphql({
-        query: getReservation,
-        variables: {
-          id: reservationID,
-        },
+      const { data } = await API.graphql(
+        graphqlOperation(createReservation, {
+          input: {
+            customerID: attributes.sub,
+            isPaid: false,
+            note: "",
+          },
+        })
+      );
+      console.log('data (reservation)', data)
+      const reservation = data.createReservation as CreateReservationMutation['createReservation'];
+      console.log("reservation", reservation);
+      bookings.forEach(async (booking) => {
+        const { data } = await API.graphql(
+          graphqlOperation(createRoomBooking, {
+            input: {
+              checkOut: booking.checkOut,
+              checkIn: booking.checkIn,
+              reservationID: reservation.id,
+              roomTypeId: booking.roomTypeId,
+              roomID: booking.roomID,
+              people: booking?.people,
+              status: BookingStatus.PENDING,
+            },
+          })
+        );
+        console.log("created booking", data.createRoomBooking.id);
       });
 
-      const reservation = data.getReservation;
-      console.log("reservation", reservation);
-      const roomTypeIds = reservation.RoomBookings.items.map(({ roomTypeId }) => roomTypeId);
-      console.log("roomTypeIds", roomTypeIds);
-      const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
-      const APP_URL = process.env.DOMAIN;
-      const lineItems = await getCheckoutLineItems(roomTypeIds);
+      const lineItems = await getCheckoutLineItems(bookings);
       console.log("line items", lineItems);
 
-      // // Create Checkout Sessions from body params.
+      // // Create Checkout Sessions from bookings params.
       const params: StripeType.Checkout.SessionCreateParams = {
-        success_url: `${APP_URL}payment-success/{CHECKOUT_SESSION_ID}`,
-        cancel_url: `${APP_URL}payment-canceled/`,
+        success_url: `${APP_URL}/payment-success/{CHECKOUT_SESSION_ID}`,
+        cancel_url: `${APP_URL}/payment-canceled/`,
         mode: "payment",
         payment_method_types: ["card"],
-        line_items: lineItems.map((price) => ({ ...price, quantity: 1 })),
+        line_items: lineItems,
         customer: stripeCustomerId,
+        client_reference_id: reservation.id,
       };
       const checkoutSession: StripeType.Checkout.Session = await stripe.checkout.sessions.create(
         params
       );
       console.log("sesssion", checkoutSession);
+      // const checkoutSession = {};
       res.status(200).json(checkoutSession);
     } catch (err) {
-      console.error("Error from stripe", err);
-      res.status(500).json({ statusCode: 500, message: err.message });
+      console.error("Error from stripe-session", err);
+      res.status(500).end("Something went wrong");
     }
   } else {
     res.setHeader("Allow", "POST");

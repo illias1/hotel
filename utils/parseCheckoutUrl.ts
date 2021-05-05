@@ -92,7 +92,11 @@ const validateDate = (dateString: string) => {
 
 export const getDynamicRoomTypeId = (index: number) => `room_${index}`;
 
-export const buildCheckoutUrl = (reservation: CreateRoomBookingInput[]) => {
+export interface IBuildCheckoutUrlInput extends CreateRoomBookingInput {
+  hotelId: IHotelName;
+}
+
+export const buildCheckoutUrl = (reservation: IBuildCheckoutUrlInput[]) => {
   console.log("reservation", reservation);
   const finalDict: Record<string, string | number> = {};
   for (let index = 1; index < reservation.length + 1; index++) {
@@ -103,7 +107,7 @@ export const buildCheckoutUrl = (reservation: CreateRoomBookingInput[]) => {
 
     finalDict[dynamicParams.checkIn] = roomBooking.checkIn;
     finalDict[dynamicParams.checkOut] = roomBooking.checkOut;
-    finalDict[dynamicParams.hotel] = "ifach";
+    finalDict[dynamicParams.hotel] = roomBooking.hotelId;
     finalDict[dynamicParams.people] = roomBooking.people;
     finalDict[dynamicParams.room] = roomBooking.roomTypeId;
   }

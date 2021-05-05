@@ -6,6 +6,12 @@ export const getReservation = /* GraphQL */ `
   query GetReservation($id: ID!) {
     getReservation(id: $id) {
       id
+      customerID
+      isPaid
+      note
+      createdAt
+      updatedAt
+      owner
       RoomBookings {
         items {
           reservationID
@@ -22,12 +28,6 @@ export const getReservation = /* GraphQL */ `
         }
         nextToken
       }
-      customerID
-      isPaid
-      note
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -40,15 +40,15 @@ export const listReservations = /* GraphQL */ `
     listReservations(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        RoomBookings {
-          nextToken
-        }
         customerID
         isPaid
         note
         createdAt
         updatedAt
         owner
+        RoomBookings {
+          nextToken
+        }
       }
       nextToken
     }

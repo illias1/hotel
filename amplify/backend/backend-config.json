@@ -19,7 +19,15 @@
               "userPoolId": "authhotel7fcfebe5"
             }
           },
-          "additionalAuthenticationProviders": []
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "API_KEY",
+              "apiKeyConfig": {
+                "apiKeyExpirationDays": 365,
+                "description": "confirm booking"
+              }
+            }
+          ]
         }
       }
     }
