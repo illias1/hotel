@@ -1,26 +1,14 @@
 import { IIncompleteHotel } from ".";
 
-const commonAttributes = [
-  "WIFI",
-  "Air conditioner",
-  "TV",
-  "Hair dryer",
-  "Private bathroom with shower",
-];
-const ifachDescription = `
-We have 2 diferent hostals with the same name, 50 meters from each other. 
-Hostal has a sharing kitchenet, with a table, 4 chairs, zone where you can cook and eat for yourself
-`;
+const commonAttributes = ["wifi", "air_conditioner", "tv", "hair_dryer", "private_bathroom"];
+
 export const ifach: IIncompleteHotel = {
   id: "ifach",
-  name: "Hostal Plaza Ifach",
   address: "Calle Isac Peral 2, Plaza Ifach",
-  description: ifachDescription,
   images: [],
   roomTypes: [
     {
       id: "ifach_2_bunk",
-      name: "Double room 1",
       priceRegular: "price_1Ihy5SJbqXJxe7z31XcJvLrG",
       priceWeekend: "price_1IhxW0JbqXJxe7z3IQfU3toX",
       peopleCount: 2,
@@ -40,11 +28,10 @@ export const ifach: IIncompleteHotel = {
         },
       ],
       attributes: commonAttributes,
-      bedType: "Bunk",
+      bedType: "bunk",
     },
     {
       id: "ifach_2_double",
-      name: "Double room 2",
       priceRegular: "price_1Ihy7FJbqXJxe7z3gQnCS1Rq",
       priceWeekend: "price_1Ihy7FJbqXJxe7z3lzBa5CSX",
       peopleCount: 2,
@@ -56,11 +43,10 @@ export const ifach: IIncompleteHotel = {
         },
       ],
       attributes: commonAttributes,
-      bedType: "Double bed",
+      bedType: "double_bed",
     },
     {
       id: "ifach_2_single_disabled",
-      name: "Double room 3",
       priceRegular: "price_1Ihy8tJbqXJxe7z3W3L6vJ5X",
       priceWeekend: "price_1Ihy8tJbqXJxe7z3Vpw25OfI",
       peopleCount: 2,
@@ -71,12 +57,11 @@ export const ifach: IIncompleteHotel = {
           name: "",
         },
       ],
-      attributes: [...commonAttributes, "Disabled Friendly"],
-      bedType: "Single bed",
+      attributes: [...commonAttributes, "disabled_friendly"],
+      bedType: "single_bed",
     },
     {
       id: "ifach_triple",
-      name: "Triple room",
       priceRegular: "price_1IhyArJbqXJxe7z3XcLVGKqX",
       priceWeekend: "price_1IhyArJbqXJxe7z3qFKM764T",
       peopleCount: 3,
@@ -88,11 +73,10 @@ export const ifach: IIncompleteHotel = {
         },
       ],
       attributes: commonAttributes,
-      bedType: "2 single and 1 sofa-bed",
+      bedType: "2_single_and_1_sofa_bed",
     },
     {
       id: "ifach_quadruple",
-      name: "Quadruple room 1",
       priceRegular: "price_1IhyCfJbqXJxe7z3xviGVWRp",
       priceWeekend: "price_1IhyCfJbqXJxe7z3TZ6M5Tio",
       peopleCount: 3,
@@ -108,7 +92,7 @@ export const ifach: IIncompleteHotel = {
         },
       ],
       attributes: commonAttributes,
-      bedType: "2 bunk beds",
+      bedType: "2_bunk_beds",
     },
   ],
 };

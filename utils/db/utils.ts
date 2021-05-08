@@ -1,4 +1,4 @@
-import { DATA, IHotel, IRoomType } from ".";
+import { DATA, IHotel, IRoom, IRoomType } from ".";
 
 export const getAllRoomTypes = () =>
   Object.values(DATA).reduce(
@@ -21,4 +21,12 @@ export const getHotelByRoomTypeId = (roomTypeId: string): IHotel => {
     }
   });
   return hotelWanted;
+};
+
+export const getAllRoomsFromRoomTypesArray = (roomTypes: IRoomType[]): IRoom[] => {
+  const rooms = [];
+  roomTypes.forEach((roomType) => {
+    roomType.rooms.forEach((room) => rooms.push(room));
+  });
+  return rooms;
 };

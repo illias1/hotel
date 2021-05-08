@@ -1,4 +1,71 @@
 {
+  "db": {
+    "bed_types": {
+      "double_bed": "Double bed",
+      "single_bed": "Single bed",
+      "4_single_beds": "4 Single beds",
+      "4_single_beds_1_sofa_bed": "4 Single beds, 1 Sofa bed",
+      "bunk": "Bunk",
+      "2_single_and_1_sofa_bed": "2 single and 1 sofa-bed",
+      "2_bunk_beds": "2 bunk beds",
+      "2_single_beds": "2 Single beds",
+      "1_bunk_bed_2_single_beds": "1 Bunk bed, 2 Single beds",
+      "1_double_bed_1_bunk_bed": "1 Double bed, 1 Bunk bed",
+      "1_double_bed_1_bunk_bed_1_single_bed": "1 Double bed, 1 Bunk bed, 1 Single bed"
+    },
+    "attributes": {
+      "wifi": "WIFI",
+      "air_conditioner": "Air conditioner",
+      "tv": "TV",
+      "hair_dryer": "Hair dryer",
+      "private_bathroom": "Private bathroom with shower",
+      "mayor_bathrooms": "2 bathrooms, main one with bathtub and the guest one with the shower",
+      "iron": "Iron",
+      "washing_machine": "Washing machine",
+      "dishwasher": "Dishwasher",
+      "coffee_machine": "Coffee machine",
+      "oven": "Oven",
+      "safe": "Safe",
+      "tv_satellite": "TV(satellite/cable)",
+      "big_terrace": "Big Terrace",
+      "small_terrace": "Small Terrace",
+      "small_balcony": "Small Balcony",
+      "balcony": "Balcony",
+      "closet_in_every_room": "Closet in every room",
+      "disabled_friendly": "Disabled Friendly"
+    },
+    "mayor": {
+      "name": "Apartments Plaza Mayor",
+      "description": "Description of plaza mayor apartments",
+      "rooms": {
+        "mayor_1_a": "Double room 1",
+        "mayor_2_b": "Double room 1",
+        "mayor_3_b": "Double room 1"
+      }
+    },
+    "galeon": {
+      "name": "Hotel Galeon",
+      "description": "Description of hotel galeon",
+      "rooms": {
+        "galeon_double_balcony": "Double room (balcony)",
+        "galeon_double_disabled": "Double room (disabled)",
+        "galeon_quadruple_bunk": "Quadruple room",
+        "galeon_quadruple_terrace": "Quadruple room",
+        "galeon_quintuple": "Quadruple room"
+      }
+    },
+    "ifach": {
+      "name": "Hostal Plaza Ifach",
+      "description": "We have 2 different hostal with the same name, 50 meters from each other. Hostal has a sharing kitchenette, with a table, 4 chairs, zone where you can cook and eat for yourself",
+      "rooms": {
+        "ifach_2_bunk": "Double room 1",
+        "ifach_2_double": "Double room 2",
+        "ifach_2_single_disabled": "Double room 3",
+        "ifach_quadruple": "Quadruple room 1",
+        "ifach_triple": "Triple room"
+      }
+    }
+  },
   "input": {
     "date": {
       "placeholder": "Date"

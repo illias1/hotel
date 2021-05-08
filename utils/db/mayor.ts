@@ -1,28 +1,25 @@
 import { IIncompleteHotel } from ".";
 
-const mayorDescription = ``;
 const commonAttributes = [
-  "Air conditioner",
-  "WIFI",
-  "Hair dryer",
-  "Iron",
-  "Washing machine",
-  "Dishwasher",
-  "Coffee maker",
-  "Oven",
-  "2 bathrooms, main one with bathtub and the guest one with the shower",
+  "air_conditioner",
+  "wifi",
+  "hair_dryer",
+  "iron",
+  "washing_machine",
+  "dishwasher",
+  "coffee_machine",
+  "oven",
+  "mayor_bathrooms",
+  "closet_in_every_room",
 ];
 
 export const mayor: IIncompleteHotel = {
   id: "mayor",
-  name: 'Apartments "Plaza Mayor"',
   address: "Calle Navío, 9",
   images: [],
-  description: mayorDescription,
   roomTypes: [
     {
       id: "mayor_1_a",
-      name: "Double room 1",
       priceRegular: "price_1IhyFFJbqXJxe7z3j1Q9gZFC",
       priceWeekend: "price_1IhyFFJbqXJxe7z3MIF6o7jh",
       deposit: 100,
@@ -35,12 +32,11 @@ export const mayor: IIncompleteHotel = {
           name: "",
         },
       ],
-      attributes: [...commonAttributes, "Big Terrace", "Small Balcony", "Closet in every room"],
-      bedType: "4 Single beds",
+      attributes: [...commonAttributes, "big_terrace", "small_balcony"],
+      bedType: "4_single_beds",
     },
     {
       id: "mayor_2_b",
-      name: "Double room 1",
       priceRegular: "price_1IhyGOJbqXJxe7z3SCz7YrE3",
       priceWeekend: "price_1IhyGOJbqXJxe7z30iynCvjP",
       deposit: 100,
@@ -53,12 +49,11 @@ export const mayor: IIncompleteHotel = {
           name: "",
         },
       ],
-      attributes: [...commonAttributes, "Balcony", "Closet in every room"],
-      bedType: "4 Single beds, 1 Sofa bed",
+      attributes: [...commonAttributes, "balcony"],
+      bedType: "4_single_beds_1_sofa_bed",
     },
     {
       id: "mayor_3_b",
-      name: "Double room 1",
       priceRegular: "price_1IhyHfJbqXJxe7z3EmuV3MOC",
       priceWeekend: "price_1IhyHfJbqXJxe7z3lL8k2771",
       deposit: 100,
@@ -71,8 +66,8 @@ export const mayor: IIncompleteHotel = {
           name: "",
         },
       ],
-      attributes: [...commonAttributes, "Balcony", "Closet in every room"],
-      bedType: "4 Single beds",
+      attributes: [...commonAttributes, "balcony"],
+      bedType: "4_single_beds",
     },
   ],
 };

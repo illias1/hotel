@@ -1,25 +1,21 @@
 import { IIncompleteHotel } from ".";
 
-const galeonDescription = ``;
 const commonAttributes = [
-  "Air conditioner",
-  "hair dryer",
+  "wifi",
+  "air_conditioner",
+  "hair_dryer",
   "safe",
-  "TV(satellite/cable)",
-  "WIFI",
-  "bathroom with shower",
+  "tv_satellite",
+  "private_bathroom",
 ];
 
 export const galeon: IIncompleteHotel = {
   id: "galeon",
-  name: "Hotel Galeon",
   address: "Carrer de Puchalt , 18",
-  description: galeonDescription,
   images: [],
   roomTypes: [
     {
       id: "galeon_double_disabled",
-      name: "Double room (disabled)",
       priceRegular: "price_1IhxXoJbqXJxe7z33Jo7t2rT",
       priceWeekend: "price_1IhxXoJbqXJxe7z3pKI5WpI2",
       peopleCount: 2,
@@ -30,12 +26,11 @@ export const galeon: IIncompleteHotel = {
           name: "",
         },
       ],
-      attributes: [...commonAttributes, "Disabled Friendly"],
-      bedType: "2 Single beds",
+      attributes: [...commonAttributes, "disabled_friendly"],
+      bedType: "2_single_beds",
     },
     {
       id: "galeon_double_balcony",
-      name: "Double room (balcony)",
       priceRegular: "price_1IhxsKJbqXJxe7z3aZacy9os",
       priceWeekend: "price_1IhxsKJbqXJxe7z3ALWjL44g",
       peopleCount: 2,
@@ -50,12 +45,11 @@ export const galeon: IIncompleteHotel = {
           name: "",
         },
       ],
-      attributes: [...commonAttributes, "Balcony"],
-      bedType: "2 Single beds",
+      attributes: [...commonAttributes, "balcony"],
+      bedType: "2_single_beds",
     },
     {
       id: "galeon_quadruple_bunk",
-      name: "Quadruple room",
       priceRegular: "price_1Ihy2gJbqXJxe7z3cJJoD3Pk",
       priceWeekend: "price_1Ihy2gJbqXJxe7z3Dp73svsV",
       peopleCount: 4,
@@ -71,27 +65,25 @@ export const galeon: IIncompleteHotel = {
         },
       ],
       attributes: commonAttributes,
-      bedType: "1 Bunk bed, 2 Single beds",
+      bedType: "1_bunk_bed_2_single_beds",
     },
     {
       id: "galeon_quadruple_terrace",
-      name: "Quadruple room",
-      peopleCount: 4,
-      images: [],
       priceRegular: "price_1Ihy0hJbqXJxe7z3OW4Xi6RR",
       priceWeekend: "price_1Ihy0hJbqXJxe7z3W6eCNmxU",
+      peopleCount: 4,
+      images: [],
       rooms: [
         {
           id: "galeon_quadruple_terrace_1",
           name: "",
         },
       ],
-      attributes: [...commonAttributes, "Small Terrace"],
-      bedType: "1 Bunk bed, 2 Single beds",
+      attributes: [...commonAttributes, "small_terrace"],
+      bedType: "1_bunk_bed_2_single_beds",
     },
     {
       id: "galeon_quintuple",
-      name: "Quadruple room",
       priceRegular: "price_1IhxvMJbqXJxe7z3ufLM7oQF",
       priceWeekend: "price_1IhxvMJbqXJxe7z3ND0l1vJq",
       peopleCount: 5,
@@ -107,7 +99,7 @@ export const galeon: IIncompleteHotel = {
         },
       ],
       attributes: commonAttributes,
-      bedType: "1 Double bed, 1 Bunk bed, 1 Single bed",
+      bedType: "1_double_bed_1_bunk_bed_1_single_bed",
     },
   ],
 };

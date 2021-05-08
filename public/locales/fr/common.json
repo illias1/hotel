@@ -1,4 +1,37 @@
 {
+  "db": {
+    "mayor": {
+      "name": "лоыавр ыыва ы",
+      "description": "Description of plaza mayor apartments",
+      "rooms": {
+        "mayor_1_a": "Double room 1",
+        "mayor_2_b": "Double room 1",
+        "mayor_3_b": "Double room 1"
+      }
+    },
+    "galeon": {
+      "name": "ываы ав ыва",
+      "description": "Description of hotel galeon",
+      "rooms": {
+        "galeon_double_balcony": "Double room (balcony)",
+        "galeon_double_disabled": "Double room (disabled)",
+        "galeon_quadruple_bunk": "Quadruple room",
+        "galeon_quadruple_terrace": "Quadruple room",
+        "galeon_quintuple": "Quadruple room"
+      }
+    },
+    "ifach": {
+      "name": " ыва ываыа",
+      "description": "We have 2 different hostal with the same name, 50 meters from each other. Hostal has a sharing kitchenette, with a table, 4 chairs, zone where you can cook and eat for yourself",
+      "rooms": {
+        "ifach_2_bunk": "Double room 1",
+        "ifach_2_double": "Double room 2",
+        "ifach_2_single_disabled": "Double room 3",
+        "ifach_quadruple": "Quadruple room 1",
+        "ifach_triple": "Triple room"
+      }
+    }
+  },
   "input": {
     "date": {
       "placeholder": "Date"
