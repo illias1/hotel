@@ -22,6 +22,7 @@
     "antd": "^4.15.0",
     "apollo": "^2.33.1",
     "aws-amplify": "^3.3.26",
+    "dayjs": "^1.8.30",
     "graphql": "^15.5.0",
     "moment": "^2.29.1",
     "next": "latest",
