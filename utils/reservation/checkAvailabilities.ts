@@ -3,7 +3,7 @@ import {
   RoomBookingQueryResult,
   RoomBookingQueryVariables,
 } from "../../src/generated/graphql";
-import { roomBookings } from "../../src/queries";
+import { BookingStatus, roomBookings } from "../../src/queries";
 import { client } from "../api";
 import { IRoom, IRoomType } from "../db";
 import { getAllRoomsFromRoomTypesArray, getAllRoomTypes, getRoomTypeById } from "../db/utils";
@@ -48,6 +48,9 @@ export const checkAvailabilities = async (
     query: roomBookings,
     variables: {
       where: {
+        status: {
+          _eq: BookingStatus.CONFIRMED,
+        },
         checkIn: {
           _lt: checkOut,
         },
