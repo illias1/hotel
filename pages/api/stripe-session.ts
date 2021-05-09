@@ -2,6 +2,7 @@ import assert from "assert";
 
 import Amplify, { withSSRContext } from "aws-amplify";
 import { NextApiRequest, NextApiResponse } from "next";
+import absoluteUrl from "next-absolute-url";
 
 import Stripe from "stripe";
 import {
@@ -33,10 +34,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const requestedReservation = JSON.parse(req.body) as ISessionReservation;
       const bookings = requestedReservation.bookings;
-      const APP_URL = process.env.DOMAIN;
+      const { origin } = absoluteUrl(req);
       const STRIPE_SECRET = process.env.STRIPE_SECRET_KEY;
 
-      assert(APP_URL && STRIPE_SECRET, "Environment variables undefined");
+      assert(origin && STRIPE_SECRET, "Environment variables undefined");
       assert(
         Array.isArray(bookings) &&
           bookings.every(
@@ -111,8 +112,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       // // Create Checkout Sessions from bookings params.
       const params: Stripe.Checkout.SessionCreateParams = {
-        success_url: `${APP_URL}/payment-success/{CHECKOUT_SESSION_ID}`,
-        cancel_url: `${APP_URL}/payment-canceled/`,
+        success_url: `${origin}/payment-success/{CHECKOUT_SESSION_ID}`,
+        cancel_url: `${origin}/payment-canceled/`,
         mode: "payment",
         payment_method_types: ["card"],
         line_items: lineItems,
