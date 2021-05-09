@@ -3,6 +3,8 @@ import { GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
+import Stripe from "stripe";
+
 import { DATA, IHotelName, IRoomType } from "../../../../utils/db";
 import { getRoomTypeById } from "../../../../utils/db/utils";
 import Navigation from "../../../../components/organs/Navigation";
@@ -83,11 +85,14 @@ export const getStaticPaths: GetStaticPaths<IRoomPath> = async () => {
 export const getStaticProps: GetStaticProps<IRoomProps, IRoomPath> = async ({ params, locale }) => {
   try {
     const roomType = getRoomTypeById(params.roomId);
-    console.log("params", params);
-    // const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
-    // const stripePrice = (await stripe.prices.retrieve(roomType.priceRegular)) as Stripe.Price;
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27" });
+    const stripePrice = (await stripe.prices.retrieve(roomType.priceRegular)) as Stripe.Price;
     return {
-      props: { roomType, price: 23, ...(await serverSideTranslations(locale, ["common"])) },
+      props: {
+        roomType,
+        price: stripePrice.unit_amount / 100,
+        ...(await serverSideTranslations(locale, ["common"])),
+      },
     };
   } catch (err) {
     return { props: { error: err.message, ...(await serverSideTranslations(locale, ["common"])) } };

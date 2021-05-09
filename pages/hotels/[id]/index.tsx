@@ -1,10 +1,9 @@
 import React from "react";
 import Link from "next/link";
 import { GetStaticProps, GetStaticPaths } from "next";
-import { Stripe as StripeType } from "stripe";
-const Stripe = require("stripe");
+import Stripe from "stripe";
 
-import { DATA, IHotel, IHotelName, IHotelWithNumberPrice } from "../../../utils/db";
+import { DATA, IHotelName, IHotelWithNumberPrice } from "../../../utils/db";
 import { PATHS } from "../../../utils/paths";
 import { useTranslation } from "next-i18next";
 import Navigation from "../../../components/organs/Navigation";
@@ -59,22 +58,22 @@ export const getStaticProps: GetStaticProps<IHotelProps> = async ({ params, loca
   try {
     const id = params.id as IHotelName;
     const hotel = DATA[id];
-    // const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
-    // const stripeResponse: Stripe.ApiList<Stripe.Price> = await stripe.prices.list({
-    //   limit: 100,
-    // });
-    // const prices = stripeResponse.data;
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27" });
+    const stripeResponse: Stripe.ApiList<Stripe.Price> = await stripe.prices.list({
+      limit: 100,
+    });
+    const prices = stripeResponse.data;
+    console.log("prices", prices);
     const hotelWitNumberPrices: IHotelWithNumberPrice = {
       ...hotel,
       roomTypes: hotel.roomTypes.map((roomType) => ({
         ...roomType,
-        // priceRegularNumber: prices.find((price) => price.id === roomType.priceRegular).unit_amount / 100,
-        // priceWeekendNumber: prices.find((price) => price.id === roomType.priceWeekend).unit_amount / 100,
-        priceRegularNumber: 50,
-        priceWeekendNumber: 60,
+        priceRegularNumber: prices.find((price) => price.id === roomType.priceRegular).unit_amount / 100,
+        priceWeekendNumber: prices.find((price) => price.id === roomType.priceWeekend).unit_amount / 100,
+        // priceRegularNumber: 50,
+        // priceWeekendNumber: 60,
       })),
     };
-    console.log("augmented hotel", hotelWitNumberPrices);
     return {
       props: {
         hotel: hotelWitNumberPrices,

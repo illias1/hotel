@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withSSRContext } from "aws-amplify";
-const Stripe = require("stripe");
-import { Stripe as StripeType } from "stripe";
+import Stripe from "stripe";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
@@ -20,12 +19,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const phone = attributes["custom:phone"];
       const { email, name } = attributes;
-      const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
-      const stripeCustomer = (await stripe.customers.create({
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27" });
+      const stripeCustomer = await stripe.customers.create({
         email,
         name,
         phone,
-      })) as StripeType.Customer;
+      });
 
       await Auth.updateUserAttributes(user, {
         "custom:stripeId": stripeCustomer.id,

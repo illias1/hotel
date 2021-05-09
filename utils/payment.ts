@@ -1,5 +1,4 @@
 import React from "react";
-import Stripe from "stripe";
 import { LOCAL_STORAGE_RESERVATION } from "../constants";
 import { IRoomType } from "./db";
 

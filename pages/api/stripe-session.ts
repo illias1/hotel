@@ -2,9 +2,8 @@ import assert from "assert";
 
 import { withSSRContext } from "aws-amplify";
 import { NextApiRequest, NextApiResponse } from "next";
-import { Stripe as StripeType } from "stripe";
 
-// import Stripe from "stripe";
+import Stripe from "stripe";
 import {
   CreateReservationMutation,
   CreateReservationMutationVariables,
@@ -12,7 +11,6 @@ import {
   CreateRoomBookingsMutationVariables,
 } from "../../src/generated/graphql";
 import { BookingStatus, createReservation, createRoomBooking } from "../../src/queries";
-const Stripe = require("stripe");
 
 import { client } from "../../utils/api";
 import { DATA } from "../../utils/db";
@@ -50,7 +48,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(405).end("You are not authenticated");
       }
 
-      const stripe = Stripe(STRIPE_SECRET);
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27" });
 
       const { attributes } = user;
       const { email, name } = attributes;
@@ -59,11 +57,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       if (!stripeCustomerId) {
         console.log("Entered customer creation");
-        const stripeCustomer = (await stripe.customers.create({
+        const stripeCustomer = await stripe.customers.create({
           email,
           name,
           phone,
-        })) as StripeType.Customer;
+        });
         await Auth.updateUserAttributes(user, {
           "custom:stripeId": stripeCustomer.id,
         });
@@ -109,7 +107,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.log("line items", lineItems);
 
       // // Create Checkout Sessions from bookings params.
-      const params: StripeType.Checkout.SessionCreateParams = {
+      const params = {
         success_url: `${APP_URL}/payment-success/{CHECKOUT_SESSION_ID}`,
         cancel_url: `${APP_URL}/payment-canceled/`,
         mode: "payment",
@@ -118,9 +116,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         customer: stripeCustomerId,
         client_reference_id: reservationId,
       };
-      const checkoutSession: StripeType.Checkout.Session = await stripe.checkout.sessions.create(
-        params
-      );
+      const checkoutSession = await stripe.checkout.sessions.create(params);
       console.log("session", checkoutSession);
       // const checkoutSession = {};
       res.status(200).json(checkoutSession);

@@ -1,4 +1,3 @@
-import Stripe from "stripe";
 import { getAllRoomTypes, getRoomTypeById } from "./utils";
 
 const stripe = require("stripe")("sk_test_qqV0U8JCS72OtxyF1pZWedjO00voYa8lKn");
@@ -14,15 +13,15 @@ test("Room types ids and prices integral with Stripe", async () => {
 
   expect(products.data.length).toBe(13);
 
-  await products.data.forEach(async (product: Stripe.Product) => {
+  await products.data.forEach(async (product) => {
     try {
       const roomTypeId = product.metadata.roomTypeId;
       expect(roomTypeIds).toContain(roomTypeId);
 
       const roomType = getRoomTypeById(roomTypeId);
 
-      expect(roomType).toHaveProperty('priceRegular');
-      expect(roomType).toHaveProperty('priceWeekend');
+      expect(roomType).toHaveProperty("priceRegular");
+      expect(roomType).toHaveProperty("priceWeekend");
 
       const prices = await stripe.prices.list({
         limit: 3,
@@ -31,7 +30,7 @@ test("Room types ids and prices integral with Stripe", async () => {
 
       expect(prices.data).toHaveLength(2);
 
-      await prices.data.forEach((price: Stripe.Price) => {
+      await prices.data.forEach((price) => {
         try {
           expect(price).toHaveProperty("id");
           expect(price).toHaveProperty("nickname");

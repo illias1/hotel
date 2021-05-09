@@ -1,8 +1,8 @@
 import assert from "assert";
 import { NextApiRequest, NextApiResponse } from "next";
-// import Stripe from "stripe";
 var postmark = require("postmark");
 var TelegramBot = require("telegrambot");
+import Stripe from "stripe";
 
 import { BookingStatus, updateReservation, updateRoomBooking } from "../../src/queries";
 import { getHotelByRoomTypeId, getRoomTypeById } from "../../utils/db/utils";
@@ -13,7 +13,6 @@ import {
   UpdateRoomBookingMutationVariables,
 } from "../../src/generated/graphql";
 import { client } from "../../utils/api";
-import { Stripe } from "stripe";
 
 // Send an email:
 
