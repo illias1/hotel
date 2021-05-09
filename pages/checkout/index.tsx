@@ -7,6 +7,8 @@ import { useTranslation } from "next-i18next";
 import { Modal, Button, Steps } from "antd";
 import { UserOutlined, EuroCircleOutlined, SmileOutlined } from "@ant-design/icons";
 
+import awsExports from "../../src/aws-exports";
+
 import Authenticator from "../../components/molecules/Authenticator";
 
 import { ICheckoutBooking, parseCheckoutUrl, ValidationError } from "../../utils/parseCheckoutUrl";
@@ -17,12 +19,14 @@ import {
   checkAvailabilities,
   IAvailableRoomType,
 } from "../../utils/reservation/checkAvailabilities";
-import { withSSRContext } from "aws-amplify";
+import Amplify, { withSSRContext } from "aws-amplify";
 import { IRoomType } from "../../utils/db";
 import { getRoomTypeById } from "../../utils/db/utils";
 import { ISessionReservation } from "../api/stripe-session";
 
 const { Step } = Steps;
+
+Amplify.configure({ ...awsExports, ssr: true });
 
 interface IBookingForCheckout extends ICheckoutBooking {
   roomType: IRoomType;

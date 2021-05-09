@@ -4,7 +4,7 @@ import {
   RoomBookingQueryVariables,
 } from "../../src/generated/graphql";
 import { roomBookings } from "../../src/queries";
-import callGraphQL, { client } from "../api";
+import { client } from "../api";
 import { IRoom, IRoomType } from "../db";
 import { getAllRoomsFromRoomTypesArray, getAllRoomTypes, getRoomTypeById } from "../db/utils";
 import { validateDate, ValidationError } from "../parseCheckoutUrl";

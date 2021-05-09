@@ -110,6 +110,7 @@ const AuthenticatorUI: React.FC<IAuthenticatorUIProps> = ({
         />
         <input
           name="password"
+          type="password"
           placeholder={t("input.password.placeholder")}
           onChange={handleChange}
         />

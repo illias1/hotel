@@ -1,4 +1,6 @@
+import React from "react";
 import Stripe from "stripe";
+import { LOCAL_STORAGE_RESERVATION } from "../constants";
 import { IRoomType } from "./db";
 
 import { getRoomTypeById } from "./db/utils";
@@ -12,7 +14,6 @@ type ICheckoutLineItems = {
 
 export const getCheckoutLineItems = async (bookings: IAvailableRoomType[]) => {
   const checkoutLineItems: ICheckoutLineItems = [];
-
   bookings.forEach(async ({ checkIn, checkOut, id }) => {
     const roomType = getRoomTypeById(id);
     if (roomType) {

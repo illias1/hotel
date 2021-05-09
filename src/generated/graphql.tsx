@@ -1095,7 +1095,7 @@ export type UpdateReservationMutation = (
   { __typename?: 'mutation_root' }
   & { update_Reservation_by_pk?: Maybe<(
     { __typename?: 'Reservation' }
-    & Pick<Reservation, 'id' | 'isPaid'>
+    & Pick<Reservation, 'id' | 'isPaid' | 'note'>
     & { RoomBookings: Array<(
       { __typename?: 'RoomBooking' }
       & Pick<RoomBooking, 'id' | 'checkIn' | 'checkOut' | 'roomTypeId'>
@@ -1306,6 +1306,7 @@ export const UpdateReservationDocument = gql`
   update_Reservation_by_pk(pk_columns: $pk_columns, _set: $_set) {
     id
     isPaid
+    note
     RoomBookings {
       id
       checkIn

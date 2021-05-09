@@ -13,5 +13,3 @@ export const client = (AdminSecret: string) =>
     cache: new InMemoryCache(),
     link: httpsLink(AdminSecret),
   });
-
-export default callGraphQL;

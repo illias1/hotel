@@ -32,7 +32,8 @@
     "react-dom": "17.0.2",
     "react-is": "^16.8.0",
     "stripe": "^8.142.0",
-    "styled-components": "^5.0.0"
+    "styled-components": "^5.0.0",
+    "telegrambot": "^0.1.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",

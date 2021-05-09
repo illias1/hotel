@@ -77,6 +77,7 @@ export const updateReservation = gql`
     update_Reservation_by_pk(pk_columns: $pk_columns, _set: $_set) {
       id
       isPaid
+      note
       RoomBookings {
         id
         checkIn

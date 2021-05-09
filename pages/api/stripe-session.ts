@@ -13,7 +13,7 @@ import {
 import { BookingStatus, createReservation, createRoomBooking } from "../../src/queries";
 const Stripe = require("stripe");
 
-import callGraphQL, { client } from "../../utils/api";
+import { client } from "../../utils/api";
 import { DATA } from "../../utils/db";
 import { ValidationError } from "../../utils/parseCheckoutUrl";
 import { getCheckoutLineItems } from "../../utils/payment";
