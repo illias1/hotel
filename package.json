@@ -24,6 +24,7 @@
     "aws-amplify": "^3.3.26",
     "dayjs": "^1.8.30",
     "graphql": "^15.5.0",
+    "graphql-tag": "^2.0.0",
     "moment": "^2.29.1",
     "next": "latest",
     "next-i18next": "^8.1.3",

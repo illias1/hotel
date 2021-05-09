@@ -1,6 +1,6 @@
 import assert from "assert";
 
-import { withSSRContext } from "aws-amplify";
+import Amplify, { withSSRContext } from "aws-amplify";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import Stripe from "stripe";
@@ -17,6 +17,9 @@ import { DATA } from "../../utils/db";
 import { ValidationError } from "../../utils/parseCheckoutUrl";
 import { getCheckoutLineItems } from "../../utils/payment";
 import { IAvailableRoomType } from "../../utils/reservation/checkAvailabilities";
+
+import awsconfig from "../../src/aws-exports";
+Amplify.configure(awsconfig);
 
 export interface ISessionReservation {
   note: string;
