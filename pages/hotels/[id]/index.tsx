@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { GetStaticProps, GetStaticPaths } from "next";
-import StripeType from "stripe";
+import { Stripe as StripeType } from "stripe";
 const Stripe = require("stripe");
 
 import { DATA, IHotel, IHotelName, IHotelWithNumberPrice } from "../../../utils/db";
@@ -35,7 +35,7 @@ const HotelPage: React.FC<IHotelProps> = ({ hotel, error }) => {
           <div>
             {roomType.priceRegularNumber} - {roomType.priceWeekendNumber} Euro
           </div>
-          <img src="https://via.placeholder.com/150" alt=""/>
+          <img src="https://via.placeholder.com/150" alt="" />
         </div>
       ))}
       <Navigation />
@@ -60,7 +60,7 @@ export const getStaticProps: GetStaticProps<IHotelProps> = async ({ params, loca
     const id = params.id as IHotelName;
     const hotel = DATA[id];
     // const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
-    // const stripeResponse: StripeType.ApiList<StripeType.Price> = await stripe.prices.list({
+    // const stripeResponse: Stripe.ApiList<Stripe.Price> = await stripe.prices.list({
     //   limit: 100,
     // });
     // const prices = stripeResponse.data;

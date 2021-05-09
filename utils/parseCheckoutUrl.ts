@@ -1,5 +1,4 @@
 import moment from "moment";
-import { CreateRoomBookingInput } from "../src/API";
 
 import { DATA, IHotelName } from "./db";
 
@@ -92,8 +91,14 @@ export const validateDate = (dateString: string) => {
 
 export const getDynamicRoomTypeId = (index: number) => `room_${index}`;
 
-export interface IBuildCheckoutUrlInput extends CreateRoomBookingInput {
-  hotelId: IHotelName;
+export interface IBuildCheckoutUrlInput {
+  roomTypeId: string;
+  roomID: string;
+  checkIn: string;
+  checkOut: string;
+  people: number;
+  reservationID: string;
+  hotelId: string;
 }
 
 export const buildCheckoutUrl = (reservation: IBuildCheckoutUrlInput[]) => {

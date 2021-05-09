@@ -3,15 +3,8 @@ import { GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-import StripeType from "stripe";
-const Stripe = require("stripe");
-
 import { DATA, IHotelName, IRoomType } from "../../../../utils/db";
-import { LOCAL_STORAGE_RESERVATION } from "../../../../constants";
-import { StyledRangePicker } from "../../../../components/atoms/RangePicker";
-import { buildCheckoutUrl } from "../../../../utils/parseCheckoutUrl";
 import { getRoomTypeById } from "../../../../utils/db/utils";
-import { addRoomBookingToLocalStorage } from "../../../../utils/reservation/addBooking";
 import Navigation from "../../../../components/organs/Navigation";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -92,7 +85,7 @@ export const getStaticProps: GetStaticProps<IRoomProps, IRoomPath> = async ({ pa
     const roomType = getRoomTypeById(params.roomId);
     console.log("params", params);
     // const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
-    // const stripePrice = (await stripe.prices.retrieve(roomType.priceRegular)) as StripeType.Price;
+    // const stripePrice = (await stripe.prices.retrieve(roomType.priceRegular)) as Stripe.Price;
     return {
       props: { roomType, price: 23, ...(await serverSideTranslations(locale, ["common"])) },
     };

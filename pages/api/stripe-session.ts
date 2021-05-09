@@ -2,8 +2,9 @@ import assert from "assert";
 
 import { withSSRContext } from "aws-amplify";
 import { NextApiRequest, NextApiResponse } from "next";
+import { Stripe as StripeType } from "stripe";
 
-import StripeType from "stripe";
+// import Stripe from "stripe";
 import {
   CreateReservationMutation,
   CreateReservationMutationVariables,

@@ -1,6 +1,6 @@
 import assert from "assert";
 import { NextApiRequest, NextApiResponse } from "next";
-import StripeType from "stripe";
+// import Stripe from "stripe";
 var postmark = require("postmark");
 var TelegramBot = require("telegrambot");
 
@@ -13,20 +13,20 @@ import {
   UpdateRoomBookingMutationVariables,
 } from "../../src/generated/graphql";
 import { client } from "../../utils/api";
+import { Stripe } from "stripe";
 
 // Send an email:
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
-    // const { API } = withSSRContext({ req });
     try {
       var postmarkClient = new postmark.ServerClient(process.env.POSTMARK_API_KEY);
       var api = new TelegramBot(process.env.TELEGRAM_API_KEY);
 
-      const event: StripeType.Event = req.body;
+      const event: Stripe.Event = req.body;
       console.log("webhook received", req.body);
       if (event && event.type == "checkout.session.completed") {
-        const session = event.data.object as StripeType.Checkout.Session;
+        const session = event.data.object as Stripe.Checkout.Session;
         const reservationId = session.client_reference_id;
         const customerEmail = session.customer_details.email;
         assert(reservationId, `Reservation id not received: ${JSON.stringify(event)}`);

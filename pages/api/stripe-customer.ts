@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withSSRContext } from "aws-amplify";
 const Stripe = require("stripe");
-import StripeType from "stripe";
+import { Stripe as StripeType } from "stripe";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
