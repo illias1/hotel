@@ -41,17 +41,24 @@ export interface IRoomType extends IIncompleteRoomType {
   rooms: IRoom[];
   name: string;
 }
-
-export interface IHotel extends IIncompleteHotel {
-  roomTypes: IRoomType[];
-  description: string;
-  name: string;
+export interface IRoomTypeWithNumberPrice extends IRoomType {
+  priceRegularNumber: number;
+  priceWeekendNumber: number;
 }
+
 export interface IIncompleteHotel {
   id: IHotelName;
   address: string;
   images: string[];
   roomTypes: IIncompleteRoomType[];
+}
+export interface IHotel extends IIncompleteHotel {
+  roomTypes: IRoomType[];
+  description: string;
+  name: string;
+}
+export interface IHotelWithNumberPrice extends IHotel {
+  roomTypes: IRoomTypeWithNumberPrice[];
 }
 
 const deeperLevelFiller = (hotel: IIncompleteHotel): IHotel => ({

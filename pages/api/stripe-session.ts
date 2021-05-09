@@ -1,32 +1,36 @@
 import assert from "assert";
 
-import { graphqlOperation, withSSRContext } from "aws-amplify";
+import { withSSRContext } from "aws-amplify";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import StripeType from "stripe";
-const Stripe = require("stripe");
-
 import {
-  BookingStatus,
   CreateReservationMutation,
   CreateReservationMutationVariables,
-  CreateRoomBookingInput,
-  CreateRoomBookingMutation,
-  CreateRoomBookingMutationVariables,
-} from "../../src/API";
-import { createReservation, createRoomBooking } from "../../src/graphql/mutations";
+  CreateRoomBookingsMutation,
+  CreateRoomBookingsMutationVariables,
+} from "../../src/generated/graphql";
+import { BookingStatus, createReservation, createRoomBooking } from "../../src/queries";
+const Stripe = require("stripe");
 
-import callGraphQL from "../../utils/api";
+import callGraphQL, { client } from "../../utils/api";
 import { DATA } from "../../utils/db";
 import { ValidationError } from "../../utils/parseCheckoutUrl";
 import { getCheckoutLineItems } from "../../utils/payment";
+import { IAvailableRoomType } from "../../utils/reservation/checkAvailabilities";
+
+export interface ISessionReservation {
+  note: string;
+  bookings: IAvailableRoomType[];
+}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     try {
-      const { API, Auth } = withSSRContext({ req });
+      const { Auth } = withSSRContext({ req });
 
-      const bookings = JSON.parse(req.body) as CreateRoomBookingInput[];
+      const requestedReservation = JSON.parse(req.body) as ISessionReservation;
+      const bookings = requestedReservation.bookings;
       const APP_URL = process.env.DOMAIN;
       const STRIPE_SECRET = process.env.STRIPE_SECRET_KEY;
 
@@ -34,10 +38,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       assert(
         Array.isArray(bookings) &&
           bookings.every(
-            (el) => "roomID" in el && "roomTypeId" in el && "checkIn" in el && "checkOut" in el
+            (el) => "availableRooms" in el && "id" in el && "checkIn" in el && "checkOut" in el
           ),
         "body is malformed"
       );
+      assert("note" in requestedReservation, "body is malformed");
 
       const user = await Auth.currentAuthenticatedUser();
       if (!user) {
@@ -61,37 +66,43 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         await Auth.updateUserAttributes(user, {
           "custom:stripeId": stripeCustomer.id,
         });
-        stripeCustomerId = stripeCustomer.id
+        stripeCustomerId = stripeCustomer.id;
       }
 
-      const { data } = await API.graphql(
-        graphqlOperation(createReservation, {
-          input: {
+      const { data } = await client(process.env.ADMIN_SECRET).mutate<
+        CreateReservationMutation,
+        CreateReservationMutationVariables
+      >({
+        mutation: createReservation,
+        variables: {
+          object: {
             customerID: attributes.sub,
             isPaid: false,
-            note: "",
+            note: requestedReservation.note,
           },
-        })
-      );
-      console.log('data (reservation)', data)
-      const reservation = data.createReservation as CreateReservationMutation['createReservation'];
-      console.log("reservation", reservation);
-      bookings.forEach(async (booking) => {
-        const { data } = await API.graphql(
-          graphqlOperation(createRoomBooking, {
-            input: {
-              checkOut: booking.checkOut,
-              checkIn: booking.checkIn,
-              reservationID: reservation.id,
-              roomTypeId: booking.roomTypeId,
-              roomID: booking.roomID,
-              people: booking?.people,
-              status: BookingStatus.PENDING,
-            },
-          })
-        );
-        console.log("created booking", data.createRoomBooking.id);
+        },
       });
+      const reservationId = data.insert_Reservation_one.id;
+      console.log("reservation data", data);
+
+      const bookingsCreatedResponse = await client(process.env.ADMIN_SECRET).mutate<
+        CreateRoomBookingsMutation,
+        CreateRoomBookingsMutationVariables
+      >({
+        mutation: createRoomBooking,
+        variables: {
+          objects: bookings.map((booking) => ({
+            checkOut: booking.checkOut,
+            checkIn: booking.checkIn,
+            reservation: reservationId,
+            roomTypeId: booking.id,
+            roomID: booking.availableRooms[0].id,
+            people: booking.people,
+            status: BookingStatus.PENDING,
+          })),
+        },
+      });
+      console.log("bookingsCreatedResponse", bookingsCreatedResponse.data);
 
       const lineItems = await getCheckoutLineItems(bookings);
       console.log("line items", lineItems);
@@ -104,12 +115,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         payment_method_types: ["card"],
         line_items: lineItems,
         customer: stripeCustomerId,
-        client_reference_id: reservation.id,
+        client_reference_id: reservationId,
       };
       const checkoutSession: StripeType.Checkout.Session = await stripe.checkout.sessions.create(
         params
       );
-      console.log("sesssion", checkoutSession);
+      console.log("session", checkoutSession);
       // const checkoutSession = {};
       res.status(200).json(checkoutSession);
     } catch (err) {

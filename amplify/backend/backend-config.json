@@ -7,29 +7,5 @@
       "customAuth": false
     }
   },
-  "api": {
-    "hotel": {
-      "service": "AppSync",
-      "providerPlugin": "awscloudformation",
-      "output": {
-        "authConfig": {
-          "defaultAuthentication": {
-            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-            "userPoolConfig": {
-              "userPoolId": "authhotel7fcfebe5"
-            }
-          },
-          "additionalAuthenticationProviders": [
-            {
-              "authenticationType": "API_KEY",
-              "apiKeyConfig": {
-                "apiKeyExpirationDays": 365,
-                "description": "confirm booking"
-              }
-            }
-          ]
-        }
-      }
-    }
-  }
+  "api": {}
 }

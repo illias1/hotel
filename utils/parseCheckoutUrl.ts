@@ -84,7 +84,7 @@ export const parseCheckoutUrl = (query: any): ICheckoutBooking[] => {
   return finalDict;
 };
 
-const validateDate = (dateString: string) => {
+export const validateDate = (dateString: string) => {
   if (!moment(dateString, "YYYY-MM-DD", true).isValid()) {
     throw new ValidationError(`${dateString} isn't a valid date`);
   }

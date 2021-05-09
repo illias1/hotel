@@ -1,6 +1,6 @@
 {
-    "identityPoolName": "hotel7fcfebe5_identitypool_7fcfebe5",
-    "allowUnauthenticatedIdentities": false,
+    "identityPoolName": "hotel13f54789_identitypool_13f54789",
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "hotel7fcfebe5",
     "userPoolName": "hotel7fcfebe5_userpool_7fcfebe5",
     "autoVerifiedAttributes": [
@@ -14,8 +14,8 @@
     "smsVerificationMessage": "Your verification code is {####}",
     "emailVerificationSubject": "Your verification code",
     "emailVerificationMessage": "Your verification code is {####}",
-    "defaultPasswordPolicy": false,
-    "passwordPolicyMinLength": 8,
+    "defaultPasswordPolicy": true,
+    "passwordPolicyMinLength": "6",
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
         "email"
@@ -45,23 +45,21 @@
             "Arn"
         ]
     },
-    "useDefault": "defaultSocial",
-    "hostedUI": true,
+    "useDefault": "manual",
+    "hostedUI": false,
     "usernameAttributes": [
         "email"
     ],
     "triggers": "{}",
-    "hostedUIDomainName": "alquileres",
-    "authProvidersUserPool": [
-        "Google"
-    ],
-    "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\"],\"LogoutURLs\":[\"http://localhost:3000/\"]}",
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "parentStack": {
         "Ref": "AWS::StackId"
     },
     "permissions": [],
-    "dependsOn": []
+    "dependsOn": [],
+    "userPoolGroups": false,
+    "adminQueries": false,
+    "authProviders": [],
+    "thirdPartyAuth": false
 }

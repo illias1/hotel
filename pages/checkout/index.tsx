@@ -5,41 +5,33 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { loadStripe } from "@stripe/stripe-js";
 import { useTranslation } from "next-i18next";
 import { Modal, Button, Steps } from "antd";
-import {
-  UserOutlined,
-  SolutionOutlined,
-  EuroCircleOutlined,
-  SmileOutlined,
-} from "@ant-design/icons";
-
-import { Amplify, withSSRContext } from "aws-amplify";
-import awsExports from "../../src/aws-exports";
+import { UserOutlined, EuroCircleOutlined, SmileOutlined } from "@ant-design/icons";
 
 import Authenticator from "../../components/molecules/Authenticator";
 
-import { CreateRoomBookingInput } from "../../src/API";
-import { createReservation, createRoomBooking } from "../../src/graphql/mutations";
-
-import { checkAvailabilityForRoomType } from "../../utils/checkAvailablityForRoomType";
-import callGraphQL from "../../utils/api";
-import { parseCheckoutUrl, ValidationError } from "../../utils/parseCheckoutUrl";
+import { ICheckoutBooking, parseCheckoutUrl, ValidationError } from "../../utils/parseCheckoutUrl";
 import { SESSION } from "../../constants";
-import { PATHS } from "../../utils/paths";
-import Link from "next/link";
 import Navigation from "../../components/organs/Navigation";
 import { getCookieUser } from "../../utils/general";
-
-Amplify.configure({ ...awsExports, ssr: true });
+import {
+  checkAvailabilities,
+  IAvailableRoomType,
+} from "../../utils/reservation/checkAvailabilities";
+import { withSSRContext } from "aws-amplify";
+import { IRoomType } from "../../utils/db";
+import { getRoomTypeById } from "../../utils/db/utils";
+import { ISessionReservation } from "../api/stripe-session";
 
 const { Step } = Steps;
 
-export interface ICreateRoomBookingForCheckout extends CreateRoomBookingInput {
-  roomName: string;
+interface IBookingForCheckout extends ICheckoutBooking {
+  roomType: IRoomType;
 }
-type IUserForm = {
-  phone: string;
-  address: string;
-};
+interface IBookingResultForCheckout {
+  booking: IBookingForCheckout;
+  availableRoomType: IAvailableRoomType;
+}
+
 interface IUser {
   username: string;
   email: string;
@@ -50,7 +42,7 @@ interface IUser {
 export type ICheckoutProps = {
   validationError: boolean;
   unknownError?: boolean;
-  bookings: ICreateRoomBookingForCheckout[];
+  bookings: IBookingResultForCheckout[];
   cookieUser?: IUser | null;
 };
 
@@ -60,11 +52,10 @@ const Checkout: React.FC<ICheckoutProps> = ({
   cookieUser,
   unknownError,
 }) => {
-  const [editableBookings, setEditableBookings] = React.useState<ICreateRoomBookingForCheckout[]>(
-    []
-  );
+  const [editableBookings, setEditableBookings] = React.useState<IBookingResultForCheckout[]>([]);
   const [isModalVisible, setIsModalVisible] = React.useState(false);
   const [user, setUser] = React.useState<IUser | null>(cookieUser);
+  const [customerNote, setCustomerNote] = React.useState<string>("");
   const [paymentStages, setPaymentStages] = React.useState<string[]>([]);
   const [error, setError] = React.useState<string>("");
 
@@ -87,9 +78,14 @@ const Checkout: React.FC<ICheckoutProps> = ({
 
   const handlePay = async () => {
     try {
-      showModal();
       setPaymentStages((prev) => [...prev, "Setting up your booking"]);
-      const body = JSON.stringify(bookings);
+      const reservationParams: ISessionReservation = {
+        note: customerNote,
+        bookings: editableBookings
+          .filter((booking) => booking.availableRoomType)
+          .map((booking) => booking.availableRoomType),
+      };
+      const body = JSON.stringify(reservationParams);
       console.log("body", body);
       const stripeSession = await fetch("/api/stripe-session", { method: "post", body });
       console.log("stripeSession", stripeSession);
@@ -109,7 +105,7 @@ const Checkout: React.FC<ICheckoutProps> = ({
               console.error("Error from network!", error);
               setError(error.message);
             }
-          }, 1500);
+          }, 1000);
         } else {
           console.error("No stripe!");
           setError("Couldn't connect to Stripe.");
@@ -156,15 +152,19 @@ const Checkout: React.FC<ICheckoutProps> = ({
         <Step status="wait" title="Done" icon={<SmileOutlined />} />
       </Steps>
 
-      <div>is authenticated: {JSON.stringify(cookieUser)}</div>
-      {editableBookings.map(({ checkOut, checkIn, roomName, roomTypeId }, index) => (
-        <div key={`${index}-${roomTypeId}`}>
-          <div>{roomName}</div>
-          <div>{roomName}</div>
-          {checkIn} - {checkOut}
-          <button onClick={() => removeBooking(index)}>Remove</button>
-        </div>
-      ))}
+      {editableBookings.map(({ booking, availableRoomType }, index) => {
+        if (!availableRoomType) {
+          return <div>{t(booking.roomType.name)} is not available anymore</div>;
+        }
+        const { checkIn, checkOut, id, name } = availableRoomType;
+        return (
+          <div key={`${index}-${id}`}>
+            <div>{t(name)}</div>
+            {checkIn} - {checkOut}
+            <button onClick={() => removeBooking(index)}>Remove</button>
+          </div>
+        );
+      })}
       <div>
         {t("pages.checkout.policies")
           .split("\n")
@@ -172,16 +172,29 @@ const Checkout: React.FC<ICheckoutProps> = ({
             <p key={i}>{line}</p>
           ))}
       </div>
+      <input type="text" value={customerNote} onChange={(e) => setCustomerNote(e.target.value)} />
       <div>
-        {
-          user ? <div>
-            We will record the following contact information: {user.name}, {user.email}, {user.phone}
-          </div> : <div>
-            You have to login first
+        {user ? (
+          <div>
+            <button onClick={handlePay}>Pay</button>
+            We will record the following contact information: {user.name}, {user.email},{" "}
+            {user.phone}
           </div>
-        }
+        ) : (
+          <div>
+            You have to login first
+            <button onClick={() => showModal()}>Login</button>
+          </div>
+        )}
       </div>
-      <button onClick={handlePay}>Pay</button>
+      <div>
+        <p style={{ color: "red" }}>{error}</p>
+      </div>
+      {paymentStages.map((stage) => (
+        <div key={stage}>
+          <p>{stage}</p>
+        </div>
+      ))}
       <Navigation />
     </>
   );
@@ -196,11 +209,19 @@ export const getServerSideProps: GetServerSideProps<ICheckoutProps> = async ({
 
   try {
     const validatedUrlParams = parseCheckoutUrl(query);
-    const completeBookingInput = [];
-    validatedUrlParams.forEach((booking) => {
-      completeBookingInput.push(checkAvailabilityForRoomType(booking));
-    });
-
+    const completeBookingInput: IBookingResultForCheckout[] = await Promise.all(
+      validatedUrlParams.map(async (booking) => {
+        const availabilities = await checkAvailabilities(
+          { people: String(booking.people), checkIn: booking.checkIn, checkOut: booking.checkOut },
+          [booking.room]
+        );
+        return {
+          booking: { roomType: getRoomTypeById(booking.room), ...booking },
+          availableRoomType: availabilities.length > 0 ? availabilities[0] : null,
+        };
+      })
+    );
+    console.log("completeBookingInput", completeBookingInput);
     let user = null;
     try {
       user = await Auth.currentAuthenticatedUser();

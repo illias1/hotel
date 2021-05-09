@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { gql } from "@apollo/client";
 
 import { DATA } from "../utils/db";
 
@@ -13,6 +14,9 @@ import Amplify from "aws-amplify";
 import awsExports from "../src/aws-exports";
 
 import Authenticator from "../components/molecules/Authenticator";
+import { Mayormapiframe } from "../assets/maps/mayor";
+import { useTranslation } from "next-i18next";
+import { client } from "../utils/api";
 
 Amplify.configure({ ...awsExports, ssr: true });
 
@@ -21,6 +25,7 @@ type IHomeProps = {
 };
 
 const Home: React.FC<IHomeProps> = ({ hotels }) => {
+  const { t } = useTranslation();
   return (
     <>
       <HomeTitle />
@@ -28,17 +33,17 @@ const Home: React.FC<IHomeProps> = ({ hotels }) => {
       {Object.values(hotels).map((hotel) => (
         <div key={hotel.id}>
           <Link href={`/hotels/${hotel.id}`}>
-            <a>{hotel.name}</a>
+            <a>{t(hotel.name)}</a>
           </Link>
         </div>
       ))}
+      <Mayormapiframe />
       <Navigation />
     </>
   );
 };
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  console.log('ENV', process.env.STRIPE_SECRET_KEY)
   return {
     props: {
       ...(await serverSideTranslations(locale, ["common"])),

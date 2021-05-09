@@ -1,20 +1,20 @@
 import Stripe from "stripe";
-import { CreateRoomBookingInput } from "../src/API";
 import { IRoomType } from "./db";
 
 import { getRoomTypeById } from "./db/utils";
 import { ValidationError } from "./parseCheckoutUrl";
+import { IAvailableRoomType } from "./reservation/checkAvailabilities";
 
 type ICheckoutLineItems = {
   price: string;
   quantity: number;
 }[];
 
-export const getCheckoutLineItems = async (bookings: CreateRoomBookingInput[]) => {
+export const getCheckoutLineItems = async (bookings: IAvailableRoomType[]) => {
   const checkoutLineItems: ICheckoutLineItems = [];
 
-  bookings.forEach(async ({ checkIn, checkOut, roomTypeId }) => {
-    const roomType = getRoomTypeById(roomTypeId);
+  bookings.forEach(async ({ checkIn, checkOut, id }) => {
+    const roomType = getRoomTypeById(id);
     if (roomType) {
       const dates = getDatesBetweenDates(new Date(checkIn), new Date(checkOut));
 

@@ -2,20 +2,20 @@ import React from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { API } from "aws-amplify";
-import { DatePicker } from "antd";
 
 import StripeType from "stripe";
 const Stripe = require("stripe");
 
 import { DATA, IHotelName, IRoomType } from "../../../../utils/db";
-import { CreateRoomBookingInput } from "../../../../src/API";
 import { LOCAL_STORAGE_RESERVATION } from "../../../../constants";
 import { StyledRangePicker } from "../../../../components/atoms/RangePicker";
 import { buildCheckoutUrl } from "../../../../utils/parseCheckoutUrl";
 import { getRoomTypeById } from "../../../../utils/db/utils";
 import { addRoomBookingToLocalStorage } from "../../../../utils/reservation/addBooking";
 import Navigation from "../../../../components/organs/Navigation";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import StayInfoSelect from "../../../../components/organs/StayInfoSelect";
 
 type IRoomProps = {
   roomType?: IRoomType;
@@ -42,22 +42,7 @@ const HotelPage: React.FC<IRoomProps> = ({ availabilities, roomType, error, pric
   const [checkDates, setCheckDates] = React.useState<ICheckDates>(initialCheckDates);
   const [bookingForm, setBookingForm] = React.useState<any>({});
   const router = useRouter();
-
-  const bookRoom = async () => {
-    const reservation = {
-      roomTypeId: roomType.id,
-      roomID: availabilities,
-      checkIn: checkDates.checkIn,
-      checkOut: checkDates.checkOut,
-      people: bookingForm.people || 2,
-      reservationID: "",
-      hotelId: roomType.hotelId,
-    };
-    addRoomBookingToLocalStorage(reservation, (reservations) => {
-      router.push(buildCheckoutUrl(reservations));
-    });
-  };
-  console.log("router", router);
+  const { t } = useTranslation();
   if (error) {
     return <div>Error happened {error}</div>;
   }
@@ -66,22 +51,20 @@ const HotelPage: React.FC<IRoomProps> = ({ availabilities, roomType, error, pric
     <>
       <p>
         <span>hotel </span>
-        <Link href={router.pathname}>
+        <Link href={`/hotels/${router.query.id}`}>
           <a>{router.query.id}</a>
         </Link>
       </p>
       <div>Room type page: {roomType.name}</div>
+      <img src="https://via.placeholder.com/300" alt="" />
+      <img src="https://via.placeholder.com/300" alt="" />
+      <img src="https://via.placeholder.com/300" alt="" />
       <ul>
         {roomType.attributes.map((attr) => (
-          <li key={attr}>{attr}</li>
+          <li key={attr}>{t(attr)}</li>
         ))}
       </ul>
-      <button onClick={bookRoom}>Book this room</button>
-      <StyledRangePicker
-        // placeholder={t("input.date.placeholder")}
-        suffixIcon=""
-        onChange={(_, [checkIn, checkOut]) => setCheckDates({ checkIn, checkOut })}
-      />
+      <StayInfoSelect first={roomType.id} />
       <div>price</div>
       <div>{price} euro?</div>
       <Navigation />
@@ -104,16 +87,16 @@ export const getStaticPaths: GetStaticPaths<IRoomPath> = async () => {
   return { paths, fallback: false };
 };
 
-export const getStaticProps: GetStaticProps<IRoomProps, IRoomPath> = async ({ params }) => {
+export const getStaticProps: GetStaticProps<IRoomProps, IRoomPath> = async ({ params, locale }) => {
   try {
     const roomType = getRoomTypeById(params.roomId);
     console.log("params", params);
     // const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
     // const stripePrice = (await stripe.prices.retrieve(roomType.priceRegular)) as StripeType.Price;
     return {
-      props: { roomType, price: 23 },
+      props: { roomType, price: 23, ...(await serverSideTranslations(locale, ["common"])) },
     };
   } catch (err) {
-    return { props: { error: err.message } };
+    return { props: { error: err.message, ...(await serverSideTranslations(locale, ["common"])) } };
   }
 };
