@@ -107,7 +107,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.log("line items", lineItems);
 
       // // Create Checkout Sessions from bookings params.
-      const params = {
+      const params: Stripe.Checkout.SessionCreateParams = {
         success_url: `${APP_URL}/payment-success/{CHECKOUT_SESSION_ID}`,
         cancel_url: `${APP_URL}/payment-canceled/`,
         mode: "payment",
