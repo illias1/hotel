@@ -57,18 +57,13 @@ const StayInfoSelect: React.FC<IStayInfoSelectProps> = ({ first }) => {
         suffixIcon=""
         onChange={(_, [checkIn, checkOut]) => setForm({ ...form, checkOut, checkIn })}
       />
-      <Button
-        disabled={!valid}
-        onClick={() => {
-          router.push(
-            `/search?people=${form.peopleCount}&checkIn=${form.checkIn}&checkOut=${form.checkOut}${
-              first ? `&first=${first}` : ""
-            }`
-          );
-        }}
+      <Link
+        href={`/search?people=${form.peopleCount}&checkIn=${form.checkIn}&checkOut=${
+          form.checkOut
+        }${first ? `&first=${first}` : ""}`}
       >
         <a>{t("pages.home.buttons.search")}</a>
-      </Button>
+      </Link>
     </>
   );
 };
