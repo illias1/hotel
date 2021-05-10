@@ -10,7 +10,7 @@ interface IMarker {
 
 const MyGreatPlaceWithHover: React.FC<IMarker> = ({ text }) => {
   const style = greatPlaceStyle;
-
+// @ts-ignore
   return <div style={style}>{text}</div>;
 };
 
