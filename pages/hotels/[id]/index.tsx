@@ -64,7 +64,6 @@ export const getStaticProps: GetStaticProps<IHotelProps> = async ({ params, loca
       limit: 100,
     });
     const prices = stripeResponse.data;
-    console.log("prices", prices);
     const hotelWitNumberPrices: IHotelWithNumberPrice = {
       ...hotel,
       roomTypes: hotel.roomTypes.map((roomType) => ({

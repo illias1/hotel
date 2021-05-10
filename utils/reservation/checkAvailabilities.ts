@@ -68,7 +68,7 @@ export const checkAvailabilities = async (
   });
   const bookings = data.RoomBooking;
 
-  console.log("bookings", bookings);
+  console.log("bookings", bookings.length);
 
   const validRooms = rooms.filter((room) =>
     bookings.every((booking) => booking.roomID !== room.id)

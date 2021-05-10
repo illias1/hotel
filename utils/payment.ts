@@ -11,9 +11,9 @@ type ICheckoutLineItems = {
   quantity: number;
 }[];
 
-export const getCheckoutLineItems = async (bookings: IAvailableRoomType[]) => {
+export const getCheckoutLineItems = (bookings: IAvailableRoomType[]) => {
   const checkoutLineItems: ICheckoutLineItems = [];
-  bookings.forEach(async ({ checkIn, checkOut, id }) => {
+  bookings.forEach(({ checkIn, checkOut, id }) => {
     const roomType = getRoomTypeById(id);
     if (roomType) {
       const dates = getDatesBetweenDates(new Date(checkIn), new Date(checkOut));

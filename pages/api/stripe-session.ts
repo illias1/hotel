@@ -105,7 +105,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           })),
         },
       });
-      console.log("bookingsCreatedResponse", bookingsCreatedResponse.data);
 
       const lineItems = await getCheckoutLineItems(bookings);
       console.log("line items", lineItems);

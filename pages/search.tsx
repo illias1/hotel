@@ -1,9 +1,9 @@
-import { withSSRContext } from "aws-amplify";
+import React from "react";
 import { GetServerSideProps } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
-import React from "react";
+import useSWR from "swr";
 import BookRoomCard from "../components/molecules/BookRoomCard";
 
 import Navigation from "../components/organs/Navigation";
@@ -21,26 +21,33 @@ interface ISearchProps {
   availableRoomTypes?: IAvailableRoomType[];
 }
 
-const Search: React.FC<ISearchProps> = ({ error, availableRoomTypes }) => {
+const Search: React.FC<ISearchProps> = () => {
   const router = useRouter();
   const { t } = useTranslation();
-
+  const { data, error } = useSWR<ISearchProps>("/api" + router.asPath, (...args) =>
+    // @ts-ignore
+    fetch(...args).then((res) => res.json())
+  );
   const [firstRoomType, setFirstRoomType] = React.useState<IAvailableRoomType>(null);
   React.useEffect(() => {
     const first = "first" in router.query ? router.query["first"] : null;
-    if (first) {
+    if (first && data && "availableRoomTypes" in data) {
       const index = availableRoomTypes.findIndex((roomType) => roomType.id === first);
-      console.log("index", index);
       if (index > -1) {
-        console.log("availableRoomTypes.length", availableRoomTypes.length);
         setFirstRoomType(availableRoomTypes.splice(index, 1)[0]);
-        console.log("availableRoomTypes.length", availableRoomTypes.length);
       }
     }
-  }, []);
+  }, [data]);
+
   if (error) {
-    return <div>{error}</div>;
+    console.error("Error in search", error);
+    return <div>Something went wrong</div>;
   }
+  if (!data) return <div>loading...</div>;
+  if (data.error) return <div>{data.error}</div>;
+
+  const { availableRoomTypes } = data;
+
   return (
     <>
       Search page
@@ -81,38 +88,6 @@ const Search: React.FC<ISearchProps> = ({ error, availableRoomTypes }) => {
       <Navigation />
     </>
   );
-};
-
-export const getServerSideProps: GetServerSideProps<ISearchProps> = async ({
-  req,
-  query,
-  locale,
-}) => {
-  try {
-    validateSearchQuery((query as unknown) as ISearchQuery);
-    const availableRoomTypes = await checkAvailabilities((query as unknown) as ISearchQuery);
-    return {
-      props: {
-        availableRoomTypes,
-        ...(await serverSideTranslations(locale, ["common"])),
-      },
-    };
-  } catch (e) {
-    console.error("Error in search", e);
-    if (e instanceof ValidationError) {
-      return {
-        props: {
-          error: e.message,
-        },
-      };
-    }
-    return {
-      props: {
-        error: "Something went wrong",
-        ...(await serverSideTranslations(locale, ["common"])),
-      },
-    };
-  }
 };
 
 export default Search;

@@ -3,7 +3,7 @@ export const Mayormapiframe = () => (
     <div className="gmap_canvas">
       <iframe
         id="gmap_canvas"
-        src="https://maps.google.com/maps?q=plaza%20mayor%20calpe&t=&z=17&ie=UTF8&iwloc=&output=embed"
+        src="https://maps.googleapis.com/maps/api/staticmap?center=40.714%2c%20-73.998&zoom=12&size=400x400&key=AIzaSyCyDzWCBWsP4WBwK7Odu8_qMRV_pAqDnQc"
         scrolling="no"
         marginHeight={0}
         marginWidth={0}

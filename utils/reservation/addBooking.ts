@@ -7,7 +7,9 @@ export const addRoomBookingToLocalStorage = (
 ) => {
   const reservations =
     (JSON.parse(localStorage.getItem(LOCAL_STORAGE_RESERVATION)) as IBuildCheckoutUrlInput[]) || [];
-  reservations.push(roomBooking);
-  localStorage.setItem(LOCAL_STORAGE_RESERVATION, JSON.stringify(reservations));
+  if (!reservations.find((res) => res.roomTypeId === roomBooking.roomTypeId)) {
+    reservations.push(roomBooking);
+    localStorage.setItem(LOCAL_STORAGE_RESERVATION, JSON.stringify(reservations));
+  }
   callback(reservations);
 };

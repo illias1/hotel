@@ -1,6 +1,6 @@
 import React from "react";
-import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
+import useSWR from "swr";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { loadStripe } from "@stripe/stripe-js";
 import { useTranslation } from "next-i18next";
@@ -31,7 +31,7 @@ Amplify.configure({ ...awsExports, ssr: true });
 interface IBookingForCheckout extends ICheckoutBooking {
   roomType: IRoomType;
 }
-interface IBookingResultForCheckout {
+export interface IBookingResultForCheckout {
   booking: IBookingForCheckout;
   availableRoomType: IAvailableRoomType;
 }
@@ -50,25 +50,26 @@ export type ICheckoutProps = {
   cookieUser?: IUser | null;
 };
 
-const Checkout: React.FC<ICheckoutProps> = ({
-  validationError,
-  bookings,
-  cookieUser,
-  unknownError,
-}) => {
+const Checkout: React.FC<ICheckoutProps> = () => {
   const [editableBookings, setEditableBookings] = React.useState<IBookingResultForCheckout[]>([]);
   const [isModalVisible, setIsModalVisible] = React.useState(false);
-  const [user, setUser] = React.useState<IUser | null>(cookieUser);
+  const [user, setUser] = React.useState<IUser | null>(null);
   const [customerNote, setCustomerNote] = React.useState<string>("");
   const [paymentStages, setPaymentStages] = React.useState<string[]>([]);
-  const [error, setError] = React.useState<string>("");
+  const [checkoutError, setCheckoutError] = React.useState<string>("");
 
   const { t } = useTranslation();
   const router = useRouter();
+  const { data, error } = useSWR<ICheckoutProps>("/api" + router.asPath, (...args) =>
+    // @ts-ignore
+    fetch(...args).then((res) => res.json())
+  );
 
   React.useEffect(() => {
-    setEditableBookings(bookings);
-  }, []);
+    if (data) {
+      setEditableBookings(data.bookings);
+    }
+  }, [data]);
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -107,30 +108,36 @@ const Checkout: React.FC<ICheckoutProps> = ({
             });
             if (error) {
               console.error("Error from network!", error);
-              setError(error.message);
+              setCheckoutError(error.message);
             }
           }, 1000);
         } else {
           console.error("No stripe!");
-          setError("Couldn't connect to Stripe.");
+          setCheckoutError("Couldn't connect to Stripe.");
         }
       } else {
         const text = await stripeSession.text();
-        setError(text);
+        setCheckoutError(text);
       }
     } catch (payError) {
       console.warn("pay error", payError);
-      setError("Something went wrong, please try again");
+      setCheckoutError("Something went wrong, please try again");
     }
   };
 
-  if (validationError) {
-    return <div>Url is corrupted</div>;
-  }
-  if (unknownError) {
+  if (error) {
     return <div>Something went wrong</div>;
   }
-  if (!bookings) return <div>Something went wrong</div>;
+  if (!data) {
+    return <div>Loading</div>;
+  }
+  if (data.validationError) {
+    return <div>Url is corrupted</div>;
+  }
+  if (data.unknownError) {
+    return <div>Something went wrong</div>;
+  }
+  if (!data.bookings) return <div>Something went wrong</div>;
   return (
     <>
       <Modal
@@ -192,7 +199,7 @@ const Checkout: React.FC<ICheckoutProps> = ({
         )}
       </div>
       <div>
-        <p style={{ color: "red" }}>{error}</p>
+        <p style={{ color: "red" }}>{checkoutError}</p>
       </div>
       {paymentStages.map((stage) => (
         <div key={stage}>
@@ -202,75 +209,6 @@ const Checkout: React.FC<ICheckoutProps> = ({
       <Navigation />
     </>
   );
-};
-
-export const getServerSideProps: GetServerSideProps<ICheckoutProps> = async ({
-  req,
-  query,
-  locale,
-}) => {
-  const { Auth } = withSSRContext({ req });
-
-  try {
-    const validatedUrlParams = parseCheckoutUrl(query);
-    const completeBookingInput: IBookingResultForCheckout[] = await Promise.all(
-      validatedUrlParams.map(async (booking) => {
-        const availabilities = await checkAvailabilities(
-          { people: String(booking.people), checkIn: booking.checkIn, checkOut: booking.checkOut },
-          [booking.room]
-        );
-        return {
-          booking: { roomType: getRoomTypeById(booking.room), ...booking },
-          availableRoomType: availabilities.length > 0 ? availabilities[0] : null,
-        };
-      })
-    );
-    console.log("completeBookingInput", completeBookingInput);
-    let user = null;
-    try {
-      user = await Auth.currentAuthenticatedUser();
-    } catch {
-      return {
-        props: {
-          cookieUser: null,
-          validationError: false,
-          bookings: completeBookingInput,
-          ...(await serverSideTranslations(locale, ["common"])),
-        },
-      };
-    }
-
-    return {
-      props: {
-        validationError: false,
-        bookings: completeBookingInput,
-        cookieUser: getCookieUser(user),
-        ...(await serverSideTranslations(locale, ["common"])),
-      },
-    };
-  } catch (error) {
-    console.log("here");
-    if (error instanceof ValidationError) {
-      console.error(error.message);
-      return {
-        props: {
-          validationError: true,
-          bookings: [],
-          ...(await serverSideTranslations(locale, ["common"])),
-        },
-      };
-    }
-
-    console.error("Unknown error at checkout server side props:", error);
-    return {
-      props: {
-        unknownError: true,
-        validationError: false,
-        bookings: [],
-        ...(await serverSideTranslations(locale, ["common"])),
-      },
-    };
-  }
 };
 
 export default Checkout;

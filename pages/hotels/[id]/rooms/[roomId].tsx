@@ -60,7 +60,7 @@ const HotelPage: React.FC<IRoomProps> = ({ availabilities, roomType, error, pric
           <li key={attr}>{t(attr)}</li>
         ))}
       </ul>
-      <StayInfoSelect first={roomType.id} />
+      <StayInfoSelect maxPeople={roomType.peopleCount} first={roomType.id} />
       <div>price</div>
       <div>{price} euro?</div>
       <Navigation />

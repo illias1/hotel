@@ -12,6 +12,7 @@ const { Option } = Select;
 
 type IStayInfoSelectProps = {
   first?: string;
+  maxPeople?: number;
 };
 
 type IFormInputs = {
@@ -26,7 +27,7 @@ const initialForm: IFormInputs = {
   peopleCount: 0,
 };
 
-const StayInfoSelect: React.FC<IStayInfoSelectProps> = ({ first }) => {
+const StayInfoSelect: React.FC<IStayInfoSelectProps> = ({ first, maxPeople }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const [form, setForm] = React.useState<IFormInputs>(initialForm);
@@ -39,7 +40,7 @@ const StayInfoSelect: React.FC<IStayInfoSelectProps> = ({ first }) => {
   }, [form.checkIn, form.checkOut, form.peopleCount]);
 
   return (
-    <>
+    <div style={{margin: 20}}>
       <StyledSelect
         placeholder="N of people"
         bordered={false}
@@ -48,7 +49,7 @@ const StayInfoSelect: React.FC<IStayInfoSelectProps> = ({ first }) => {
       >
         {Array.from({ length: 6 }, (_, i) => (
           <Option key={i + 1} value={i + 1}>
-            {i + 1}
+            {i + 1} {i + 1 === maxPeople && " - this room's limit"}
           </Option>
         ))}
       </StyledSelect>
@@ -64,7 +65,7 @@ const StayInfoSelect: React.FC<IStayInfoSelectProps> = ({ first }) => {
       >
         <a>{t("pages.home.buttons.search")}</a>
       </Link>
-    </>
+    </div>
   );
 };
 

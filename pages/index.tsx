@@ -2,8 +2,6 @@ import React from "react";
 import Link from "next/link";
 import { GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { gql } from "@apollo/client";
-
 import { DATA } from "../utils/db";
 
 import Navigation from "../components/organs/Navigation";
@@ -17,6 +15,7 @@ import Authenticator from "../components/molecules/Authenticator";
 import { Mayormapiframe } from "../assets/maps/mayor";
 import { useTranslation } from "next-i18next";
 import { client } from "../utils/api";
+import Map from "../components/organs/Map";
 
 Amplify.configure({ ...awsExports, ssr: true });
 
@@ -26,6 +25,7 @@ type IHomeProps = {
 
 const Home: React.FC<IHomeProps> = ({ hotels }) => {
   const { t } = useTranslation();
+  console.log("data", DATA);
   return (
     <>
       <HomeTitle />
@@ -37,7 +37,7 @@ const Home: React.FC<IHomeProps> = ({ hotels }) => {
           </Link>
         </div>
       ))}
-      <Mayormapiframe />
+      <Map />
       <Navigation />
     </>
   );
