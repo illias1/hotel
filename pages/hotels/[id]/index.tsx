@@ -8,6 +8,7 @@ import { PATHS } from "../../../utils/paths";
 import { useTranslation } from "next-i18next";
 import Navigation from "../../../components/organs/Navigation";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { REVALIDATE_PERIOD } from "../../../constants";
 
 type IHotelProps = {
   hotel?: IHotelWithNumberPrice;
@@ -79,8 +80,9 @@ export const getStaticProps: GetStaticProps<IHotelProps> = async ({ params, loca
         hotel: hotelWitNumberPrices,
         ...(await serverSideTranslations(locale, ["common"])),
       },
+      revalidate: REVALIDATE_PERIOD
     };
   } catch (err) {
-    return { props: { error: err.message } };
+    return { props: { error: err.message }, revalidate: REVALIDATE_PERIOD };
   }
 };

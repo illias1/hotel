@@ -11,6 +11,7 @@ import Navigation from "../../../../components/organs/Navigation";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import StayInfoSelect from "../../../../components/organs/StayInfoSelect";
+import { REVALIDATE_PERIOD } from "../../../../constants";
 
 type IRoomProps = {
   roomType?: IRoomType;
@@ -93,8 +94,12 @@ export const getStaticProps: GetStaticProps<IRoomProps, IRoomPath> = async ({ pa
         price: stripePrice.unit_amount / 100,
         ...(await serverSideTranslations(locale, ["common"])),
       },
+      revalidate: REVALIDATE_PERIOD,
     };
   } catch (err) {
-    return { props: { error: err.message, ...(await serverSideTranslations(locale, ["common"])) } };
+    return {
+      props: { error: err.message, ...(await serverSideTranslations(locale, ["common"])) },
+      revalidate: REVALIDATE_PERIOD,
+    };
   }
 };
