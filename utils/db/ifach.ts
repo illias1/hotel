@@ -5,14 +5,22 @@ const commonAttributes = ["wifi", "air_conditioner", "tv", "hair_dryer", "privat
 export const ifach: IIncompleteHotel = {
   id: "ifach",
   address: "Calle Isac Peral 2, Plaza Ifach",
-  images: [],
+  images: [
+    "https://via.placeholder.com/300",
+    "https://via.placeholder.com/300",
+    "https://via.placeholder.com/300",
+  ],
   roomTypes: [
     {
       id: "ifach_2_bunk",
       priceRegular: "price_1Ihy5SJbqXJxe7z31XcJvLrG",
       priceWeekend: "price_1IhxW0JbqXJxe7z3IQfU3toX",
       peopleCount: 2,
-      images: [],
+      images: [
+        "https://via.placeholder.com/300",
+        "https://via.placeholder.com/300",
+        "https://via.placeholder.com/300",
+      ],
       rooms: [
         {
           id: "ifach_2_bunk_1",
@@ -35,7 +43,11 @@ export const ifach: IIncompleteHotel = {
       priceRegular: "price_1Ihy7FJbqXJxe7z3gQnCS1Rq",
       priceWeekend: "price_1Ihy7FJbqXJxe7z3lzBa5CSX",
       peopleCount: 2,
-      images: [],
+      images: [
+        "https://via.placeholder.com/300",
+        "https://via.placeholder.com/300",
+        "https://via.placeholder.com/300",
+      ],
       rooms: [
         {
           id: "ifach_2_double_1",
@@ -50,7 +62,11 @@ export const ifach: IIncompleteHotel = {
       priceRegular: "price_1Ihy8tJbqXJxe7z3W3L6vJ5X",
       priceWeekend: "price_1Ihy8tJbqXJxe7z3Vpw25OfI",
       peopleCount: 2,
-      images: [],
+      images: [
+        "https://via.placeholder.com/300",
+        "https://via.placeholder.com/300",
+        "https://via.placeholder.com/300",
+      ],
       rooms: [
         {
           id: "ifach_2_single_disabled_1",
@@ -65,7 +81,11 @@ export const ifach: IIncompleteHotel = {
       priceRegular: "price_1IhyArJbqXJxe7z3XcLVGKqX",
       priceWeekend: "price_1IhyArJbqXJxe7z3qFKM764T",
       peopleCount: 3,
-      images: [],
+      images: [
+        "https://via.placeholder.com/300",
+        "https://via.placeholder.com/300",
+        "https://via.placeholder.com/300",
+      ],
       rooms: [
         {
           id: "ifach_triple_1",
@@ -80,7 +100,11 @@ export const ifach: IIncompleteHotel = {
       priceRegular: "price_1IhyCfJbqXJxe7z3xviGVWRp",
       priceWeekend: "price_1IhyCfJbqXJxe7z3TZ6M5Tio",
       peopleCount: 3,
-      images: [],
+      images: [
+        "https://via.placeholder.com/300",
+        "https://via.placeholder.com/300",
+        "https://via.placeholder.com/300",
+      ],
       rooms: [
         {
           id: "ifach_quadruple_1",

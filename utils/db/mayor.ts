@@ -16,7 +16,7 @@ const commonAttributes = [
 export const mayor: IIncompleteHotel = {
   id: "mayor",
   address: "Calle Navío, 9",
-  images: [],
+  images: ["https://via.placeholder.com/300"],
   roomTypes: [
     {
       id: "mayor_1_a",
@@ -25,7 +25,7 @@ export const mayor: IIncompleteHotel = {
       deposit: 100,
       cleaningFee: 40,
       peopleCount: 4,
-      images: [],
+      images: ["https://via.placeholder.com/300"],
       rooms: [
         {
           id: "mayor_1_a_1",
@@ -42,7 +42,7 @@ export const mayor: IIncompleteHotel = {
       deposit: 100,
       cleaningFee: 40,
       peopleCount: 5,
-      images: [],
+      images: ["https://via.placeholder.com/300"],
       rooms: [
         {
           id: "mayor_2_b_1",
@@ -59,7 +59,7 @@ export const mayor: IIncompleteHotel = {
       deposit: 100,
       cleaningFee: 40,
       peopleCount: 5,
-      images: [],
+      images: ["https://via.placeholder.com/300"],
       rooms: [
         {
           id: "mayor_3_b_1",

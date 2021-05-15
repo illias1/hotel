@@ -12,14 +12,14 @@ const commonAttributes = [
 export const galeon: IIncompleteHotel = {
   id: "galeon",
   address: "Carrer de Puchalt , 18",
-  images: [],
+  images: ["https://via.placeholder.com/300"],
   roomTypes: [
     {
       id: "galeon_double_disabled",
       priceRegular: "price_1IhxXoJbqXJxe7z33Jo7t2rT",
       priceWeekend: "price_1IhxXoJbqXJxe7z3pKI5WpI2",
       peopleCount: 2,
-      images: [],
+      images: ["https://via.placeholder.com/300"],
       rooms: [
         {
           id: "galeon_double_disabled_1",
@@ -34,7 +34,7 @@ export const galeon: IIncompleteHotel = {
       priceRegular: "price_1IhxsKJbqXJxe7z3aZacy9os",
       priceWeekend: "price_1IhxsKJbqXJxe7z3ALWjL44g",
       peopleCount: 2,
-      images: [],
+      images: ["https://via.placeholder.com/300"],
       rooms: [
         {
           id: "galeon_double_balcony_1",
@@ -53,7 +53,7 @@ export const galeon: IIncompleteHotel = {
       priceRegular: "price_1Ihy2gJbqXJxe7z3cJJoD3Pk",
       priceWeekend: "price_1Ihy2gJbqXJxe7z3Dp73svsV",
       peopleCount: 4,
-      images: [],
+      images: ["https://via.placeholder.com/300"],
       rooms: [
         {
           id: "galeon_quadruple_1",
@@ -72,7 +72,7 @@ export const galeon: IIncompleteHotel = {
       priceRegular: "price_1Ihy0hJbqXJxe7z3OW4Xi6RR",
       priceWeekend: "price_1Ihy0hJbqXJxe7z3W6eCNmxU",
       peopleCount: 4,
-      images: [],
+      images: ["https://via.placeholder.com/300"],
       rooms: [
         {
           id: "galeon_quadruple_terrace_1",
@@ -87,7 +87,7 @@ export const galeon: IIncompleteHotel = {
       priceRegular: "price_1IhxvMJbqXJxe7z3ufLM7oQF",
       priceWeekend: "price_1IhxvMJbqXJxe7z3ND0l1vJq",
       peopleCount: 5,
-      images: [],
+      images: ["https://via.placeholder.com/300"],
       rooms: [
         {
           id: "galeon_quintuple_1",
