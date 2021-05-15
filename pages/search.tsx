@@ -1,20 +1,12 @@
 import React from "react";
-import { GetServerSideProps } from "next";
 import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import BookRoomCard from "../components/molecules/BookRoomCard";
 
 import Navigation from "../components/organs/Navigation";
-import { DATA, IRoom, IRoomType } from "../utils/db";
-import { ValidationError } from "../utils/parseCheckoutUrl";
-import {
-  checkAvailabilities,
-  IAvailableRoomType,
-  ISearchQuery,
-  validateSearchQuery,
-} from "../utils/reservation/checkAvailabilities";
+import { IAvailableRoomType } from "../utils/reservation/checkAvailabilities";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 interface ISearchProps {
   error?: string;
@@ -38,6 +30,7 @@ const Search: React.FC<ISearchProps> = () => {
       }
     }
   }, [data]);
+  console.log("data", data);
 
   if (error) {
     console.error("Error in search", error);
@@ -57,6 +50,7 @@ const Search: React.FC<ISearchProps> = () => {
             {firstRoomType ? (
               <div>
                 <BookRoomCard
+                  t={t}
                   roomType={firstRoomType}
                   checkIn={router.query["checkIn"] as string}
                   checkOut={router.query["checkOut"] as string}
@@ -74,20 +68,26 @@ const Search: React.FC<ISearchProps> = () => {
         {availableRoomTypes.map((roomType) => (
           <div key={roomType.id}>
             <BookRoomCard
+              t={t}
               roomType={roomType}
               checkIn={router.query["checkIn"] as string}
               checkOut={router.query["checkOut"] as string}
               people={(router.query["people"] as unknown) as number}
             />
-            {/* {roomType.availableRooms.map((room) => (
-              <span>{room.id}, </span>
-            ))} */}
           </div>
         ))}
       </div>
       <Navigation />
     </>
   );
+};
+
+export const getServerSideProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
 };
 
 export default Search;

@@ -211,4 +211,12 @@ const Checkout: React.FC<ICheckoutProps> = () => {
   );
 };
 
+export const getServerSideProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
+};
+
 export default Checkout;
