@@ -3,8 +3,6 @@ import { GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-import Stripe from "stripe";
-
 import { DATA, IHotelName, IRoomType } from "../../../../utils/db";
 import { getRoomTypeById } from "../../../../utils/db/utils";
 import Navigation from "../../../../components/organs/Navigation";
@@ -12,11 +10,13 @@ import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import StayInfoSelect from "../../../../components/organs/StayInfoSelect";
 import { REVALIDATE_PERIOD } from "../../../../constants";
+import { displayPrice } from "../../../../utils/general";
+import { getPrices } from "../../../../utils/payment";
 
 type IRoomProps = {
   roomType?: IRoomType;
-  price?: number;
-  availabilities?: any;
+  priceRegular?: number;
+  priceWeekend?: number;
   error?: string;
 };
 type IRoomPath = {
@@ -34,7 +34,7 @@ const initialCheckDates: ICheckDates = {
   checkOut: "",
 };
 
-const HotelPage: React.FC<IRoomProps> = ({ availabilities, roomType, error, price }) => {
+const HotelPage: React.FC<IRoomProps> = ({ roomType, error, priceRegular, priceWeekend }) => {
   const [checkDates, setCheckDates] = React.useState<ICheckDates>(initialCheckDates);
   const [bookingForm, setBookingForm] = React.useState<any>({});
   const router = useRouter();
@@ -62,7 +62,7 @@ const HotelPage: React.FC<IRoomProps> = ({ availabilities, roomType, error, pric
       </ul>
       <StayInfoSelect maxPeople={roomType.peopleCount} first={roomType.id} />
       <div>price</div>
-      <div>{price} euro?</div>
+      <div>{displayPrice(null, priceRegular, priceWeekend)} euro?</div>
       <Navigation />
     </>
   );
@@ -86,12 +86,12 @@ export const getStaticPaths: GetStaticPaths<IRoomPath> = async () => {
 export const getStaticProps: GetStaticProps<IRoomProps, IRoomPath> = async ({ params, locale }) => {
   try {
     const roomType = getRoomTypeById(params.roomId);
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27" });
-    const stripePrice = (await stripe.prices.retrieve(roomType.priceRegular)) as Stripe.Price;
+    const prices = await getPrices(process.env.STRIPE_SECRET_KEY);
     return {
       props: {
         roomType,
-        price: stripePrice.unit_amount / 100,
+        priceWeekend: prices[roomType.priceWeekend],
+        priceRegular: prices[roomType.priceRegular],
         ...(await serverSideTranslations(locale, ["common"])),
       },
       revalidate: REVALIDATE_PERIOD,

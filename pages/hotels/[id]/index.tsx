@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import { GetStaticProps, GetStaticPaths } from "next";
-import Stripe from "stripe";
 
 import { DATA, IHotelName, IHotelWithNumberPrice } from "../../../utils/db";
 import { PATHS } from "../../../utils/paths";
@@ -9,6 +8,7 @@ import { useTranslation } from "next-i18next";
 import Navigation from "../../../components/organs/Navigation";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { REVALIDATE_PERIOD } from "../../../constants";
+import { getPrices } from "../../../utils/payment";
 
 type IHotelProps = {
   hotel?: IHotelWithNumberPrice;
@@ -59,19 +59,15 @@ export const getStaticProps: GetStaticProps<IHotelProps> = async ({ params, loca
   try {
     const id = params.id as IHotelName;
     const hotel = DATA[id];
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27" });
-    const stripeResponse: Stripe.ApiList<Stripe.Price> = await stripe.prices.list({
-      limit: 100,
-    });
-    const prices = stripeResponse.data;
+    const prices = await getPrices(process.env.STRIPE_SECRET_KEY);
+    console.log('prices', prices)
+
     const hotelWitNumberPrices: IHotelWithNumberPrice = {
       ...hotel,
       roomTypes: hotel.roomTypes.map((roomType) => ({
         ...roomType,
-        priceRegularNumber: prices.find((price) => price.id === roomType.priceRegular).unit_amount / 100,
-        priceWeekendNumber: prices.find((price) => price.id === roomType.priceWeekend).unit_amount / 100,
-        // priceRegularNumber: 50,
-        // priceWeekendNumber: 60,
+        priceRegularNumber: prices[roomType.priceRegular] / 100,
+        priceWeekendNumber: prices[roomType.priceWeekend] / 100,
       })),
     };
     return {
@@ -79,7 +75,7 @@ export const getStaticProps: GetStaticProps<IHotelProps> = async ({ params, loca
         hotel: hotelWitNumberPrices,
         ...(await serverSideTranslations(locale, ["common"])),
       },
-      revalidate: REVALIDATE_PERIOD
+      revalidate: REVALIDATE_PERIOD,
     };
   } catch (err) {
     return { props: { error: err.message }, revalidate: REVALIDATE_PERIOD };

@@ -41,7 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       assert(
         Array.isArray(bookings) &&
           bookings.every(
-            (el) => "availableRooms" in el && "id" in el && "checkIn" in el && "checkOut" in el
+            (el) => "availableRoom" in el && "id" in el && "checkIn" in el && "checkOut" in el
           ),
         "body is malformed"
       );
@@ -99,7 +99,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             checkIn: booking.checkIn,
             reservation: reservationId,
             roomTypeId: booking.id,
-            roomID: booking.availableRooms[0].id,
+            roomID: booking.availableRoom[0].id,
             people: booking.people,
             status: BookingStatus.PENDING,
           })),

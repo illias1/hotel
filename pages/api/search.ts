@@ -7,12 +7,14 @@ import {
 } from "../../utils/reservation/checkAvailabilities";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  console.log("received", req);
   if (req.method === "GET") {
     const query = req.query;
     try {
       validateSearchQuery((query as unknown) as ISearchQuery);
-      const availableRoomTypes = await checkAvailabilities((query as unknown) as ISearchQuery);
+      const availableRoomTypes = await checkAvailabilities(
+        (query as unknown) as ISearchQuery,
+        process.env.STRIPE_SECRET_KEY
+      );
       return res.status(200).json({ availableRoomTypes });
     } catch (e) {
       console.error("Error in search", e);
@@ -22,6 +24,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(500).json({ error: "Something went wrong" });
     }
   } else {
-    return res.status(500).end("Method Not Allowed");;
+    return res.status(500).end("Method Not Allowed");
   }
 }

@@ -23,6 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               checkIn: booking.checkIn,
               checkOut: booking.checkOut,
             },
+            process.env.STRIPE_SECRET_KEY,
             [booking.room]
           );
           return {

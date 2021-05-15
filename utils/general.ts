@@ -1,3 +1,5 @@
+import { IRoomTypeWithNumberPrice } from "./db";
+
 export const getCookieUser = (user: any) => {
   if (!user) {
     return null;
@@ -11,4 +13,21 @@ export const getCookieUser = (user: any) => {
         stripeId: user.attributes["custom:stripeId"],
       }
     : null;
+};
+
+export const displayPrice = (
+  roomType?: IRoomTypeWithNumberPrice,
+  inputPriceRegular?: number,
+  inputPriceWeekend?: number
+) => {
+  let priceRegular = inputPriceRegular;
+  let priceWeekend = inputPriceWeekend;
+  if (roomType) {
+    priceRegular = roomType.priceRegularNumber;
+    priceWeekend = roomType.priceWeekendNumber;
+  }
+  if (priceRegular == priceWeekend) {
+    return priceWeekend;
+  }
+  return `${priceRegular} - ${priceWeekend}`;
 };

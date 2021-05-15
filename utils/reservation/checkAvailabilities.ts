@@ -5,17 +5,18 @@ import {
 } from "../../src/generated/graphql";
 import { BookingStatus, roomBookings } from "../../src/queries";
 import { client } from "../api";
-import { IRoom, IRoomType } from "../db";
+import { IRoom, IRoomType, IRoomTypeWithNumberPrice } from "../db";
 import { getAllRoomsFromRoomTypesArray, getAllRoomTypes, getRoomTypeById } from "../db/utils";
 import { validateDate, ValidationError } from "../parseCheckoutUrl";
+import { getPrices } from "../payment";
 
 export interface ISearchQuery {
   people: string;
   checkIn: string;
   checkOut: string;
 }
-export interface IAvailableRoomType extends IRoomType {
-  availableRooms: IRoom[];
+export interface IAvailableRoomType extends IRoomTypeWithNumberPrice {
+  availableRoom: IRoom;
   checkIn: string;
   checkOut: string;
   people: number;
@@ -34,6 +35,7 @@ export const validateSearchQuery = (query: ISearchQuery) => {
 
 export const checkAvailabilities = async (
   { people, checkIn, checkOut }: ISearchQuery,
+  stripeKey: string,
   roomTypeIds?: string[]
 ): Promise<IAvailableRoomType[]> => {
   const peopleCount = Number(people);
@@ -73,26 +75,21 @@ export const checkAvailabilities = async (
   const validRooms = rooms.filter((room) =>
     bookings.every((booking) => booking.roomID !== room.id)
   );
+  const prices = await getPrices(stripeKey);
 
   const availableRoomTypes = {} as Record<string, IAvailableRoomType>;
   validRooms.forEach((room) => {
     const roomTypeId = room.roomTypeId;
-    availableRoomTypes[roomTypeId] =
-      roomTypeId in availableRoomTypes
-        ? {
-            ...availableRoomTypes[roomTypeId],
-            availableRooms: [room, ...availableRoomTypes[roomTypeId].availableRooms],
-            people: peopleCount,
-            checkIn: checkIn,
-            checkOut: checkOut,
-          }
-        : {
-            ...getRoomTypeById(roomTypeId),
-            availableRooms: [room],
-            people: peopleCount,
-            checkIn: checkIn,
-            checkOut: checkOut,
-          };
+    const roomType = getRoomTypeById(roomTypeId);
+    availableRoomTypes[roomTypeId] = {
+      ...roomType,
+      availableRoom: room,
+      people: peopleCount,
+      checkIn: checkIn,
+      checkOut: checkOut,
+      priceRegularNumber: prices[roomType.priceRegular],
+      priceWeekendNumber: prices[roomType.priceWeekend],
+    };
   });
   return Object.values(availableRoomTypes).sort((a, b) => b.hotelId.localeCompare(a.hotelId));
 };

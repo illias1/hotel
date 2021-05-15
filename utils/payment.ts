@@ -1,8 +1,10 @@
-import React from "react";
-import { LOCAL_STORAGE_RESERVATION } from "../constants";
+var cache = require("memory-cache");
+import Stripe from "stripe";
+
+import { PRICES_CACHE_TIMEOUT } from "../constants";
 import { IRoomType } from "./db";
 
-import { getRoomTypeById } from "./db/utils";
+import { getAllRoomTypes, getRoomTypeById } from "./db/utils";
 import { ValidationError } from "./parseCheckoutUrl";
 import { IAvailableRoomType } from "./reservation/checkAvailabilities";
 
@@ -56,4 +58,33 @@ const Counter = (array: string[]): Record<string, number> => {
   var count = {};
   array.forEach((val) => (count[val] = (count[val] || 0) + 1));
   return count;
+};
+
+export const getPrices = async (stripeKey: string) => {
+  const prices: Record<string, number> = {};
+  let allPricesCached = true;
+  getAllRoomTypes().forEach((roomType) => {
+    const priceRegular = cache.get(roomType.priceRegular);
+    const priceWeekend = cache.get(roomType.priceWeekend);
+    console.log("priceWeekend retrieved from cache", priceWeekend);
+    if (!(priceWeekend || priceRegular)) {
+      allPricesCached = false;
+    }
+    prices[roomType.priceRegular] = priceRegular;
+    prices[roomType.priceWeekend] = priceWeekend;
+  });
+  if (allPricesCached) {
+    console.log("Retrieved all prices from cache");
+    return prices;
+  }
+  console.log("Called stripe to get prices");
+  const stripe = new Stripe(stripeKey, { apiVersion: "2020-08-27" });
+  const stripeResponse: Stripe.ApiList<Stripe.Price> = await stripe.prices.list({
+    limit: 100,
+  });
+  stripeResponse.data.forEach((stripePrice) => {
+    prices[stripePrice.id] = stripePrice.unit_amount / 100;
+    cache.put(stripePrice.id, stripePrice.unit_amount / 100, PRICES_CACHE_TIMEOUT);
+  });
+  return prices;
 };
