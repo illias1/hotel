@@ -13,7 +13,6 @@ const NavigationContainer = styled.div`
   height: 78px;
   display: flex;
   justify-content: space-around;
-  position: absolute;
   bottom: 0;
 `;
 
