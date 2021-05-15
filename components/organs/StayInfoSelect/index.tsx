@@ -1,5 +1,4 @@
 import React from "react";
-import { useRouter } from "next/router";
 import Link from "next/link";
 import { useTranslation } from "next-i18next";
 import { Select } from "antd";
@@ -7,6 +6,11 @@ import { Select } from "antd";
 import Button from "../../atoms/Button";
 import { StyledRangePicker } from "../../atoms/RangePicker";
 import { StyledSelect } from "../../atoms/Select";
+import {
+  LOCAL_STORAGE_CHECK_IN,
+  LOCAL_STORAGE_CHECK_OUT,
+  LOCAL_STORAGE_PEOPLE,
+} from "../../../constants";
 
 const { Option } = Select;
 
@@ -29,10 +33,8 @@ const initialForm: IFormInputs = {
 
 const StayInfoSelect: React.FC<IStayInfoSelectProps> = ({ first, maxPeople }) => {
   const { t } = useTranslation();
-  const router = useRouter();
   const [form, setForm] = React.useState<IFormInputs>(initialForm);
   const [valid, setValid] = React.useState<boolean>(false);
-  const handleChange = (value) => {};
   React.useEffect(() => {
     if (form.peopleCount && form.checkOut && form.checkIn) {
       setValid(true);
@@ -40,12 +42,15 @@ const StayInfoSelect: React.FC<IStayInfoSelectProps> = ({ first, maxPeople }) =>
   }, [form.checkIn, form.checkOut, form.peopleCount]);
 
   return (
-    <div style={{margin: 20}}>
+    <div style={{ margin: 20 }}>
       <StyledSelect
         placeholder="N of people"
         bordered={false}
         size="small"
-        onChange={(peopleCount: number) => setForm({ ...form, peopleCount })}
+        onChange={(peopleCount: number) => {
+          localStorage.setItem(LOCAL_STORAGE_PEOPLE, String(peopleCount));
+          setForm({ ...form, peopleCount });
+        }}
       >
         {Array.from({ length: 6 }, (_, i) => (
           <Option key={i + 1} value={i + 1}>
@@ -56,15 +61,23 @@ const StayInfoSelect: React.FC<IStayInfoSelectProps> = ({ first, maxPeople }) =>
       <StyledRangePicker
         placeholder={t("input.date.placeholder")}
         suffixIcon=""
-        onChange={(_, [checkIn, checkOut]) => setForm({ ...form, checkOut, checkIn })}
+        onChange={(_, [checkIn, checkOut]) => {
+          localStorage.setItem(LOCAL_STORAGE_CHECK_IN, checkIn);
+          localStorage.setItem(LOCAL_STORAGE_CHECK_OUT, checkOut);
+          setForm({ ...form, checkOut, checkIn });
+        }}
       />
-      <Link
-        href={`/search?people=${form.peopleCount}&checkIn=${form.checkIn}&checkOut=${
-          form.checkOut
-        }${first ? `&first=${first}` : ""}`}
-      >
-        <a>{t("pages.home.buttons.search")}</a>
-      </Link>
+      {valid ? (
+        <Link
+          href={`/search?people=${form.peopleCount}&checkIn=${form.checkIn}&checkOut=${
+            form.checkOut
+          }${first ? `&first=${first}` : ""}`}
+        >
+          <a>{t("pages.home.buttons.search")}</a>
+        </Link>
+      ) : (
+        "Select all fields"
+      )}
     </div>
   );
 };

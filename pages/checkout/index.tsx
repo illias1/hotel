@@ -11,18 +11,15 @@ import awsExports from "../../src/aws-exports";
 
 import Authenticator from "../../components/molecules/Authenticator";
 
-import { ICheckoutBooking, parseCheckoutUrl, ValidationError } from "../../utils/parseCheckoutUrl";
+import { ICheckoutBooking } from "../../utils/parseCheckoutUrl";
 import { SESSION } from "../../constants";
 import Navigation from "../../components/organs/Navigation";
 import { getCookieUser } from "../../utils/general";
-import {
-  checkAvailabilities,
-  IAvailableRoomType,
-} from "../../utils/reservation/checkAvailabilities";
-import Amplify, { withSSRContext } from "aws-amplify";
+import { IAvailableRoomType } from "../../utils/reservation/checkAvailabilities";
+import Amplify from "aws-amplify";
 import { IRoomType } from "../../utils/db";
-import { getRoomTypeById } from "../../utils/db/utils";
 import { ISessionReservation } from "../api/stripe-session";
+import Image from "next/image";
 
 const { Step } = Steps;
 
@@ -167,11 +164,17 @@ const Checkout: React.FC<ICheckoutProps> = () => {
         if (!availableRoomType) {
           return <div>{t(booking.roomType.name)} is not available anymore</div>;
         }
-        const { checkIn, checkOut, id, name } = availableRoomType;
+        const { checkIn, checkOut, id, name, images, hotelId } = availableRoomType;
         return (
           <div key={`${index}-${id}`}>
             <div>{t(name)}</div>
             {checkIn} - {checkOut}
+            <Image
+              width={100}
+              height={100}
+              src={images[0]}
+              alt={`Image for room ${name} in hotel ${hotelId}`}
+            />
             <button onClick={() => removeBooking(index)}>Remove</button>
           </div>
         );

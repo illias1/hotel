@@ -1,47 +1,36 @@
 import React from "react";
-import { useRouter } from "next/router";
-import { useTranslation } from "next-i18next";
+import { TFunction } from "next-i18next";
+import Image from "next/image";
 
-import { addRoomBookingToLocalStorage } from "../../../utils/reservation/addBooking";
 import { IAvailableRoomType } from "../../../utils/reservation/checkAvailabilities";
-import { buildCheckoutUrl } from "../../../utils/parseCheckoutUrl";
 import Link from "next/link";
-import LoadingIcon from "../../../assets/icons/Loading";
+
+import { displayPrice } from "../../../utils/general";
+import BookRoomButton from "../BookRoomButton";
 
 type IBookRoomCardProps = {
   roomType: IAvailableRoomType;
   checkIn: string;
   checkOut: string;
   people: number;
+  t: TFunction;
 };
 
-const BookRoomCard: React.FC<IBookRoomCardProps> = ({ roomType, checkIn, checkOut, people }) => {
-  const router = useRouter();
-  const [isLoading, setsILoading] = React.useState<boolean>(false);
-  const { t } = useTranslation();
-  const bookRoom = async (e) => {
-    e.preventDefault();
-    setsILoading(true);
-    const reservation = {
-      roomTypeId: roomType.id,
-      roomID: roomType.availableRooms[0].id,
-      checkIn: checkIn,
-      checkOut: checkOut,
-      people: people || 2,
-      reservationID: "",
-      hotelId: roomType.hotelId,
-    };
-    addRoomBookingToLocalStorage(reservation, (reservations) => {
-      router.push(buildCheckoutUrl(reservations));
-    });
-  };
+const BookRoomCard: React.FC<IBookRoomCardProps> = ({ roomType, checkIn, checkOut, people, t }) => {
   return (
-    <div>
-      {roomType.hotelId} - {t(roomType.name)} ({roomType.id}):
-      <Link href="/checkout">
-        <a onClick={bookRoom}>Book this room</a>
+    <div style={{ margin: 10 }}>
+      <div>{displayPrice(roomType)}</div>
+      <Link
+        href={`/hotels/${roomType.hotelId}/rooms/${roomType.id}?checkIn=${checkIn}&checkOut=${checkOut}&people=${people}`}
+      >
+        <a>
+          {roomType.hotelId} - {t(roomType.name)} ({roomType.id}):
+        </a>
       </Link>
-      {isLoading && <LoadingIcon />}
+      {roomType.images.map((url, i) => (
+        <Image key={i} width={100} height={100} src={url} alt={`Image ${i} for ${roomType.id}`} />
+      ))}
+      <BookRoomButton roomType={roomType} />
     </div>
   );
 };

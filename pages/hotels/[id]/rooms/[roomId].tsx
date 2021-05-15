@@ -12,6 +12,8 @@ import StayInfoSelect from "../../../../components/organs/StayInfoSelect";
 import { REVALIDATE_PERIOD } from "../../../../constants";
 import { displayPrice } from "../../../../utils/general";
 import { getPrices } from "../../../../utils/payment";
+import Image from "next/image";
+import BookRoomButton from "../../../../components/molecules/BookRoomButton";
 
 type IRoomProps = {
   roomType?: IRoomType;
@@ -52,14 +54,38 @@ const HotelPage: React.FC<IRoomProps> = ({ roomType, error, priceRegular, priceW
         </Link>
       </p>
       <div>Room type page: {roomType.name}</div>
-      <img src="https://via.placeholder.com/300" alt="" />
-      <img src="https://via.placeholder.com/300" alt="" />
-      <img src="https://via.placeholder.com/300" alt="" />
+      {roomType.images.map((url, index) => (
+        <Image
+          key={index}
+          width={300}
+          height={300}
+          src={url}
+          alt={`Image ${index} for room ${roomType.name}`}
+        />
+      ))}
       <ul>
         {roomType.attributes.map((attr) => (
           <li key={attr}>{t(attr)}</li>
         ))}
       </ul>
+      {"checkIn" in router.query && "checkOut" in router.query && "people" in router.query && (
+        <div>
+          <div>
+            The room is available for {router.query["checkIn"]} - {router.query["checkOut"]}
+          </div>
+          <BookRoomButton
+            roomType={{
+              ...roomType,
+              people: (router.query["people"] as unknown) as number,
+              checkIn: router.query["checkIn"] as string,
+              checkOut: router.query["checkOut"] as string,
+              availableRoom: null,
+              priceRegularNumber: priceRegular,
+              priceWeekendNumber: priceWeekend,
+            }}
+          />
+        </div>
+      )}
       <StayInfoSelect maxPeople={roomType.peopleCount} first={roomType.id} />
       <div>price</div>
       <div>{displayPrice(null, priceRegular, priceWeekend)} euro?</div>

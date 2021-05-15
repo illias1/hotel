@@ -11,11 +11,10 @@ import HomeTitle from "../components/molecules/HomeTitle";
 import Amplify from "aws-amplify";
 import awsExports from "../src/aws-exports";
 
-import Authenticator from "../components/molecules/Authenticator";
-import { Mayormapiframe } from "../assets/maps/mayor";
 import { useTranslation } from "next-i18next";
-import { client } from "../utils/api";
 import Map from "../components/organs/Map";
+import Head from "../components/atoms/Head";
+import Image from "next/image";
 
 Amplify.configure({ ...awsExports, ssr: true });
 
@@ -28,16 +27,24 @@ const Home: React.FC<IHomeProps> = ({ hotels }) => {
   console.log("data", DATA);
   return (
     <>
+      <Head />
       <HomeTitle />
       <StayInfoSelect />
+      We have 3 hotels in center of Calpe ....
+      <Map />
       {Object.values(hotels).map((hotel) => (
         <div key={hotel.id}>
-          <Link href={`/hotels/${hotel.id}`}>
-            <a>{t(hotel.name)}</a>
-          </Link>
+          {t(hotel.name)}
+          {hotel.images.map((url, index) => (
+            <Image
+              width={300}
+              height={300}
+              src={url}
+              alt={`Image ${index} for hotel ${t(hotel.name)}`}
+            />
+          ))}
         </div>
       ))}
-      <Map />
       <Navigation />
     </>
   );

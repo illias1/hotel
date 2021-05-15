@@ -10,15 +10,20 @@ interface IMarker {
 
 const MyGreatPlaceWithHover: React.FC<IMarker> = ({ text }) => {
   const style = greatPlaceStyle;
-// @ts-ignore
+  // @ts-ignore
   return <div style={style}>{text}</div>;
 };
 
-const mapCenter = { lat: 38.644119, lng: 0.045980 };
+const mapCenter = { lat: 38.644119, lng: 0.04598 };
 
 const markers = (locations) => {
   return locations.map((location) => (
-    <MyGreatPlaceWithHover text={location.name} lat={location.lat} lng={location.lng} />
+    <MyGreatPlaceWithHover
+      key={location.lng + location.lat}
+      text={location.name}
+      lat={location.lat}
+      lng={location.lng}
+    />
   ));
 };
 
