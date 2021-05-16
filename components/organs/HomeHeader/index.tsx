@@ -48,7 +48,10 @@ const HomeTitle: React.FC<IHomeTitleProps> = ({ ...props }) => {
   return (
     <div style={{ background: "black", lineHeight: 2, marginBottom: 50 }}>
       <HomeHeader>
-        <StyledImage priority layout="fill" objectFit="cover" src="/headerCalpe.jpg" />
+        {
+          // @ts-ignore
+          <StyledImage priority layout="fill" objectFit="cover" src="/headerCalpe.jpg" />
+        }
         <HomeH1>{t("pages.home.title")}</HomeH1>
         <StayInfoSelectRoot>
           <StayInfoSelect />
