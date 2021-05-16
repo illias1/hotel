@@ -11,33 +11,49 @@ type IHomeTitleProps = {};
 const HomeH1 = styled(H1)`
   color: white;
   position: absolute;
-  top: 5%;
-  left: 5%;
+  top: 30%;
+  @media (max-width: 400px) {
+    flex-direction: column;
+    top: 5%;
+  }
 `;
 
 export const StayInfoSelectRoot = styled.div`
   background: #393939;
   border-radius: 30px 30px 0px 0px;
-  margin-top: -20px;
   position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 42px 18px;
+  max-width: 600px;
+  bottom: -50px;
+  position: absolute;
+`;
+
+const HomeHeader = styled.div`
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  justify-content: center;
+`;
+
+const StyledImage = styled(Image)`
+  opacity: 0.5;
 `;
 
 const HomeTitle: React.FC<IHomeTitleProps> = ({ ...props }) => {
   const { t } = useTranslation();
   return (
-    <div style={{ background: "black", lineHeight: 2 }}>
-      <div style={{ opacity: 0.5, minHeight: "30vh", position: "relative" }}>
-        <Image priority layout="fill" objectFit="cover" src="/headerCalpe.jpg" />
-      </div>
-      <HomeH1>{t("pages.home.title")}</HomeH1>
-      <StayInfoSelectRoot>
-        <StayInfoSelect />
-      </StayInfoSelectRoot>
+    <div style={{ background: "black", lineHeight: 2, marginBottom: 50 }}>
+      <HomeHeader>
+        <StyledImage priority layout="fill" objectFit="cover" src="/headerCalpe.jpg" />
+        <HomeH1>{t("pages.home.title")}</HomeH1>
+        <StayInfoSelectRoot>
+          <StayInfoSelect />
+        </StayInfoSelectRoot>
+      </HomeHeader>
     </div>
   );
 };
