@@ -1,5 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import Navigation from "../../organs/Navigation";
 
 interface IPaddingProps {
   readonly margin?: number | string;
@@ -12,5 +13,10 @@ export const Space = styled.div<IPaddingProps>`
 `;
 
 export const PageWrapper: React.FC = ({ children }) => {
-  return <Space margin="0 0 70px 0">{children}</Space>;
+  return (
+    <Space margin="0 0 70px 0">
+      {children}
+      <Navigation />
+    </Space>
+  );
 };

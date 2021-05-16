@@ -5,7 +5,6 @@ import { GetStaticProps, GetStaticPaths } from "next";
 import { DATA, IHotelName, IHotelWithNumberPrice } from "../../../utils/db";
 import { PATHS } from "../../../utils/paths";
 import { useTranslation } from "next-i18next";
-import Navigation from "../../../components/organs/Navigation";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { REVALIDATE_PERIOD } from "../../../constants";
 import { getPrices } from "../../../utils/payment";
@@ -39,7 +38,6 @@ const HotelPage: React.FC<IHotelProps> = ({ hotel, error }) => {
           <img src="https://via.placeholder.com/150" alt="" />
         </div>
       ))}
-      <Navigation />
     </PageWrapper>
   );
 };

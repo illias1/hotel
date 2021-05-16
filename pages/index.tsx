@@ -4,8 +4,6 @@ import { GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { DATA } from "../utils/db";
 
-import Navigation from "../components/organs/Navigation";
-import StayInfoSelect from "../components/molecules/StayInfoSelect";
 import HomeHeader from "../components/organs/HomeHeader";
 
 import Amplify from "aws-amplify";
@@ -38,7 +36,6 @@ const Home: React.FC<IHomeProps> = ({ hotels }) => {
       {Object.values(hotels).map((hotel) => (
         <HomeSection key={hotel.id} t={t} hotel={hotel} />
       ))}
-      <Navigation />
     </PageWrapper>
   );
 };

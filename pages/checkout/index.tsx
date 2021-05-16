@@ -13,7 +13,6 @@ import Authenticator from "../../components/molecules/Authenticator";
 
 import { ICheckoutBooking } from "../../utils/parseCheckoutUrl";
 import { SESSION } from "../../constants";
-import Navigation from "../../components/organs/Navigation";
 import { getCookieUser } from "../../utils/general";
 import { IAvailableRoomType } from "../../utils/reservation/checkAvailabilities";
 import Amplify from "aws-amplify";
@@ -210,7 +209,6 @@ const Checkout: React.FC<ICheckoutProps> = () => {
           <p>{stage}</p>
         </div>
       ))}
-      <Navigation />
     </>
   );
 };

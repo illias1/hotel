@@ -5,7 +5,6 @@ import Link from "next/link";
 
 import { DATA, IHotelName, IRoomType } from "../../../../utils/db";
 import { getRoomTypeById } from "../../../../utils/db/utils";
-import Navigation from "../../../../components/organs/Navigation";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import StayInfoSelect from "../../../../components/molecules/StayInfoSelect";
@@ -90,7 +89,6 @@ const HotelPage: React.FC<IRoomProps> = ({ roomType, error, priceRegular, priceW
       <StayInfoSelect maxPeople={roomType.peopleCount} first={roomType.id} />
       <div>price</div>
       <div>{displayPrice(null, priceRegular, priceWeekend)} euro?</div>
-      <Navigation />
     </PageWrapper>
   );
 };

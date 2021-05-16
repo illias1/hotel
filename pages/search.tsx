@@ -4,10 +4,10 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import BookRoomCard from "../components/molecules/BookRoomCard";
 
-import Navigation from "../components/organs/Navigation";
 import { IAvailableRoomType } from "../utils/reservation/checkAvailabilities";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { PageWrapper, Space } from "../components/atoms/Layout";
+import SomethingWentWrong from "../components/organs/Wrong";
 
 interface ISearchProps {
   error?: string;
@@ -35,10 +35,10 @@ const Search: React.FC<ISearchProps> = () => {
 
   if (error) {
     console.error("Error in search", error);
-    return <div>Something went wrong</div>;
+    return <SomethingWentWrong />;
   }
   if (!data) return <div>loading...</div>;
-  if (data.error) return <div>{data.error}</div>;
+  if (data.error) return <SomethingWentWrong message={data.error} />;
 
   const { availableRoomTypes } = data;
 
@@ -78,7 +78,6 @@ const Search: React.FC<ISearchProps> = () => {
           </div>
         ))}
       </div>
-      <Navigation />
     </PageWrapper>
   );
 };
