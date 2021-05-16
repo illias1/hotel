@@ -7,12 +7,14 @@ import LoadingIcon from "../../../assets/icons/Loading";
 import { buildCheckoutUrl } from "../../../utils/parseCheckoutUrl";
 import { addRoomBookingToLocalStorage } from "../../../utils/reservation/addBooking";
 import { IAvailableRoomType } from "../../../utils/reservation/checkAvailabilities";
+import Button from "../../atoms/Button";
 
 type IBookRoomButtonProps = {
   roomType: IAvailableRoomType;
+  style?: React.CSSProperties;
 };
 
-const BookRoomButton: React.FC<IBookRoomButtonProps> = ({ roomType }) => {
+const BookRoomButton: React.FC<IBookRoomButtonProps> = ({ roomType, style }) => {
   const router = useRouter();
   const [isLoading, setsILoading] = React.useState<boolean>(false);
   const bookRoom = async (e) => {
@@ -32,10 +34,8 @@ const BookRoomButton: React.FC<IBookRoomButtonProps> = ({ roomType }) => {
     });
   };
   return (
-    <div>
-      <Link href="/checkout">
-        <a onClick={bookRoom}>Book this room</a>
-      </Link>
+    <div style={style}>
+      <Button onClick={bookRoom}>Book</Button>
       {isLoading && <LoadingIcon />}
     </div>
   );

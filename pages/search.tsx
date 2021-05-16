@@ -7,6 +7,7 @@ import BookRoomCard from "../components/molecules/BookRoomCard";
 import Navigation from "../components/organs/Navigation";
 import { IAvailableRoomType } from "../utils/reservation/checkAvailabilities";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { Space } from "../components/atoms/Layout";
 
 interface ISearchProps {
   error?: string;
@@ -45,7 +46,7 @@ const Search: React.FC<ISearchProps> = () => {
     <>
       Search page
       {"first" in router.query && (
-        <>
+        <Space margin={18}>
           <div>
             {firstRoomType ? (
               <div>
@@ -62,7 +63,7 @@ const Search: React.FC<ISearchProps> = () => {
             )}
           </div>
           <br />
-        </>
+        </Space>
       )}
       <div>
         {availableRoomTypes.map((roomType) => (
