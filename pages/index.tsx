@@ -1,12 +1,12 @@
 import React from "react";
-import Link from "next/link";
+
 import { GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { DATA } from "../utils/db";
 
 import Navigation from "../components/organs/Navigation";
-import StayInfoSelect from "../components/organs/StayInfoSelect";
-import HomeTitle from "../components/molecules/HomeTitle";
+import StayInfoSelect from "../components/molecules/StayInfoSelect";
+import HomeHeader from "../components/organs/HomeHeader";
 
 import Amplify from "aws-amplify";
 import awsExports from "../src/aws-exports";
@@ -14,7 +14,8 @@ import awsExports from "../src/aws-exports";
 import { useTranslation } from "next-i18next";
 import Map from "../components/organs/Map";
 import Head from "../components/atoms/Head";
-import Image from "next/image";
+import HomeSection from "../HomeSection";
+import { Section } from "../components/atoms/Section";
 
 Amplify.configure({ ...awsExports, ssr: true });
 
@@ -28,22 +29,13 @@ const Home: React.FC<IHomeProps> = ({ hotels }) => {
   return (
     <>
       <Head />
-      <HomeTitle />
-      <StayInfoSelect />
-      We have 3 hotels in center of Calpe ....
+      <HomeHeader />
+      <Section>
+        <h2>We have 3 hotels in center of Calpe ....</h2>
+      </Section>
       <Map />
       {Object.values(hotels).map((hotel) => (
-        <div key={hotel.id}>
-          {t(hotel.name)}
-          {hotel.images.map((url, index) => (
-            <Image
-              width={300}
-              height={300}
-              src={url}
-              alt={`Image ${index} for hotel ${t(hotel.name)}`}
-            />
-          ))}
-        </div>
+        <HomeSection key={hotel.id} t={t} hotel={hotel} />
       ))}
       <Navigation />
     </>

@@ -7,6 +7,11 @@ body {
   font-family: "Nunito", sans-serif;
   background-color: #FAFAFB;
 }
+@media(max-width: 576px) { 
+  .ant-picker-panels { 
+    flex-direction: column;
+  } 
+}
 `;
 
 const theme = {

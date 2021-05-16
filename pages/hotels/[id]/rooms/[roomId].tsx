@@ -8,7 +8,7 @@ import { getRoomTypeById } from "../../../../utils/db/utils";
 import Navigation from "../../../../components/organs/Navigation";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import StayInfoSelect from "../../../../components/organs/StayInfoSelect";
+import StayInfoSelect from "../../../../components/molecules/StayInfoSelect";
 import { REVALIDATE_PERIOD } from "../../../../constants";
 import { displayPrice } from "../../../../utils/general";
 import { getPrices } from "../../../../utils/payment";

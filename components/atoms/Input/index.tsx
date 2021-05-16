@@ -24,7 +24,7 @@ export const inputStyles = css`
   background: #dfdede;
   border-radius: 10px;
 
-  width: 220px;
+  width: 173px;
   padding: 14px;
 `;
 

@@ -29,7 +29,7 @@ const markers = (locations) => {
 
 const Map: React.FC = () => {
   return (
-    <div style={{ height: 500, width: 500 }}>
+    <div style={{ height: 500, width: "100%" }}>
       <GoogleMapReact
         bootstrapURLKeys={{ key: "AIzaSyCyDzWCBWsP4WBwK7Odu8_qMRV_pAqDnQc" }}
         defaultCenter={mapCenter}

@@ -9,6 +9,8 @@ export const ifach: IIncompleteHotel = {
     "https://via.placeholder.com/300",
     "https://via.placeholder.com/300",
     "https://via.placeholder.com/300",
+    "https://via.placeholder.com/300",
+    "https://via.placeholder.com/300",
   ],
   roomTypes: [
     {

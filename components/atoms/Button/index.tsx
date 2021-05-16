@@ -6,7 +6,7 @@ type IButtonProps = {
 };
 
 const Button = styled.button<IButtonProps>`
-  width: 338px;
+  width: 100%;
   height: 70px;
 
   cursor: pointer;
