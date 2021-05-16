@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { StyledSelect } from "../../atoms/Select";
 
 export const GuestSelect = styled(StyledSelect)`
-  width: 107px;
+  width: 35%;
 `;
 
 export const SelectsWrapper = styled.div`

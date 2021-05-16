@@ -30,7 +30,7 @@ export const StayInfoSelectRoot = styled.div`
 const HomeTitle: React.FC<IHomeTitleProps> = ({ ...props }) => {
   const { t } = useTranslation();
   return (
-    <div style={{ background: "black", lineHeight: 1 }}>
+    <div style={{ background: "black", lineHeight: 2 }}>
       <div style={{ opacity: 0.5, minHeight: "30vh", position: "relative" }}>
         <Image priority layout="fill" objectFit="cover" src="/headerCalpe.jpg" />
       </div>
