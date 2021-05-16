@@ -14,6 +14,9 @@ const NavigationContainer = styled.div`
   display: flex;
   justify-content: space-around;
   bottom: 0;
+  position: fixed;
+  background: white;
+  align-items: center;
 `;
 
 type INavigationProps = {};
