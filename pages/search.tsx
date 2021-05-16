@@ -8,11 +8,19 @@ import { IAvailableRoomType } from "../utils/reservation/checkAvailabilities";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { PageWrapper, Space } from "../components/atoms/Layout";
 import SomethingWentWrong from "../components/organs/Wrong";
+import SearchSkeleton from "../components/organs/Skeletons";
+import StayInfoSelect from "../components/molecules/StayInfoSelect";
+import styled from "styled-components";
 
 interface ISearchProps {
   error?: string;
   availableRoomTypes?: IAvailableRoomType[];
 }
+
+export const SearchInfoSelect = styled(Space)`
+  max-width: 338px;
+  margin: 28px auto;
+`;
 
 const Search: React.FC<ISearchProps> = () => {
   const router = useRouter();
@@ -37,14 +45,16 @@ const Search: React.FC<ISearchProps> = () => {
     console.error("Error in search", error);
     return <SomethingWentWrong />;
   }
-  if (!data) return <div>loading...</div>;
+  if (!data) return <SearchSkeleton />;
   if (data.error) return <SomethingWentWrong message={data.error} />;
 
   const { availableRoomTypes } = data;
 
   return (
     <PageWrapper>
-      Search page
+      <SearchInfoSelect>
+        <StayInfoSelect />
+      </SearchInfoSelect>
       {"first" in router.query && (
         <Space margin={18}>
           <div>
@@ -55,7 +65,7 @@ const Search: React.FC<ISearchProps> = () => {
                   roomType={firstRoomType}
                   checkIn={router.query["checkIn"] as string}
                   checkOut={router.query["checkOut"] as string}
-                  people={(router.query["people"] as unknown) as number}
+                  people={router.query["people"] as unknown as number}
                 />
               </div>
             ) : (
@@ -73,7 +83,7 @@ const Search: React.FC<ISearchProps> = () => {
               roomType={roomType}
               checkIn={router.query["checkIn"] as string}
               checkOut={router.query["checkOut"] as string}
-              people={(router.query["people"] as unknown) as number}
+              people={router.query["people"] as unknown as number}
             />
           </div>
         ))}

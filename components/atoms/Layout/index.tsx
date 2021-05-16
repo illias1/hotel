@@ -9,7 +9,8 @@ interface IPaddingProps {
 
 export const Space = styled.div<IPaddingProps>`
   padding: ${({ padding }) => (padding ? `${padding}px` : 0)};
-  margin: ${({ margin }) => (margin ? (typeof margin == "number" ? `${margin}px` : margin) : 0)};
+  ${({ margin }) =>
+    margin ? (typeof margin == "number" ? `margin: ${margin}px` : `margin: ${margin}`) : null};
 `;
 
 export const PageWrapper: React.FC = ({ children }) => {

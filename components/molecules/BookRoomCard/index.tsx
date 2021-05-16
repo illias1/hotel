@@ -20,9 +20,9 @@ type IBookRoomCardProps = {
   t: TFunction;
 };
 
-const RoomCardWrapper = styled.div`
+export const RoomCardWrapper = styled.div`
   max-width: 338px;
-  margin: 18px;
+  margin: 18px auto;
   cursor: pointer;
 
   filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.05));
@@ -31,7 +31,7 @@ const RoomCardWrapper = styled.div`
   overflow: hidden;
 `;
 
-const ImageWrapper = styled.div`
+export const ImageWrapper = styled.div`
   width: 100%;
   height: 184px;
   position: relative;
