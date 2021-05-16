@@ -20,6 +20,7 @@ import Amplify from "aws-amplify";
 import { IRoomType } from "../../utils/db";
 import { ISessionReservation } from "../api/stripe-session";
 import Image from "next/image";
+import SomethingWentWrong from "../../components/organs/Wrong";
 
 const { Step } = Steps;
 
@@ -123,16 +124,16 @@ const Checkout: React.FC<ICheckoutProps> = () => {
   };
 
   if (error) {
-    return <div>Something went wrong</div>;
+    return <SomethingWentWrong />;
   }
   if (!data) {
     return <div>Loading</div>;
   }
   if (data.validationError) {
-    return <div>Url is corrupted</div>;
+    return <SomethingWentWrong message="Url is corrupted" />;
   }
   if (data.unknownError) {
-    return <div>Something went wrong</div>;
+    return <SomethingWentWrong />;
   }
   if (!data.bookings) return <div>Something went wrong</div>;
   return (

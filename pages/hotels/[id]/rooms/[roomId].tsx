@@ -14,6 +14,7 @@ import { displayPrice } from "../../../../utils/general";
 import { getPrices } from "../../../../utils/payment";
 import Image from "next/image";
 import BookRoomButton from "../../../../components/molecules/BookRoomButton";
+import { PageWrapper } from "../../../../components/atoms/Layout";
 
 type IRoomProps = {
   roomType?: IRoomType;
@@ -46,7 +47,7 @@ const HotelPage: React.FC<IRoomProps> = ({ roomType, error, priceRegular, priceW
   }
 
   return (
-    <>
+    <PageWrapper>
       <p>
         <span>hotel </span>
         <Link href={`/hotels/${router.query.id}`}>
@@ -90,7 +91,7 @@ const HotelPage: React.FC<IRoomProps> = ({ roomType, error, priceRegular, priceW
       <div>price</div>
       <div>{displayPrice(null, priceRegular, priceWeekend)} euro?</div>
       <Navigation />
-    </>
+    </PageWrapper>
   );
 };
 

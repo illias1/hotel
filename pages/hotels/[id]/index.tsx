@@ -9,6 +9,7 @@ import Navigation from "../../../components/organs/Navigation";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { REVALIDATE_PERIOD } from "../../../constants";
 import { getPrices } from "../../../utils/payment";
+import { PageWrapper } from "../../../components/atoms/Layout";
 
 type IHotelProps = {
   hotel?: IHotelWithNumberPrice;
@@ -22,7 +23,7 @@ const HotelPage: React.FC<IHotelProps> = ({ hotel, error }) => {
   }
 
   return (
-    <div>
+    <PageWrapper>
       {t(hotel.name)} page
       <p>{t(hotel.description)}</p>
       {hotel.roomTypes.map((roomType) => (
@@ -39,7 +40,7 @@ const HotelPage: React.FC<IHotelProps> = ({ hotel, error }) => {
         </div>
       ))}
       <Navigation />
-    </div>
+    </PageWrapper>
   );
 };
 
@@ -60,7 +61,7 @@ export const getStaticProps: GetStaticProps<IHotelProps> = async ({ params, loca
     const id = params.id as IHotelName;
     const hotel = DATA[id];
     const prices = await getPrices(process.env.STRIPE_SECRET_KEY);
-    console.log('prices', prices)
+    console.log("prices", prices);
 
     const hotelWitNumberPrices: IHotelWithNumberPrice = {
       ...hotel,

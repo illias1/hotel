@@ -16,6 +16,7 @@ import Map from "../components/organs/Map";
 import Head from "../components/atoms/Head";
 import HomeSection from "../HomeSection";
 import { Section } from "../components/atoms/Section";
+import { PageWrapper } from "../components/atoms/Layout";
 
 Amplify.configure({ ...awsExports, ssr: true });
 
@@ -27,7 +28,7 @@ const Home: React.FC<IHomeProps> = ({ hotels }) => {
   const { t } = useTranslation();
   console.log("data", DATA);
   return (
-    <>
+    <PageWrapper>
       <Head />
       <HomeHeader />
       <Section>
@@ -38,7 +39,7 @@ const Home: React.FC<IHomeProps> = ({ hotels }) => {
         <HomeSection key={hotel.id} t={t} hotel={hotel} />
       ))}
       <Navigation />
-    </>
+    </PageWrapper>
   );
 };
 
