@@ -2,8 +2,9 @@ import React from "react";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import BookRoomCard from "../components/molecules/BookRoomCard";
+import { Row, Col } from "antd";
 
+import BookRoomCard from "../components/molecules/BookRoomCard";
 import { IAvailableRoomType } from "../utils/reservation/checkAvailabilities";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { PageWrapper, Space } from "../components/atoms/Layout";
@@ -24,8 +25,9 @@ export const SearchInfoSelect = styled(Space)`
 
 const Search: React.FC<ISearchProps> = () => {
   const router = useRouter();
+  const isRoot = router.asPath === "/search";
   const { t } = useTranslation();
-  const { data, error } = useSWR<ISearchProps>("/api" + router.asPath, (...args) =>
+  const { data, error } = useSWR<ISearchProps>(isRoot ? null : `/api${router.asPath}`, (...args) =>
     // @ts-ignore
     fetch(...args).then((res) => res.json())
   );
@@ -39,7 +41,16 @@ const Search: React.FC<ISearchProps> = () => {
       }
     }
   }, [data]);
-  console.log("data", data);
+
+  if (isRoot) {
+    return (
+      <PageWrapper>
+        <SearchInfoSelect>
+          <StayInfoSelect />
+        </SearchInfoSelect>
+      </PageWrapper>
+    );
+  }
 
   if (error) {
     console.error("Error in search", error);
@@ -75,9 +86,9 @@ const Search: React.FC<ISearchProps> = () => {
           <br />
         </Space>
       )}
-      <div>
+      <Row>
         {availableRoomTypes.map((roomType) => (
-          <div key={roomType.id}>
+          <Col xs={24} md={12} xl={8} key={roomType.id}>
             <BookRoomCard
               t={t}
               roomType={roomType}
@@ -85,9 +96,9 @@ const Search: React.FC<ISearchProps> = () => {
               checkOut={router.query["checkOut"] as string}
               people={router.query["people"] as unknown as number}
             />
-          </div>
+          </Col>
         ))}
-      </div>
+      </Row>
     </PageWrapper>
   );
 };

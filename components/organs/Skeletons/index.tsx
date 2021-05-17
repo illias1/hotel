@@ -1,5 +1,5 @@
 import React from "react";
-import { Skeleton } from "antd";
+import { Skeleton, Row, Col } from "antd";
 import { ImageWrapper, RoomCardWrapper } from "../../molecules/BookRoomCard";
 import { Space } from "../../atoms/Layout";
 import { SelectsWrapper } from "../../molecules/StayInfoSelect/components";
@@ -8,7 +8,7 @@ import { SearchInfoSelect } from "../../../pages/search";
 
 type ISkeletonProps = {};
 
-const a = [1, 1, 1];
+const a = [1, 1, 1, 1, 1, 1];
 
 const SearchSkeleton: React.FC<ISkeletonProps> = ({ ...props }) => {
   return (
@@ -16,21 +16,25 @@ const SearchSkeleton: React.FC<ISkeletonProps> = ({ ...props }) => {
       <SearchInfoSelect>
         <StayInfoSelect />
       </SearchInfoSelect>
-      {a.map(() => (
-        <RoomCardWrapper>
-          <ImageWrapper style={{ background: "grey" }} />
-          <Space padding={18}>
-            <Skeleton active />
-            <Space
-              style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
-              margin="20px 0"
-            >
-              <Skeleton.Button active shape="circle" />
-              <Skeleton.Button active />
-            </Space>
-          </Space>
-        </RoomCardWrapper>
-      ))}
+      <Row>
+        {a.map((_, i) => (
+          <Col xs={24} md={12} xl={8} key={i}>
+            <RoomCardWrapper key={i}>
+              <ImageWrapper style={{ background: "grey" }} />
+              <Space padding={18}>
+                <Skeleton active />
+                <Space
+                  style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
+                  margin="20px 0"
+                >
+                  <Skeleton.Button active shape="circle" />
+                  <Skeleton.Button active />
+                </Space>
+              </Space>
+            </RoomCardWrapper>
+          </Col>
+        ))}
+      </Row>
     </>
   );
 };
