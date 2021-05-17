@@ -7,6 +7,7 @@ import HomeIcon from "../../../assets/icons/HomeIcon";
 import UserIcon from "../../../assets/icons/UserIcon";
 import SearchIcon from "../../../assets/icons/SearchIcon";
 import Translation from "../../molecules/Translation";
+import { LOCAL_STORAGE_SEARCH } from "../../../constants";
 
 const NavigationContainer = styled.div`
   width: 100%;
@@ -27,8 +28,8 @@ const Navigation: React.FC<INavigationProps> = ({ ...props }) => {
   return (
     <NavigationContainer>
       {ROUTES.map((path) => (
-        <Link key={path.href} href={path.href}>
-          <a>{path.icon(router.pathname == path.href)}</a>
+        <Link key={path.href()} href={path.href()}>
+          <a>{path.icon(router.pathname == path.href())}</a>
         </Link>
       ))}
       <Translation />
@@ -38,15 +39,21 @@ const Navigation: React.FC<INavigationProps> = ({ ...props }) => {
 
 const ROUTES = [
   {
-    href: "/",
+    href: () => "/",
     icon: (active: boolean) => <HomeIcon active={active} />,
   },
   {
-    href: "/profile",
+    href: () => "/profile",
     icon: (active: boolean) => <UserIcon active={active} />,
   },
   {
-    href: "/search",
+    href: () => {
+      let search_query = undefined;
+      if (typeof window !== "undefined" && "localStorage" in window) {
+        search_query = localStorage.getItem(LOCAL_STORAGE_SEARCH);
+      }
+      return search_query || "/search";
+    },
     icon: (active: boolean) => <SearchIcon active={active} />,
   },
 ];

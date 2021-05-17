@@ -1,4 +1,5 @@
 export const LOCAL_STORAGE_RESERVATION = "reservation";
+export const LOCAL_STORAGE_SEARCH = "search";
 export const LOCAL_STORAGE_PEOPLE = "people";
 export const LOCAL_STORAGE_CHECK_IN = "check_in";
 export const LOCAL_STORAGE_CHECK_OUT = "check_out";

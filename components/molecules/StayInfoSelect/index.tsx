@@ -10,6 +10,7 @@ import {
   LOCAL_STORAGE_CHECK_IN,
   LOCAL_STORAGE_CHECK_OUT,
   LOCAL_STORAGE_PEOPLE,
+  LOCAL_STORAGE_SEARCH,
 } from "../../../constants";
 import styled from "styled-components";
 import { GuestSelect, SelectsWrapper } from "./components";
@@ -73,13 +74,15 @@ const StayInfoSelect: React.FC<IStayInfoSelectProps> = ({ first, maxPeople }) =>
         />
       </SelectsWrapper>
       <Button
-        onClick={() =>
-          router.push(
-            `/search?people=${form.peopleCount}&checkIn=${form.checkIn}&checkOut=${form.checkOut}${
-              first ? `&first=${first}` : ""
-            }`
-          )
-        }
+        onClick={() => {
+          const searchQuery = `/search?people=${form.peopleCount}&checkIn=${
+            form.checkIn
+          }&checkOut=${form.checkOut}${first ? `&first=${first}` : ""}`;
+          if (typeof window !== "undefined" && "localStorage" in window) {
+            localStorage.setItem(LOCAL_STORAGE_SEARCH, searchQuery);
+          }
+          router.push(searchQuery);
+        }}
         disabled={!valid}
       >
         {t("pages.home.buttons.search")}
