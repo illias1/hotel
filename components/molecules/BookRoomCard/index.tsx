@@ -49,7 +49,7 @@ const BookRoomCard: React.FC<IBookRoomCardProps> = ({ roomType, checkIn, checkOu
         <Space padding={18}>
           <H4>{t(roomType.name)}</H4>
           {roomType.attributes.map((attribute) => (
-            <LI>
+            <LI key={attribute}>
               <AttributeIcon name={attribute.split(".")[2]} />
               <Label style={{ marginLeft: 10 }}>{t(attribute)}</Label>
             </LI>
@@ -60,7 +60,7 @@ const BookRoomCard: React.FC<IBookRoomCardProps> = ({ roomType, checkIn, checkOu
           >
             <H4>{displayPrice(roomType)}</H4>
 
-            <BookRoomButton style={{width: "60%"}} roomType={roomType} />
+            <BookRoomButton style={{ width: "60%" }} roomType={roomType} />
           </Space>
         </Space>
       </RoomCardWrapper>

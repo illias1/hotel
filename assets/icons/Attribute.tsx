@@ -30,6 +30,9 @@ const AttributeIcon: React.FC<IAttributeIconProps> = ({ ...props }) => {
     case "wifi":
       return <Wifi />;
     case "balcony":
+    case "small_terrace":
+    case "big_terrace":
+    case "small_balcony":
       return <Balcony />;
     case "closet_in_every_room":
       return <Closet />;
