@@ -20,7 +20,7 @@ type IAttributeIconProps = {
 };
 
 export const AttributeSVG = styled.svg`
-  color: #dfdede;
+  color: #000;
   width: 14px;
   height: 12.25px;
 `;

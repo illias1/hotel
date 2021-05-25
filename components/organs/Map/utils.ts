@@ -1,8 +1,17 @@
-export const locations = [
-  { id: 0, lat: 38.643036, lng: 0.046209, name: "Plaza Mayor Apts." },
-  { id: 1, lat: 38.644208, lng: 0.046863, name: "Ifach" },
-  { id: 2, lat: 38.644313, lng: 0.045016, name: "Galeon" },
-];
+import { IHotelName } from "../../../utils/db";
+
+export interface ILocation {
+  id: number;
+  lat: number;
+  lng: number;
+  name: string;
+}
+
+export const locations: Record<IHotelName, ILocation> = {
+  mayor: { id: 0, lat: 38.643036, lng: 0.046209, name: "Plaza Mayor Apts." },
+  ifach: { id: 1, lat: 38.644208, lng: 0.046863, name: "Ifach" },
+  galeon: { id: 2, lat: 38.644313, lng: 0.045016, name: "Galeon" },
+};
 
 export const K_SIZE = 10;
 export const greatPlaceStyle = {
@@ -19,7 +28,7 @@ export const greatPlaceStyle = {
   color: "#3f51b5",
   fontSize: 14,
   fontWeight: "bold",
-  paddingTop: 10
+  paddingTop: 10,
 };
 export const createMapOptions = (maps) => {
   // next props are exposed at maps

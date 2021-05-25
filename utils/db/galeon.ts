@@ -12,14 +12,27 @@ const commonAttributes = [
 export const galeon: IIncompleteHotel = {
   id: "galeon",
   address: "Carrer de Puchalt , 18",
-  images: ["https://via.placeholder.com/300"],
+  images: [
+    "https://ik.imagekit.io/alquileres/Galeon/IMG20210510173242_a682_jXjW.jpg",
+    "https://ik.imagekit.io/alquileres/Galeon/IMG20210510173158_oNS7naYad.jpg",
+    "https://ik.imagekit.io/alquileres/Galeon/IMG20210510173512_tPhM0KapG.jpg",
+    "https://ik.imagekit.io/alquileres/Galeon/IMG20210510173502_Zp3zPbkQ7qx.jpg",
+    "https://ik.imagekit.io/alquileres/Galeon/IMG20210510174550_KZYkML8ux.jpg",
+    "https://ik.imagekit.io/alquileres/Galeon/IMG20210510174635_hbkmF1fCi.jpg",
+  ],
   roomTypes: [
     {
       id: "galeon_double_disabled",
       priceRegular: "price_1IhxXoJbqXJxe7z33Jo7t2rT",
       priceWeekend: "price_1IhxXoJbqXJxe7z3pKI5WpI2",
       peopleCount: 2,
-      images: ["https://via.placeholder.com/300"],
+      images: [
+        "https://ik.imagekit.io/alquileres/Galeon/test/IMG20210510174215_DOH1slEs3.jpg",
+        "https://ik.imagekit.io/alquileres/Galeon/test/IMG20210510175115_yVoGD9G_X.jpg",
+        "https://ik.imagekit.io/alquileres/Galeon/test/IMG20210510175352_rACuBh0FF.jpg",
+        "https://ik.imagekit.io/alquileres/Galeon/test/IMG20210510174246_YamxJ_0Fp.jpg",
+        "https://ik.imagekit.io/alquileres/Galeon/test/IMG20210510174405_uMYKI1RPbGyF.jpg",
+      ],
       rooms: [
         {
           id: "galeon_double_disabled_1",

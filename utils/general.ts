@@ -27,7 +27,7 @@ export const displayPrice = (
     priceWeekend = roomType.priceWeekendNumber;
   }
   if (priceRegular == priceWeekend) {
-    return `${priceWeekend} €`;
+    return `${priceWeekend} € / night`;
   }
-  return `${priceRegular} - ${priceWeekend} €`;
+  return `${priceRegular} - ${priceWeekend} € / night`;
 };

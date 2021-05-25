@@ -8,7 +8,10 @@ export const H4 = styled.h4`
 `;
 export const H5 = styled.h5``;
 export const Paragraph = styled.p``;
-export const Label = styled.label``;
+export const Label = styled.label`
+  border-bottom: 1px solid black;
+  color: rgb(113, 113, 113);
+`;
 
 interface ILI {
   before?: any;

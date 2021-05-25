@@ -9,8 +9,8 @@ const commonAttributes = [
   "dishwasher",
   "coffee_machine",
   "oven",
-  "mayor_bathrooms",
   "closet_in_every_room",
+  "mayor_bathrooms",
 ];
 
 export const mayor: IIncompleteHotel = {
