@@ -22,6 +22,8 @@ export interface IIncompleteRoomType {
   rooms: IIncompleteRoom[];
   attributes: string[];
   images: string[];
+  bedRoomCount: number;
+  bathCount: number;
   bedType:
     | "double_bed"
     | "single_bed"

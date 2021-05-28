@@ -34,10 +34,12 @@ const BookRoomButton: React.FC<IBookRoomButtonProps> = ({ roomType, style }) => 
     });
   };
   return (
-    <div style={style}>
-      <Button onClick={bookRoom}>Book</Button>
+    <>
+      <Button style={style} onClick={bookRoom}>
+        Book
+      </Button>
       {isLoading && <LoadingIcon />}
-    </div>
+    </>
   );
 };
 

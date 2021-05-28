@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Section = styled.div`
   padding: 30px 18px;
@@ -7,8 +7,13 @@ export const Center = styled.div`
   justify-content: center;
   display: flex;
 `;
-export const Flex = styled.div`
+
+interface IFlexProps {
+  align?: "center";
+}
+export const Flex = styled.div<IFlexProps>`
   display: flex;
   justify-content: space-between;
-  align-items: baseline
+  align-items: ${({ align }) => align || "baseline"};
+  width: 100%;
 `;

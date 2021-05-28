@@ -13,11 +13,15 @@ export const Space = styled.div<IPaddingProps>`
     margin ? (typeof margin == "number" ? `margin: ${margin}px` : `margin: ${margin}`) : null};
 `;
 
-export const PageWrapper: React.FC = ({ children }) => {
+interface IPageWrapper {
+  isRoomPage?: boolean;
+}
+
+export const PageWrapper: React.FC<IPageWrapper> = ({ children, isRoomPage = false }) => {
   return (
     <Space margin="0 0 70px 0">
       {children}
-      <Navigation />
+      {!isRoomPage && <Navigation />}
     </Space>
   );
 };

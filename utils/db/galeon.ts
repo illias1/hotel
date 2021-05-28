@@ -41,6 +41,8 @@ export const galeon: IIncompleteHotel = {
       ],
       attributes: [...commonAttributes, "disabled_friendly"],
       bedType: "2_single_beds",
+      bedRoomCount: 1,
+      bathCount: 1,
     },
     {
       id: "galeon_double_balcony",
@@ -60,6 +62,8 @@ export const galeon: IIncompleteHotel = {
       ],
       attributes: [...commonAttributes, "balcony"],
       bedType: "2_single_beds",
+      bedRoomCount: 1,
+      bathCount: 1,
     },
     {
       id: "galeon_quadruple_bunk",
@@ -79,6 +83,8 @@ export const galeon: IIncompleteHotel = {
       ],
       attributes: commonAttributes,
       bedType: "1_bunk_bed_2_single_beds",
+      bedRoomCount: 1,
+      bathCount: 1,
     },
     {
       id: "galeon_quadruple_terrace",
@@ -94,6 +100,8 @@ export const galeon: IIncompleteHotel = {
       ],
       attributes: [...commonAttributes, "small_terrace"],
       bedType: "1_bunk_bed_2_single_beds",
+      bedRoomCount: 1,
+      bathCount: 1,
     },
     {
       id: "galeon_quintuple",
@@ -113,6 +121,8 @@ export const galeon: IIncompleteHotel = {
       ],
       attributes: commonAttributes,
       bedType: "1_double_bed_1_bunk_bed_1_single_bed",
+      bedRoomCount: 1,
+      bathCount: 1,
     },
   ],
 };

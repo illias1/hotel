@@ -6,7 +6,9 @@ export const H3 = styled.h3``;
 export const H4 = styled.h4`
   font-size: 22px;
 `;
-export const H5 = styled.h5``;
+export const H5 = styled.h5`
+  font-size: 18px;
+`;
 export const Paragraph = styled.p``;
 export const Label = styled.label`
   border-bottom: 1px solid black;

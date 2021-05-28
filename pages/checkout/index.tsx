@@ -4,7 +4,7 @@ import useSWR from "swr";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { loadStripe } from "@stripe/stripe-js";
 import { useTranslation } from "next-i18next";
-import { Modal, Button, Steps } from "antd";
+import { Modal, Button, Steps, Divider } from "antd";
 import { UserOutlined, EuroCircleOutlined, SmileOutlined } from "@ant-design/icons";
 
 import awsExports from "../../src/aws-exports";
@@ -18,8 +18,11 @@ import { IAvailableRoomType } from "../../utils/reservation/checkAvailabilities"
 import Amplify from "aws-amplify";
 import { IRoomType } from "../../utils/db";
 import { ISessionReservation } from "../api/stripe-session";
-import Image from "next/image";
 import SomethingWentWrong from "../../components/organs/Wrong";
+import { Flex } from "../../components/atoms/Section";
+import LeftChevronIcon from "../../assets/icons/LeftChevron";
+import { H1, H4 } from "../../components/atoms/Typography";
+import RoomsEnum from "../../components/organs/Checkout/RoomsEnum";
 
 const { Step } = Steps;
 
@@ -154,31 +157,21 @@ const Checkout: React.FC<ICheckoutProps> = () => {
           }}
         />
       </Modal>
-      <Steps>
+      <Flex>
+        <LeftChevronIcon />
+        <H1 style={{ flex: 1 }}>Confirm and pay</H1>
+      </Flex>
+      {/* <Steps>
         <Step status="process" title="Confirmation" icon={<UserOutlined />} />
         <Step status="wait" title="Pay" icon={<EuroCircleOutlined />} />
         <Step status="wait" title="Done" icon={<SmileOutlined />} />
-      </Steps>
+      </Steps> */}
 
-      {editableBookings.map(({ booking, availableRoomType }, index) => {
-        if (!availableRoomType) {
-          return <div>{t(booking.roomType.name)} is not available anymore</div>;
-        }
-        const { checkIn, checkOut, id, name, images, hotelId } = availableRoomType;
-        return (
-          <div key={`${index}-${id}`}>
-            <div>{t(name)}</div>
-            {checkIn} - {checkOut}
-            <Image
-              width={100}
-              height={100}
-              src={images[0]}
-              alt={`Image for room ${name} in hotel ${hotelId}`}
-            />
-            <button onClick={() => removeBooking(index)}>Remove</button>
-          </div>
-        );
-      })}
+      <RoomsEnum t={t} removeBooking={removeBooking} editableBookings={editableBookings} />
+
+      <Divider />
+
+      <H4>Your trip</H4>
       <div>
         {t("pages.checkout.policies")
           .split("\n")

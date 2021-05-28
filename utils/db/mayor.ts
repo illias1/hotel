@@ -34,6 +34,8 @@ export const mayor: IIncompleteHotel = {
       ],
       attributes: [...commonAttributes, "big_terrace", "small_balcony"],
       bedType: "4_single_beds",
+      bedRoomCount: 2,
+      bathCount: 2,
     },
     {
       id: "mayor_2_b",
@@ -51,6 +53,8 @@ export const mayor: IIncompleteHotel = {
       ],
       attributes: [...commonAttributes, "balcony"],
       bedType: "4_single_beds_1_sofa_bed",
+      bedRoomCount: 2,
+      bathCount: 2,
     },
     {
       id: "mayor_3_b",
@@ -68,6 +72,8 @@ export const mayor: IIncompleteHotel = {
       ],
       attributes: [...commonAttributes, "balcony"],
       bedType: "4_single_beds",
+      bedRoomCount: 2,
+      bathCount: 2,
     },
   ],
 };

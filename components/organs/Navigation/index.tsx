@@ -9,12 +9,13 @@ import SearchIcon from "../../../assets/icons/SearchIcon";
 import Translation from "../../molecules/Translation";
 import { LOCAL_STORAGE_SEARCH } from "../../../constants";
 
-const NavigationContainer = styled.div`
+export const NavigationContainer = styled.div`
   width: 100%;
   height: 78px;
   display: flex;
   justify-content: space-around;
   bottom: 0;
+  left: 0;
   position: fixed;
   background: white;
   align-items: center;

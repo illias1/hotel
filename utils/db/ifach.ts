@@ -39,6 +39,8 @@ export const ifach: IIncompleteHotel = {
       ],
       attributes: commonAttributes,
       bedType: "bunk",
+      bedRoomCount: 1,
+      bathCount: 1,
     },
     {
       id: "ifach_2_double",
@@ -58,6 +60,8 @@ export const ifach: IIncompleteHotel = {
       ],
       attributes: commonAttributes,
       bedType: "double_bed",
+      bedRoomCount: 1,
+      bathCount: 1,
     },
     {
       id: "ifach_2_single_disabled",
@@ -77,6 +81,8 @@ export const ifach: IIncompleteHotel = {
       ],
       attributes: [...commonAttributes, "disabled_friendly"],
       bedType: "single_bed",
+      bedRoomCount: 1,
+      bathCount: 1,
     },
     {
       id: "ifach_triple",
@@ -96,6 +102,8 @@ export const ifach: IIncompleteHotel = {
       ],
       attributes: commonAttributes,
       bedType: "2_single_and_1_sofa_bed",
+      bedRoomCount: 1,
+      bathCount: 1,
     },
     {
       id: "ifach_quadruple",
@@ -119,6 +127,8 @@ export const ifach: IIncompleteHotel = {
       ],
       attributes: commonAttributes,
       bedType: "2_bunk_beds",
+      bedRoomCount: 1,
+      bathCount: 1,
     },
   ],
 };

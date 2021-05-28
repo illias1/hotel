@@ -7,7 +7,6 @@ import { checkAvailabilities } from "../../utils/reservation/checkAvailabilities
 import { IBookingResultForCheckout } from "../checkout";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  console.log("received", req);
   if (req.method === "GET") {
     const query = req.query;
 
