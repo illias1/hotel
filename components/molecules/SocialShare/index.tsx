@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { Modal, Button, Row, Col } from "antd";
+import { Modal, Button, Row, Col, Input, notification } from "antd";
 import {
   EmailShareButton,
   FacebookShareButton,
@@ -20,11 +20,99 @@ import {
 
 import ShareIcon from "../../../assets/icons/ShareIcon";
 import { H5 } from "../../atoms/Typography";
+import { Flex } from "../../atoms/Section";
+
+const socialMediaIcons = (url: string, style: React.CSSProperties) => [
+  {
+    name: "Facebook",
+    icon: (
+      <FacebookShareButton style={style} url={url}>
+        <FacebookIcon size={40} />
+      </FacebookShareButton>
+    ),
+  },
+  {
+    name: "VK",
+    icon: (
+      <VKShareButton style={style} url={url}>
+        <VKIcon size={40} />
+      </VKShareButton>
+    ),
+  },
+  {
+    name: "Twitter",
+    icon: (
+      <TwitterShareButton style={style} url={url}>
+        <TwitterIcon size={40} />
+      </TwitterShareButton>
+    ),
+  },
+  { name: "", icon: "" },
+];
+
+const messagingIcons = (url: string, style: React.CSSProperties) => [
+  {
+    name: "WhatsApp",
+    icon: (
+      <WhatsappShareButton style={style} url={url}>
+        <WhatsappIcon size={40} />
+      </WhatsappShareButton>
+    ),
+  },
+  {
+    name: "Telegram",
+    icon: (
+      <TelegramShareButton style={style} url={url}>
+        <TelegramIcon size={40} />
+      </TelegramShareButton>
+    ),
+  },
+  {
+    name: "Viber",
+    icon: (
+      <ViberShareButton style={style} url={url}>
+        <ViberIcon size={40} />
+      </ViberShareButton>
+    ),
+  },
+  {
+    name: "Email",
+    icon: (
+      <EmailShareButton style={style} url={url}>
+        <EmailIcon size={40} />
+      </EmailShareButton>
+    ),
+  },
+];
 
 const SocialShare: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [url, setUrl] = React.useState<string>("");
   const router = useRouter();
+  React.useEffect(() => {
+    setUrl(window.location.href);
+  }, []);
 
+  const copyToClipBoard = () => {
+    if (typeof window !== "undefined" && "navigator" in window && "clipboard" in window.navigator) {
+      navigator.clipboard.writeText(url);
+      console.log("before");
+      notification.success({
+        message: `Copied to clipboard`,
+        description: "",
+        placement: "bottomLeft",
+        duration: 1,
+      });
+      console.log("after");
+    } else {
+      notification.error({
+        message: `Error copying to clipboard`,
+        description: "",
+        placement: "bottomLeft",
+        duration: 2,
+      });
+    }
+  };
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -36,7 +124,6 @@ const SocialShare: React.FC = () => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-  const url = process.env.VERCEL_URL + router.route;
   console.log("route", url);
   return (
     <>
@@ -47,51 +134,39 @@ const SocialShare: React.FC = () => {
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
+        footer={null}
       >
         <H5>Social Media</H5>
-        <Row justify="space-between">
-          <Col span={8}>
-            <FacebookShareButton url={url}>
-              <FacebookIcon size={50} round={true} />
-            </FacebookShareButton>
-          </Col>
-          <Col span={8}>
-            <TwitterShareButton url={url}>
-              <TwitterIcon size={50} round={true} />
-            </TwitterShareButton>
-          </Col>
-          <Col span={8}>
-            <VKShareButton url={url}>
-              <VKIcon size={50} round={true} />
-            </VKShareButton>
-          </Col>
+        <Row style={{ marginBottom: 20 }}>
+          {socialMediaIcons(url, { marginRight: 20 }).map((icon) => (
+            <Col span={12}>
+              <Flex justify="start" align="center">
+                {icon.icon}
+                {icon.name}
+              </Flex>
+            </Col>
+          ))}
         </Row>
 
         <H5>Messaging & Email</H5>
-        <Row>
-          <Col span={6}>
-            <WhatsappShareButton url={url}>
-              <WhatsappIcon size={50} round={true} />
-            </WhatsappShareButton>
-          </Col>
-          <Col span={6}>
-            <TelegramShareButton url={url}>
-              <TelegramIcon size={50} round={true} />
-            </TelegramShareButton>
-          </Col>
-          <Col span={6}>
-            <ViberShareButton url={url}>
-              <ViberIcon size={50} round={true} />
-            </ViberShareButton>
-          </Col>
-          <Col span={6}>
-            <EmailShareButton url={url}>
-              <EmailIcon size={50} round={true} />
-            </EmailShareButton>
-          </Col>
+        <Row style={{ marginBottom: 20 }}>
+          {messagingIcons(url, { marginRight: 20 }).map((icon) => (
+            <Col span={12}>
+              <Flex justify="start" align="center">
+                {icon.icon}
+                {icon.name}
+              </Flex>
+            </Col>
+          ))}
         </Row>
 
         <H5>Copy link</H5>
+        <Flex>
+          <Input value={url} disabled size="large" />
+          <Button onClick={copyToClipBoard} size="large">
+            Copy
+          </Button>
+        </Flex>
       </Modal>
     </>
   );
