@@ -1,6 +1,13 @@
 import React from "react";
 import GoogleMapReact from "google-map-react";
-import { createMapOptions, greatPlaceStyle, locations, K_SIZE, ILocation } from "./utils";
+import {
+  createMapOptions,
+  greatPlaceStyle,
+  locations,
+  K_SIZE,
+  ILocation,
+  greatPlaceOuterStyle,
+} from "./utils";
 import { IHotelName } from "../../../utils/db";
 
 interface IMarker {
@@ -10,9 +17,15 @@ interface IMarker {
 }
 
 const MyGreatPlaceWithHover: React.FC<IMarker> = ({ text }) => {
-  const style = greatPlaceStyle;
   // @ts-ignore
-  return <div style={style}>{text}</div>;
+  return (
+    <div>
+      <div style={greatPlaceOuterStyle}>
+        <div style={greatPlaceStyle} />
+      </div>
+      <div>{text}</div>
+    </div>
+  );
 };
 
 const mapCenter = { lat: 38.644119, lng: 0.04598 };

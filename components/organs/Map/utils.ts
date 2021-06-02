@@ -1,3 +1,4 @@
+import React from "react";
 import { IHotelName } from "../../../utils/db";
 
 export interface ILocation {
@@ -13,22 +14,32 @@ export const locations: Record<IHotelName, ILocation> = {
   galeon: { id: 2, lat: 38.644313, lng: 0.045016, name: "Galeon" },
 };
 
-export const K_SIZE = 10;
-export const greatPlaceStyle = {
-  // initially any map object has left top corner at lat lng coordinates
-  // it's on you to set object origin to 0,0 coordinates
-  position: "absolute",
+export const K_SIZE = 15;
+export const greatPlaceOuterStyle: React.CSSProperties = {
+  border: "1px solid red",
+  background: "rgba(200, 0, 0, 0.4)",
+  position: "relative",
+  borderRadius: K_SIZE,
   width: K_SIZE,
   height: K_SIZE,
   left: -K_SIZE / 2,
   top: -K_SIZE / 2,
-
-  border: "1px solid #f44336",
-  borderRadius: K_SIZE,
-  color: "#3f51b5",
-  fontSize: 14,
-  fontWeight: "bold",
-  paddingTop: 10,
+};
+export const greatPlaceStyle: React.CSSProperties = {
+  // initially any map object has left top corner at lat lng coordinates
+  // it's on you to set object origin to 0,0 coordinates
+  // position: "relative",
+  // background: "blue",
+  // borderRadius: K_SIZE / 2,
+  // width: K_SIZE / 2,
+  // height: K_SIZE / 2,
+  // left: -K_SIZE / 2,
+  // top: -K_SIZE / 2,
+  // border: "1px solid #f44336",
+  // color: "#3f51b5",
+  // fontSize: 14,
+  // fontWeight: "bold",
+  // paddingTop: 10,
 };
 export const createMapOptions = (maps) => {
   // next props are exposed at maps
