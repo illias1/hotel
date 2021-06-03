@@ -2,17 +2,16 @@ import React from "react";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { Select } from "antd";
+import moment from "moment";
 
 import Button from "../../atoms/Button";
 import { StyledRangePicker } from "../../atoms/RangePicker";
-import { StyledSelect } from "../../atoms/Select";
 import {
   LOCAL_STORAGE_CHECK_IN,
   LOCAL_STORAGE_CHECK_OUT,
   LOCAL_STORAGE_PEOPLE,
   LOCAL_STORAGE_SEARCH,
 } from "../../../constants";
-import styled from "styled-components";
 import { GuestSelect, SelectsWrapper } from "./components";
 
 const { Option } = Select;
@@ -45,11 +44,30 @@ const StayInfoSelect: React.FC<IStayInfoSelectProps> = ({ first, maxPeople }) =>
     }
   }, [form.checkIn, form.checkOut, form.peopleCount]);
 
+  React.useEffect(() => {
+    if (typeof window !== "undefined" && "localStorage" in window) {
+      const checkIn = localStorage.getItem(LOCAL_STORAGE_CHECK_IN);
+      const checkOut = localStorage.getItem(LOCAL_STORAGE_CHECK_OUT);
+      const peopleCount = localStorage.getItem(LOCAL_STORAGE_PEOPLE);
+      [
+        [checkIn, "checkIn"],
+        [checkOut, "checkOut"],
+        [peopleCount, "peopleCount"],
+      ].forEach((prop) => {
+        if (prop[0]) {
+          setForm((prev) => ({ ...prev, [prop[1]]: prop[0] }));
+        }
+      });
+      console.log(form);
+    }
+  }, []);
+
   return (
     <>
       <SelectsWrapper>
         <GuestSelect
           placeholder="Guests"
+          value={form.peopleCount}
           bordered={false}
           size="small"
           onChange={(peopleCount: number) => {
@@ -64,6 +82,7 @@ const StayInfoSelect: React.FC<IStayInfoSelectProps> = ({ first, maxPeople }) =>
           ))}
         </GuestSelect>
         <StyledRangePicker
+          value={[moment(form.checkIn), moment(form.checkOut)]}
           placeholder={[t("input.date.checkIn"), t("input.date.checkOut")]}
           suffixIcon=""
           onChange={(_, [checkIn, checkOut]) => {
