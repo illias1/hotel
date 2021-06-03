@@ -15,6 +15,7 @@ import AttributeIcon from "../../../assets/icons/Attribute";
 import PhotoGallery from "../Gallery";
 import { Flex } from "../../atoms/Section";
 import { getHotelByRoomTypeId } from "../../../utils/db/utils";
+import { IHotelName } from "../../../utils/db";
 
 type IBookRoomCardProps = {
   roomType: IAvailableRoomType;
@@ -22,6 +23,17 @@ type IBookRoomCardProps = {
   checkOut: string;
   people: number;
   t: TFunction;
+};
+
+const getHotelColor = (hotel: IHotelName) => {
+  switch (hotel) {
+    case "galeon":
+      return "brown";
+    case "ifach":
+      return "blue";
+    case "mayor":
+      return "green";
+  }
 };
 
 export const RoomCardWrapper = styled.div`
@@ -42,6 +54,7 @@ export const ImageWrapper = styled.div`
 `;
 
 const BookRoomCard: React.FC<IBookRoomCardProps> = ({ roomType, checkIn, checkOut, people, t }) => {
+  const hotel = getHotelByRoomTypeId(roomType.id);
   return (
     <RoomCardWrapper>
       <PhotoGallery images={roomType.images.map((url) => ({ url }))} />
@@ -66,7 +79,7 @@ const BookRoomCard: React.FC<IBookRoomCardProps> = ({ roomType, checkIn, checkOu
           <Space margin="20px 0">
             <Flex>
               <H4>{displayPrice(roomType)}</H4>
-              <Tag color="green">{t(getHotelByRoomTypeId(roomType.id).name)}</Tag>
+              <Tag color={getHotelColor(hotel.id)}>{t(hotel.name)}</Tag>
             </Flex>
           </Space>
         </Space>
