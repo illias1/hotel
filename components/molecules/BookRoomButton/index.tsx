@@ -1,12 +1,24 @@
 import React from "react";
 import Link from "next/link";
+import styled from "styled-components";
 
 import { buildCheckoutUrl } from "../../../utils/parseCheckoutUrl";
 import { IAvailableRoomType } from "../../../utils/reservation/checkAvailabilities";
+import { buttonStyles } from "../../atoms/Button";
 
 type IBookRoomButtonProps = {
   roomType: IAvailableRoomType;
 };
+
+const StyledBookRoomButton = styled.a`
+  ${buttonStyles}
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  background: linear-gradient(91.97deg, #f8a170 14.73%, #ffcd61 97.52%);
+  color: white;
+`;
 
 const BookRoomButton: React.FC<IBookRoomButtonProps> = ({ roomType }) => {
   const reservation = {
@@ -17,7 +29,9 @@ const BookRoomButton: React.FC<IBookRoomButtonProps> = ({ roomType }) => {
   };
   return (
     <Link href={buildCheckoutUrl(reservation)}>
-      <a>Book</a>
+      <a>
+        <StyledBookRoomButton>Book</StyledBookRoomButton>
+      </a>
     </Link>
   );
 };

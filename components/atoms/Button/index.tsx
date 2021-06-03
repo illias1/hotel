@@ -5,7 +5,7 @@ type IButtonProps = {
   secondary?: boolean;
 };
 
-const Button = styled.button<IButtonProps>`
+export const buttonStyles = css`
   width: 100%;
   height: 50px;
 
@@ -20,7 +20,10 @@ const Button = styled.button<IButtonProps>`
   font-weight: 600;
 
   filter: drop-shadow(0px 10px 40px rgba(248, 161, 112, 0.2));
+`;
 
+const Button = styled.button<IButtonProps>`
+  ${buttonStyles}
   ${(props: IButtonProps) =>
     props.secondary
       ? css`
