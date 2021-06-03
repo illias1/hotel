@@ -24,7 +24,7 @@ Amplify.configure(awsconfig);
 
 export interface ISessionReservation {
   note: string;
-  bookings: IAvailableRoomType[];
+  booking: IAvailableRoomType;
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -33,16 +33,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const { Auth } = withSSRContext({ req });
 
       const requestedReservation = JSON.parse(req.body) as ISessionReservation;
-      const bookings = requestedReservation.bookings;
+      const booking = requestedReservation.booking;
       const { origin } = absoluteUrl(req);
       const STRIPE_SECRET = process.env.STRIPE_SECRET_KEY;
 
       assert(origin && STRIPE_SECRET, "Environment variables undefined");
       assert(
-        Array.isArray(bookings) &&
-          bookings.every(
-            (el) => "availableRoom" in el && "id" in el && "checkIn" in el && "checkOut" in el
-          ),
+        "availableRoom" in booking &&
+          "id" in booking &&
+          "checkIn" in booking &&
+          "checkOut" in booking,
         "body is malformed"
       );
       assert("note" in requestedReservation, "body is malformed");
@@ -88,28 +88,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const reservationId = data.insert_Reservation_one.id;
       console.log("reservation data", data);
 
-      const bookingsCreatedResponse = await client(process.env.ADMIN_SECRET).mutate<
+      const bookingCreatedResponse = await client(process.env.ADMIN_SECRET).mutate<
         CreateRoomBookingsMutation,
         CreateRoomBookingsMutationVariables
       >({
         mutation: createRoomBooking,
         variables: {
-          objects: bookings.map((booking) => ({
-            checkOut: booking.checkOut,
-            checkIn: booking.checkIn,
-            reservation: reservationId,
-            roomTypeId: booking.id,
-            roomID: booking.availableRoom[0].id,
-            people: booking.people,
-            status: BookingStatus.PENDING,
-          })),
+          objects: [
+            {
+              checkOut: booking.checkOut,
+              checkIn: booking.checkIn,
+              reservation: reservationId,
+              roomTypeId: booking.id,
+              roomID: booking.availableRoom[0].id,
+              people: booking.people,
+              status: BookingStatus.PENDING,
+            },
+          ],
         },
       });
 
-      const lineItems = await getCheckoutLineItems(bookings);
+      const lineItems = await getCheckoutLineItems(booking);
       console.log("line items", lineItems);
 
-      // // Create Checkout Sessions from bookings params.
+      // // Create Checkout Sessions from booking params.
       const params: Stripe.Checkout.SessionCreateParams = {
         success_url: `${origin}/payment-success/{CHECKOUT_SESSION_ID}`,
         cancel_url: `${origin}/payment-canceled/`,

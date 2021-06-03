@@ -10,10 +10,11 @@ export const Center = styled.div`
 
 interface IFlexProps {
   align?: "center";
+  justify?: "center" | "space-around" | "start";
 }
 export const Flex = styled.div<IFlexProps>`
   display: flex;
-  justify-content: space-between;
+  justify-content: ${({ justify }) => justify || "space-between"};
   align-items: ${({ align }) => align || "baseline"};
   width: 100%;
 `;

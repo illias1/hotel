@@ -3,50 +3,45 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getRoomTypeById } from "../../utils/db/utils";
 import { getCookieUser } from "../../utils/general";
 import { parseCheckoutUrl, ValidationError } from "../../utils/parseCheckoutUrl";
-import { checkAvailabilities } from "../../utils/reservation/checkAvailabilities";
-import { IBookingResultForCheckout } from "../checkout";
+import {
+  checkAvailabilities,
+  IAvailableRoomType,
+} from "../../utils/reservation/checkAvailabilities";
+import { ICheckoutProps } from "../checkout";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<ICheckoutProps>) {
   if (req.method === "GET") {
     const query = req.query;
-
-    const { Auth } = withSSRContext({ req });
-
     try {
       const validatedUrlParams = parseCheckoutUrl(query);
-      const completeBookingInput: IBookingResultForCheckout[] = await Promise.all(
-        validatedUrlParams.map(async (booking) => {
-          const availabilities = await checkAvailabilities(
-            {
-              people: String(booking.people),
-              checkIn: booking.checkIn,
-              checkOut: booking.checkOut,
-            },
-            process.env.STRIPE_SECRET_KEY,
-            [booking.room]
-          );
-          return {
-            booking: { roomType: getRoomTypeById(booking.room), ...booking },
-            availableRoomType: availabilities.length > 0 ? availabilities[0] : null,
-          };
-        })
+      const availabilities = await checkAvailabilities(
+        {
+          people: String(validatedUrlParams.people),
+          checkIn: validatedUrlParams.checkIn,
+          checkOut: validatedUrlParams.checkOut,
+        },
+        process.env.STRIPE_SECRET_KEY,
+        [validatedUrlParams.roomTypeId]
       );
-      let user = null;
-      try {
-        user = await Auth.currentAuthenticatedUser();
-      } catch {}
+      // const completeBookingInput: IBookingResultForCheckout[] = await Promise.all(
+      //   validatedUrlParams.map(async (booking) => {
+      //     return {
+      //       booking: { roomType: getRoomTypeById(booking.room), ...booking },
+      //       availableRoomType: availabilities.length > 0 ? availabilities[0] : null,
+      //     };
+      //   })
+      // );
 
       return res.status(200).json({
         validationError: false,
-        bookings: completeBookingInput,
-        cookieUser: getCookieUser(user),
+        booking: availabilities.length ? availabilities[0] : null,
       });
     } catch (error) {
       if (error instanceof ValidationError) {
         console.error(error.message);
         return res.status(200).end({
           validationError: true,
-          bookings: [],
+          booking: [],
         });
       }
 
@@ -54,7 +49,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(500).json({
         unknownError: true,
         validationError: false,
-        bookings: [],
+        booking: null,
       });
     }
   } else {

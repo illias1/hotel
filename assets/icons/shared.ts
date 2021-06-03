@@ -20,6 +20,6 @@ export const StyledIcon = styled.svg`
           border-radius: 10px;
         `
       : css`
-          color: #dfdede;
+          color: black;
         `}
 `;

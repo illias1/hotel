@@ -4,14 +4,13 @@ import useSWR from "swr";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { loadStripe } from "@stripe/stripe-js";
 import { useTranslation } from "next-i18next";
-import { Modal, Button, Steps, Divider } from "antd";
+import { Modal, Steps, Divider, Input } from "antd";
 import { UserOutlined, EuroCircleOutlined, SmileOutlined } from "@ant-design/icons";
 
 import awsExports from "../../src/aws-exports";
 
 import Authenticator from "../../components/molecules/Authenticator";
 
-import { ICheckoutBooking } from "../../utils/parseCheckoutUrl";
 import { SESSION } from "../../constants";
 import { getCookieUser } from "../../utils/general";
 import { IAvailableRoomType } from "../../utils/reservation/checkAvailabilities";
@@ -21,20 +20,17 @@ import { ISessionReservation } from "../api/stripe-session";
 import SomethingWentWrong from "../../components/organs/Wrong";
 import { Flex } from "../../components/atoms/Section";
 import LeftChevronIcon from "../../assets/icons/LeftChevron";
-import { H1, H4 } from "../../components/atoms/Typography";
+import { H1, H2, H4, Paragraph } from "../../components/atoms/Typography";
 import RoomsEnum from "../../components/organs/Checkout/RoomsEnum";
+import YourTrip from "../../components/organs/Checkout/YourTrip";
+import CancellationPolicy from "../../components/organs/Checkout/CancellationPolicy";
+import Footer from "../../components/organs/Checkout/Footer";
+import Button from "../../components/atoms/Button";
+import { Space } from "../../components/atoms/Layout";
 
-const { Step } = Steps;
+const { TextArea } = Input;
 
 Amplify.configure({ ...awsExports, ssr: true });
-
-interface IBookingForCheckout extends ICheckoutBooking {
-  roomType: IRoomType;
-}
-export interface IBookingResultForCheckout {
-  booking: IBookingForCheckout;
-  availableRoomType: IAvailableRoomType;
-}
 
 interface IUser {
   username: string;
@@ -46,12 +42,10 @@ interface IUser {
 export type ICheckoutProps = {
   validationError: boolean;
   unknownError?: boolean;
-  bookings: IBookingResultForCheckout[];
-  cookieUser?: IUser | null;
+  booking: IAvailableRoomType;
 };
 
-const Checkout: React.FC<ICheckoutProps> = () => {
-  const [editableBookings, setEditableBookings] = React.useState<IBookingResultForCheckout[]>([]);
+const Checkout: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = React.useState(false);
   const [user, setUser] = React.useState<IUser | null>(null);
   const [customerNote, setCustomerNote] = React.useState<string>("");
@@ -65,11 +59,6 @@ const Checkout: React.FC<ICheckoutProps> = () => {
     fetch(...args).then((res) => res.json())
   );
 
-  React.useEffect(() => {
-    if (data) {
-      setEditableBookings(data.bookings);
-    }
-  }, [data]);
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -77,18 +66,13 @@ const Checkout: React.FC<ICheckoutProps> = () => {
   const closeModal = () => {
     setIsModalVisible(false);
   };
-  const removeBooking = (index: number) => {
-    setEditableBookings((bookings) => bookings.filter((_, i) => i != index));
-  };
 
   const handlePay = async () => {
     try {
       setPaymentStages((prev) => [...prev, "Setting up your booking"]);
       const reservationParams: ISessionReservation = {
         note: customerNote,
-        bookings: editableBookings
-          .filter((booking) => booking.availableRoomType)
-          .map((booking) => booking.availableRoomType),
+        booking: data.booking,
       };
       const body = JSON.stringify(reservationParams);
       console.log("body", body);
@@ -137,7 +121,7 @@ const Checkout: React.FC<ICheckoutProps> = () => {
   if (data.unknownError) {
     return <SomethingWentWrong />;
   }
-  if (!data.bookings) return <div>Something went wrong</div>;
+  if (!data.booking) return <SomethingWentWrong />;
   return (
     <>
       <Modal
@@ -157,51 +141,49 @@ const Checkout: React.FC<ICheckoutProps> = () => {
           }}
         />
       </Modal>
-      <Flex>
+      <Flex justify="center" align="center">
         <LeftChevronIcon />
-        <H1 style={{ flex: 1 }}>Confirm and pay</H1>
+        <H1>Confirm and pay</H1>
       </Flex>
-      {/* <Steps>
-        <Step status="process" title="Confirmation" icon={<UserOutlined />} />
-        <Step status="wait" title="Pay" icon={<EuroCircleOutlined />} />
-        <Step status="wait" title="Done" icon={<SmileOutlined />} />
-      </Steps> */}
 
-      <RoomsEnum t={t} removeBooking={removeBooking} editableBookings={editableBookings} />
-
+      <RoomsEnum availableRoomType={data.booking} t={t} />
+      <Divider />
+      <YourTrip t={t} availableRoomType={data.booking} />
+      <Divider />
+      <CancellationPolicy t={t} />
       <Divider />
 
-      <H4>Your trip</H4>
-      <div>
-        {t("pages.checkout.policies")
-          .split("\n")
-          .map((line, i) => (
-            <p key={i}>{line}</p>
-          ))}
-      </div>
-      <input type="text" value={customerNote} onChange={(e) => setCustomerNote(e.target.value)} />
       <div>
         {user ? (
-          <div>
-            <button onClick={handlePay}>Pay</button>
-            We will record the following contact information: {user.name}, {user.email},{" "}
-            {user.phone}
-          </div>
+          <>
+            <Space margin="16px 24px">
+              <Paragraph>Confirmation email will be sent to {user.email}</Paragraph>
+              <TextArea
+                placeholder="Your additional request"
+                value={customerNote}
+                onChange={(e) => setCustomerNote(e.target.value)}
+                autoSize
+              />
+            </Space>
+            <Space margin="16px 24px">
+              <Button onClick={handlePay}>Confirm and pay</Button>
+            </Space>
+          </>
         ) : (
-          <div>
-            You have to login first
-            <button onClick={() => showModal()}>Login</button>
+          <div style={{ padding: "16px 24px" }}>
+            <Button onClick={() => showModal()}>Proceed to guest info</Button>
           </div>
         )}
       </div>
-      <div>
+      <Flex justify="center">
         <p style={{ color: "red" }}>{checkoutError}</p>
-      </div>
-      {paymentStages.map((stage) => (
+      </Flex>
+      {/* {paymentStages.map((stage) => (
         <div key={stage}>
           <p>{stage}</p>
         </div>
-      ))}
+      ))} */}
+      <Footer t={t} />
     </>
   );
 };

@@ -2,10 +2,12 @@ import React from "react";
 import styled from "styled-components";
 
 const SvgContainer = styled.div`
+  position: absolute;
+  left: 0;
   width: 50px;
   height: 50px;
   padding: 0px;
-  margin: 32px;
+  margin: 0 32px 16px 0;
   cursor: pointer;
   border-radius: 50%;
   display: flex;
@@ -21,7 +23,7 @@ const StyledSvg = styled.svg`
   display: inline-block;
   border: medium none;
   outline: currentcolor none medium;
-  width: 16px;
+  width: 10px;
   color: rgb(34, 34, 34);
   touch-action: manipulation;
   position: relative;

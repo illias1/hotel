@@ -7,7 +7,7 @@ type IButtonProps = {
 
 const Button = styled.button<IButtonProps>`
   width: 100%;
-  height: 70px;
+  height: 50px;
 
   cursor: pointer;
   border: none;
@@ -15,9 +15,9 @@ const Button = styled.button<IButtonProps>`
 
   text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   font: inherit;
-  font-weight: bold;
-  font-size: 26px;
-  line-height: 35px;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
 
   filter: drop-shadow(0px 10px 40px rgba(248, 161, 112, 0.2));
 

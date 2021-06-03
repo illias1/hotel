@@ -13,28 +13,26 @@ type ICheckoutLineItems = {
   quantity: number;
 }[];
 
-export const getCheckoutLineItems = (bookings: IAvailableRoomType[]) => {
+export const getCheckoutLineItems = ({ id, checkIn, checkOut }: IAvailableRoomType) => {
   const checkoutLineItems: ICheckoutLineItems = [];
-  bookings.forEach(({ checkIn, checkOut, id }) => {
-    const roomType = getRoomTypeById(id);
-    if (roomType) {
-      const dates = getDatesBetweenDates(new Date(checkIn), new Date(checkOut));
+  const roomType = getRoomTypeById(id);
+  if (roomType) {
+    const dates = getDatesBetweenDates(new Date(checkIn), new Date(checkOut));
 
-      if (dates.length > 3) {
-        checkoutLineItems.push({
-          price: roomType.priceRegular,
-          quantity: dates.length,
-        });
-      } else {
-        const pricesCounted = Counter(dates.map((date) => getDayPrice(date, roomType)));
-        Object.entries(pricesCounted).forEach(([price, quantity]) => {
-          checkoutLineItems.push({ price, quantity });
-        });
-      }
+    if (dates.length > 3) {
+      checkoutLineItems.push({
+        price: roomType.priceRegular,
+        quantity: dates.length,
+      });
     } else {
-      throw new ValidationError("Reservation is corrupted");
+      const pricesCounted = Counter(dates.map((date) => getDayPrice(date, roomType)));
+      Object.entries(pricesCounted).forEach(([price, quantity]) => {
+        checkoutLineItems.push({ price, quantity });
+      });
     }
-  });
+  } else {
+    throw new ValidationError("Reservation is corrupted");
+  }
   return checkoutLineItems;
 };
 
