@@ -8,11 +8,11 @@ import { getHotelByRoomTypeId, getRoomTypeById } from "../../../../utils/db/util
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import StayInfoSelect from "../../../../components/molecules/StayInfoSelect";
-import { REVALIDATE_PERIOD } from "../../../../constants";
+import { houseRules, REVALIDATE_PERIOD } from "../../../../constants";
 import { displayPrice } from "../../../../utils/general";
 import { getPrices } from "../../../../utils/payment";
 import { PageWrapper, Space } from "../../../../components/atoms/Layout";
-import PhotoGallery from "../../../../components/molecules/Gallery";
+import PhotoSlider from "../../../../components/molecules/Slider";
 import { H1, H4, H5, Label, LI } from "../../../../components/atoms/Typography";
 import { Center, Flex, Section } from "../../../../components/atoms/Section";
 import AttributeIcon from "../../../../assets/icons/Attribute";
@@ -22,6 +22,8 @@ import Map from "../../../../components/organs/Map";
 import ExternalLinkIcon from "../../../../assets/icons/ExternalLink";
 import RoomBookArea from "../../../../components/organs/RoomBookArea";
 import SocialShare from "../../../../components/molecules/SocialShare";
+import Header from "../../../../components/molecules/Header";
+import PhotoGallery from "../../../../components/molecules/Galery";
 
 type IRoomProps = {
   roomType?: IRoomType;
@@ -72,18 +74,24 @@ const HotelPage: React.FC<IRoomProps> = ({ roomType, error, priceRegular, priceW
 
   return (
     <PageWrapper isRoomPage={Boolean(availability)}>
-      <PhotoGallery images={roomType.images.map((url) => ({ url }))} />
+      <Header text="Search">
+        <SocialShare />
+      </Header>
+      <PhotoGallery photos={roomType.images} />
       <Space padding={24}>
-        <Row justify="space-around" style={{ maxWidth: 1000, margin: "auto" }}>
+        <Row justify="space-between">
           <Col xs={24} md={14}>
             <Flex>
               <H1>{t(roomType.name)}</H1>
               <SocialShare />
             </Flex>
-            <Label>{getHotelByRoomTypeId(roomType.id).address}</Label>
-            <ExternalLinkIcon />
+            <a href="#map">
+              <Label style={{ cursor: "pointer" }}>
+                {getHotelByRoomTypeId(roomType.id).address}
+              </Label>
+            </a>
             <Divider />
-            <H5>Room type</H5>
+            <H4>Room type</H4>
             {roomType.peopleCount} guests - {roomType.bedRoomCount} bedrooms - {t(roomType.bedType)}{" "}
             -{roomType.bathCount} baths
             <Divider />
@@ -110,6 +118,16 @@ const HotelPage: React.FC<IRoomProps> = ({ roomType, error, priceRegular, priceW
             <Divider />
             <H4>Location</H4>
             <Map height={300} location={roomType.hotelId} />
+            <Divider />
+            <H4>House rules</H4>
+            {houseRules.map(({ name, icon }) => (
+              <LI key={name}>
+                <Flex>
+                  {name}
+                  {icon}
+                </Flex>
+              </LI>
+            ))}
             <Divider />
             <H5>Choose another dates?</H5>
             <StayInfoSelect maxPeople={roomType.peopleCount} first={roomType.id} />
