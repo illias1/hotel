@@ -1,16 +1,15 @@
 import React from "react";
 import { TFunction } from "next-i18next";
-import Image from "next/image";
 import styled from "styled-components";
 import { Row, Col, Tag } from "antd";
+import { useRouter } from "next/router";
 
 import { IAvailableRoomType } from "../../../utils/reservation/checkAvailabilities";
 import Link from "next/link";
 
 import { displayPrice } from "../../../utils/general";
-import BookRoomButton from "../BookRoomButton";
 import { Space } from "../../atoms/Layout";
-import { H4, H5, Label, LI, Paragraph } from "../../atoms/Typography";
+import { H4, Label, LI } from "../../atoms/Typography";
 import AttributeIcon from "../../../assets/icons/Attribute";
 import PhotoGallery from "../Gallery";
 import { Flex } from "../../atoms/Section";
@@ -55,15 +54,20 @@ export const ImageWrapper = styled.div`
 
 const BookRoomCard: React.FC<IBookRoomCardProps> = ({ roomType, checkIn, checkOut, people, t }) => {
   const hotel = getHotelByRoomTypeId(roomType.id);
+  const router = useRouter();
+  const href = `/hotels/${roomType.hotelId}/rooms/${roomType.id}?checkIn=${checkIn}&checkOut=${checkOut}&people=${people}`;
   return (
     <RoomCardWrapper>
-      <PhotoGallery images={roomType.images.map((url) => ({ url }))} />
+      <PhotoGallery
+        onClick={() => {
+          router.push(href);
+        }}
+        images={roomType.images.map((url) => ({ url }))}
+      />
       {/* <ImageWrapper>
           <Image src={roomType.images[0]} layout="fill" />
         </ImageWrapper> */}
-      <Link
-        href={`/hotels/${roomType.hotelId}/rooms/${roomType.id}?checkIn=${checkIn}&checkOut=${checkOut}&people=${people}`}
-      >
+      <Link href={href}>
         <Space padding={18}>
           <H4>{t(roomType.name)}</H4>
           <Row>

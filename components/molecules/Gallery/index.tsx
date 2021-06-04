@@ -6,9 +6,10 @@ const SimpleImageSlider = dynamic(() => import("react-simple-image-slider"), { s
 
 type IGalleryProps = {
   images: { url: string }[];
+  onClick?: () => void;
 };
 
-const PhotoGallery: React.FC<IGalleryProps> = ({ images }) => {
+const PhotoGallery: React.FC<IGalleryProps> = ({ images, onClick }) => {
   return (
     <SimpleImageSlider
       showBullets={false}
@@ -16,6 +17,7 @@ const PhotoGallery: React.FC<IGalleryProps> = ({ images }) => {
       width="100%"
       height={250}
       images={images}
+      onClick={onClick}
     />
   );
 };
