@@ -8,6 +8,7 @@ interface IPaddingProps {
 }
 
 export const Space = styled.div<IPaddingProps>`
+  max-width: 1128px;
   padding: ${({ padding }) => (padding ? `${padding}px` : 0)};
   ${({ margin }) =>
     margin ? (typeof margin == "number" ? `margin: ${margin}px` : `margin: ${margin}`) : null};
@@ -19,7 +20,7 @@ interface IPageWrapper {
 
 export const PageWrapper: React.FC<IPageWrapper> = ({ children, isRoomPage = false }) => {
   return (
-    <Space margin="0 0 70px 0">
+    <Space margin="0 auto 70px">
       {children}
       {!isRoomPage && <Navigation />}
     </Space>

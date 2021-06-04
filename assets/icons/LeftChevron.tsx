@@ -1,13 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
-const SvgContainer = styled.div`
-  position: absolute;
-  left: 0;
+export const SvgContainer = styled.div`
   width: 50px;
   height: 50px;
   padding: 0px;
-  margin: 0 32px 16px 0;
   cursor: pointer;
   border-radius: 50%;
   display: flex;

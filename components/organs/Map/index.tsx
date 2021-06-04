@@ -53,11 +53,13 @@ interface IMapProp {
 const Map: React.FC<IMapProp> = ({ location, height }) => {
   return (
     <div
+      id="map"
       style={{
         height: height || 500,
         width: "100%",
         borderRadius: "12px 12px 0px 0px !important",
         overflow: "hidden !important",
+        // @ts-ignore
         backfaceVisibility: "hidden !important",
       }}
     >

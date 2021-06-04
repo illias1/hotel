@@ -12,6 +12,7 @@ import SomethingWentWrong from "../components/organs/Wrong";
 import SearchSkeleton from "../components/organs/Skeletons";
 import StayInfoSelect from "../components/molecules/StayInfoSelect";
 import styled from "styled-components";
+import { H5, Paragraph } from "../components/atoms/Typography";
 
 interface ISearchProps {
   error?: string;
@@ -80,7 +81,10 @@ const Search: React.FC<ISearchProps> = () => {
                 />
               </div>
             ) : (
-              "No availabilities for the room you searched"
+              <>
+                <H5>No availabilities for the room you searched</H5>
+                <Paragraph>You may also like:</Paragraph>
+              </>
             )}
           </div>
           <br />

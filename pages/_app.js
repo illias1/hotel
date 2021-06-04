@@ -7,6 +7,9 @@ body {
   font-family: "Nunito", sans-serif;
   background-color: #FAFAFB;
 }
+.ant-drawer-title {
+  color: transparent
+}
 @media(max-width: 576px) { 
   .ant-picker-panels { 
     flex-direction: column;

@@ -11,7 +11,7 @@ import { displayPrice } from "../../../utils/general";
 import { Space } from "../../atoms/Layout";
 import { H4, Label, LI } from "../../atoms/Typography";
 import AttributeIcon from "../../../assets/icons/Attribute";
-import PhotoGallery from "../Gallery";
+import PhotoSlider from "../Slider";
 import { Flex } from "../../atoms/Section";
 import { getHotelByRoomTypeId } from "../../../utils/db/utils";
 import { IHotelName } from "../../../utils/db";
@@ -58,7 +58,7 @@ const BookRoomCard: React.FC<IBookRoomCardProps> = ({ roomType, checkIn, checkOu
   const href = `/hotels/${roomType.hotelId}/rooms/${roomType.id}?checkIn=${checkIn}&checkOut=${checkOut}&people=${people}`;
   return (
     <RoomCardWrapper>
-      <PhotoGallery
+      <PhotoSlider
         onClick={() => {
           router.push(href);
         }}

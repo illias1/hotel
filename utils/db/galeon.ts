@@ -27,11 +27,11 @@ export const galeon: IIncompleteHotel = {
       priceWeekend: "price_1IhxXoJbqXJxe7z3pKI5WpI2",
       peopleCount: 2,
       images: [
-        "https://ik.imagekit.io/alquileres/Galeon/test/IMG20210510174215_DOH1slEs3.jpg",
-        "https://ik.imagekit.io/alquileres/Galeon/test/IMG20210510175115_yVoGD9G_X.jpg",
-        "https://ik.imagekit.io/alquileres/Galeon/test/IMG20210510175352_rACuBh0FF.jpg",
-        "https://ik.imagekit.io/alquileres/Galeon/test/IMG20210510174246_YamxJ_0Fp.jpg",
-        "https://ik.imagekit.io/alquileres/Galeon/test/IMG20210510174405_uMYKI1RPbGyF.jpg",
+        "https://ik.imagekit.io/alquileres/Galeon/test/IMG20210510174215_DOH1slEs3.jpg?4:2",
+        "https://ik.imagekit.io/alquileres/Galeon/test/IMG20210510175115_yVoGD9G_X.jpg?3:4",
+        "https://ik.imagekit.io/alquileres/Galeon/test/IMG20210510175352_rACuBh0FF.jpg?4:3",
+        "https://ik.imagekit.io/alquileres/Galeon/test/IMG20210510174246_YamxJ_0Fp.jpg?4:3",
+        "https://ik.imagekit.io/alquileres/Galeon/test/IMG20210510174405_uMYKI1RPbGyF.jpg?3:4",
       ],
       rooms: [
         {

@@ -26,7 +26,6 @@ const VerticalContainer = styled.div`
 
 const RoomBookArea: React.FC<IRoomPageNavigationProps> = ({ roomType }) => {
   const screens = useBreakpoint();
-  console.log("screens", screens);
   return screens.md ? (
     <VerticalContainer>
       <H4>{displayPrice(roomType)}</H4>
