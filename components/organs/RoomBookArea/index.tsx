@@ -33,7 +33,7 @@ const RoomBookArea: React.FC<IRoomPageNavigationProps> = ({ roomType }) => {
       <H5>
         {roomType.checkIn} - {roomType.checkOut}
       </H5>
-      <BookRoomButton style={{ height: 50 }} roomType={roomType} />
+      <BookRoomButton roomType={roomType} />
     </VerticalContainer>
   ) : (
     <NavigationContainer>
@@ -43,7 +43,7 @@ const RoomBookArea: React.FC<IRoomPageNavigationProps> = ({ roomType }) => {
         </div>
         {displayPrice(roomType)}
       </div>
-      <BookRoomButton style={{ height: 50, width: "30%" }} roomType={roomType} />
+      <BookRoomButton roomType={roomType} />
     </NavigationContainer>
   );
 };
