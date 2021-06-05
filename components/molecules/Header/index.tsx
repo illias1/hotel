@@ -3,9 +3,13 @@ import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
 import styled from "styled-components";
 import LeftChevronIcon from "../../../assets/icons/LeftChevron";
 import { Flex } from "../../atoms/Section";
+import { H5 } from "../../atoms/Typography";
+import { useRouter } from "next/router";
 
 type IHeaderProps = {
-  text: string;
+  text?: string;
+  title?: string;
+  isAlsoBigScreens?: boolean;
 };
 
 const HeaderContainer = styled.div`
@@ -13,23 +17,36 @@ const HeaderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  padding-right: 24px;
 `;
 
-const Header: React.FC<IHeaderProps> = ({ text, children }) => {
+const AbsolutePosition = styled.div<{ left?: boolean }>`
+  position: absolute;
+  ${({ left }) => (left ? "left: 0" : "right: 0")};
+  display: flex;
+  align-items: center;
+`;
+
+const Header: React.FC<IHeaderProps> = ({ isAlsoBigScreens, text, title, children }) => {
   const screens = useBreakpoint();
-  return screens.md ? (
-    <> </>
-  ) : (
+  const router = useRouter();
+  const component = (
     <HeaderContainer>
-      <Flex align="center" justify="start">
-        <LeftChevronIcon />
-        <>{text}</>
+      <AbsolutePosition left>
+        <div onClick={() => router.back()}>
+          <LeftChevronIcon />
+        </div>
+        <div>{text}</div>
+      </AbsolutePosition>
+      <Flex align="center" justify="center">
+        <H5 style={{ marginBottom: 0 }}>{title}</H5>
       </Flex>
-      {children}
+      <AbsolutePosition>{children}</AbsolutePosition>
     </HeaderContainer>
   );
+  if (isAlsoBigScreens) {
+    return component;
+  }
+  return screens.md ? <> </> : component;
 };
 
 export default Header;

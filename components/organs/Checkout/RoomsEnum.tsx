@@ -17,8 +17,9 @@ const RoomDescriptionContainer = styled.div`
   padding-left: 24px;
 `;
 
-const CheckoutImage = styled(Image)`
+const CheckoutImage = styled.img`
   border-radius: 10px;
+  object-fit: cover;
 `;
 
 const RoomsEnum: React.FC<IRoomsEnumProps> = ({ availableRoomType, t }) => {

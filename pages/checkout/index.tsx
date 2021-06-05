@@ -27,6 +27,7 @@ import CancellationPolicy from "../../components/organs/Checkout/CancellationPol
 import Footer from "../../components/organs/Checkout/Footer";
 import Button from "../../components/atoms/Button";
 import { Space } from "../../components/atoms/Layout";
+import Header from "../../components/molecules/Header";
 
 const { TextArea } = Input;
 
@@ -141,10 +142,9 @@ const Checkout: React.FC = () => {
           }}
         />
       </Modal>
-      <Flex justify="center" align="center">
-        <LeftChevronIcon />
-        <H1>Confirm and pay</H1>
-      </Flex>
+      <Header isAlsoBigScreens text="" title="Confirm and pay" >
+        <div style={{color: "transparent"}}>f</div>
+      </Header>
 
       <RoomsEnum availableRoomType={data.booking} t={t} />
       <Divider />
