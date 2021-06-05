@@ -39,8 +39,12 @@ const HomeHeader = styled.div`
   justify-content: center;
 `;
 
-const StyledImage = styled(Image)`
+const StyledImage = styled.img`
   opacity: 0.5;
+  object-fit: cover;
+  width: 100%;
+  position: absolute;
+  max-height: 60vh;
 `;
 
 const HomeTitle: React.FC<IHomeTitleProps> = ({ ...props }) => {
@@ -50,7 +54,7 @@ const HomeTitle: React.FC<IHomeTitleProps> = ({ ...props }) => {
       <HomeHeader>
         {
           // @ts-ignore
-          <StyledImage priority layout="fill" objectFit="cover" src="/headerCalpe.jpg" />
+          <StyledImage src="https://ik.imagekit.io/alquileres/headerCalpe_6TmVsBhqe.jpg" />
         }
         <HomeH1>{t("pages.home.title")}</HomeH1>
         <StayInfoSelectRoot>

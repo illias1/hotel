@@ -14,7 +14,7 @@ import Map from "../components/organs/Map";
 import Head from "../components/atoms/Head";
 import HomeSection from "../HomeSection";
 import { Section } from "../components/atoms/Section";
-import { PageWrapper } from "../components/atoms/Layout";
+import { PageWrapper, Space } from "../components/atoms/Layout";
 
 Amplify.configure({ ...awsExports, ssr: true });
 
@@ -29,13 +29,15 @@ const Home: React.FC<IHomeProps> = ({ hotels }) => {
     <PageWrapper>
       <Head />
       <HomeHeader />
-      <Section>
-        <h2>We have 3 hotels in center of Calpe ....</h2>
-      </Section>
-      <Map />
-      {Object.values(hotels).map((hotel) => (
-        <HomeSection key={hotel.id} t={t} hotel={hotel} />
-      ))}
+      <Space isMaxWidthEnabled>
+        <Section>
+          <h2>We have 3 hotels in center of Calpe ....</h2>
+        </Section>
+        <Map />
+        {Object.values(hotels).map((hotel) => (
+          <HomeSection key={hotel.id} t={t} hotel={hotel} />
+        ))}
+      </Space>
     </PageWrapper>
   );
 };

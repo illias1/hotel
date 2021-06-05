@@ -5,10 +5,11 @@ import Navigation from "../../organs/Navigation";
 interface IPaddingProps {
   readonly margin?: number | string;
   readonly padding?: number;
+  readonly isMaxWidthEnabled?: boolean;
 }
 
 export const Space = styled.div<IPaddingProps>`
-  max-width: 1128px;
+  ${({ isMaxWidthEnabled }) => isMaxWidthEnabled && `max-width: 1128px; margin: auto;`};
   padding: ${({ padding }) => (padding ? `${padding}px` : 0)};
   ${({ margin }) =>
     margin ? (typeof margin == "number" ? `margin: ${margin}px` : `margin: ${margin}`) : null};
