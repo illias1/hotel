@@ -24,6 +24,8 @@ import RoomBookArea from "../../../../components/organs/RoomBookArea";
 import SocialShare from "../../../../components/molecules/SocialShare";
 import Header from "../../../../components/molecules/Header";
 import PhotoGallery from "../../../../components/molecules/Galery";
+import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
+import IconTextList from "../../../../components/organs/IconsTextList";
 
 type IRoomProps = {
   roomType?: IRoomType;
@@ -58,6 +60,8 @@ const HotelPage: React.FC<IRoomProps> = ({ roomType, error, priceRegular, priceW
   const [amenities, setAmenities] = React.useState<string[]>(roomType.attributes.slice(0, 4));
   const router = useRouter();
   const { t } = useTranslation();
+  const screens = useBreakpoint();
+
   if (error) {
     return <div>Error happened {error}</div>;
   }
@@ -80,7 +84,7 @@ const HotelPage: React.FC<IRoomProps> = ({ roomType, error, priceRegular, priceW
       <PhotoGallery photos={roomType.images} />
       <Space padding={24}>
         <Row justify="space-between">
-          <Col xs={24} md={14}>
+          <Col flex={2} xs={24} md={14}>
             <Flex>
               <H1>{t(roomType.name)}</H1>
               <SocialShare />
@@ -96,16 +100,13 @@ const HotelPage: React.FC<IRoomProps> = ({ roomType, error, priceRegular, priceW
             -{roomType.bathCount} baths
             <Divider />
             <H4>Amenities</H4>
-            <div>
-              {amenities.map((attribute) => (
-                <LI key={attribute}>
-                  <Flex>
-                    {t(attribute)}
-                    <AttributeIcon name={attribute.split(".")[2]} />
-                  </Flex>
-                </LI>
-              ))}
-            </div>
+            <IconTextList
+              t={t}
+              list={amenities.map((name) => ({
+                icon: <AttributeIcon name={name.split(".")[2]} />,
+                name,
+              }))}
+            />
             {amenities.length == 4 ? (
               <Center onClick={() => setAmenities(roomType.attributes)}>
                 <DownChevronIcon />
@@ -120,20 +121,13 @@ const HotelPage: React.FC<IRoomProps> = ({ roomType, error, priceRegular, priceW
             <Map height={300} location={roomType.hotelId} />
             <Divider />
             <H4>House rules</H4>
-            {houseRules.map(({ name, icon }) => (
-              <LI key={name}>
-                <Flex>
-                  {name}
-                  {icon}
-                </Flex>
-              </LI>
-            ))}
+            <IconTextList t={t} list={houseRules} />
             <Divider />
             <H5>Choose another dates?</H5>
             <StayInfoSelect maxPeople={roomType.peopleCount} first={roomType.id} />
           </Col>
-          <Col>
-            {Boolean(availability) && (
+          {Boolean(availability) && (
+            <Col flex={1} style={{ marginLeft: "8%" }}>
               <RoomBookArea
                 roomType={{
                   ...roomType,
@@ -143,8 +137,8 @@ const HotelPage: React.FC<IRoomProps> = ({ roomType, error, priceRegular, priceW
                   priceWeekendNumber: priceWeekend,
                 }}
               />
-            )}
-          </Col>
+            </Col>
+          )}
         </Row>
       </Space>
     </PageWrapper>

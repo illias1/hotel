@@ -21,8 +21,8 @@ type IAttributeIconProps = {
 
 export const AttributeSVG = styled.svg`
   color: #000;
-  width: 14px;
-  height: 12.25px;
+  width: 24px;
+  height: 24px;
 `;
 
 const AttributeIcon: React.FC<IAttributeIconProps> = ({ ...props }) => {

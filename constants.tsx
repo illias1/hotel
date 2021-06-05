@@ -1,4 +1,7 @@
+import BanIcon from "./assets/icons/Ban";
 import ClockIcon from "./assets/icons/ClockIcon";
+import LockIcon from "./assets/icons/LockIcon";
+import NoSmokingIcon from "./assets/icons/NoSmoking";
 
 export const LOCAL_STORAGE_RESERVATION = "reservation";
 export const LOCAL_STORAGE_SEARCH = "search";
@@ -21,14 +24,14 @@ export const houseRules = [
   },
   {
     name: "Self check-in with smart lock",
-    icon: <ClockIcon />,
+    icon: <LockIcon />,
   },
   {
     name: "No pets",
-    icon: <ClockIcon />,
+    icon: <BanIcon />,
   },
   {
     name: "No smoking",
-    icon: <ClockIcon />,
+    icon: <NoSmokingIcon />,
   },
 ];
