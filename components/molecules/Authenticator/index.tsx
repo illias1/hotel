@@ -1,6 +1,5 @@
 import React from "react";
 import { Auth } from "aws-amplify";
-import AuthenticatorUI from "./UI";
 import LoginAuthenticator, { ILoginFormResult } from "./LoginAuthenitcator";
 import SignupAuthenticator, { ISignupFormResult } from "./SignupAuthenticator";
 import { TFunction } from "next-i18next";
