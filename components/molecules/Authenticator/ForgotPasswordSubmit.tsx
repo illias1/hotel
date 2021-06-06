@@ -3,13 +3,15 @@ import { TFunction } from "next-i18next";
 import { Form, Input } from "antd";
 import { MailOutlined, LockOutlined, CodeOutlined } from "@ant-design/icons";
 
-import { IReusableAuthenticatorData, StyledForm } from ".";
+import { IAuthenticationState, IReusableAuthenticatorData, StyledForm } from ".";
 import Button from "../../atoms/Button";
+import { Space } from "../../atoms/Layout";
 
 type IForgotPasswordSubmitProps = {
   t: TFunction;
   reusableData: IReusableAuthenticatorData;
   handleSubmit: (data: any) => void;
+  setAuthenticationState: React.Dispatch<React.SetStateAction<IAuthenticationState>>;
 };
 
 export interface IForgotPasswordSubmitFormResult {
@@ -21,6 +23,7 @@ export interface IForgotPasswordSubmitFormResult {
 const ForgotPasswordSubmit: React.FC<IForgotPasswordSubmitProps> = ({
   handleSubmit,
   reusableData,
+  setAuthenticationState,
   t,
 }) => {
   return (
@@ -47,8 +50,9 @@ const ForgotPasswordSubmit: React.FC<IForgotPasswordSubmitProps> = ({
         <Input prefix={<MailOutlined />} />
       </Form.Item>
       <Form.Item
-        name="password"
+        name="newPassword"
         label="New password"
+        help="Should have at least 6 characters"
         rules={[
           {
             required: true,
@@ -72,6 +76,11 @@ const ForgotPasswordSubmit: React.FC<IForgotPasswordSubmitProps> = ({
         <Input prefix={<CodeOutlined />} placeholder="1234" />
       </Form.Item>
       <Button type="submit">{t("pages.authenticator.ForgotPasswordSubmit")}</Button>
+      <Space margin="20px 0 0 0">
+        <Button link onClick={() => setAuthenticationState("signIn")}>
+          Back to login
+        </Button>
+      </Space>
     </StyledForm>
   );
 };

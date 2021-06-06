@@ -25,9 +25,11 @@ const HomeSection: React.FC<IHomeSectionProps> = ({ hotel, t }) => {
       <Paragraph>{t(hotel.description)}</Paragraph>
       <Slider>
         {hotel.images.map((url, index) => (
-          // <div>
-          <StyledImage src={url} alt={`Image ${index} for hotel ${t(hotel.name)}`} />
-          // </div>
+          <StyledImage
+            src={url}
+            alt={`Image ${index} for hotel ${t(hotel.name)}`}
+            key={url + index}
+          />
         ))}
       </Slider>
     </Section>

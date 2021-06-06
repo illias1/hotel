@@ -28,7 +28,7 @@ const IconTextList: React.FC<IIconTextListProps> = ({ list, t }) => {
             </Space>
           </Col>
         ) : (
-          <Flex>
+          <Flex key={name}>
             {t(name)}
             {icon}
           </Flex>

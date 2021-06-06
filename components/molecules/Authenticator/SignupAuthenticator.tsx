@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Form, Input, Checkbox, Button } from "antd";
+import { Form, Input, Checkbox } from "antd";
 import { UserOutlined, LockOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
 import { IAmplifyError, IAuthenticationState, StyledForm } from ".";
+import Button from "../../atoms/Button";
+import { TFunction } from "next-i18next";
 
 const formItemLayout = {
   labelCol: {
@@ -38,6 +40,7 @@ type IAuthenticatorUIProps = {
   setAuthenticationState: React.Dispatch<React.SetStateAction<IAuthenticationState>>;
   handleSubmit: (data: any) => void;
   error: IAmplifyError["code"];
+  t: TFunction;
 };
 
 export interface ISignupFormResult {
@@ -51,6 +54,7 @@ const SignupAuthenticator: React.FC<IAuthenticatorUIProps> = ({
   setAuthenticationState,
   handleSubmit,
   error,
+  t,
 }) => {
   const [form] = Form.useForm();
 
@@ -162,9 +166,7 @@ const SignupAuthenticator: React.FC<IAuthenticatorUIProps> = ({
         </Checkbox>
       </Form.Item>
       <Form.Item {...tailFormItemLayout}>
-        <Button type="primary" htmlType="submit">
-          Register
-        </Button>
+        <Button type="submit">Register</Button>
       </Form.Item>
       {error === "UsernameExistsException" && (
         <>
@@ -173,7 +175,7 @@ const SignupAuthenticator: React.FC<IAuthenticatorUIProps> = ({
         </>
       )}
       Or
-      <Button onClick={() => setAuthenticationState("signIn")} type="link">
+      <Button onClick={() => setAuthenticationState("signIn")} link>
         Login!
       </Button>
     </StyledForm>

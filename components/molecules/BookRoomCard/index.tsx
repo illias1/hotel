@@ -72,7 +72,7 @@ const BookRoomCard: React.FC<IBookRoomCardProps> = ({ roomType, checkIn, checkOu
           <H4>{t(roomType.name)}</H4>
           <Row>
             {roomType.attributes.map((attribute) => (
-              <Col span={12}>
+              <Col key={attribute} span={12}>
                 <LI key={attribute}>
                   <AttributeIcon name={attribute.split(".")[2]} />
                   <Label style={{ marginLeft: 10 }}>{t(attribute)}</Label>

@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 
 type IButtonProps = {
   secondary?: boolean;
+  link?: boolean;
 };
 
 export const buttonStyles = css`
@@ -24,11 +25,22 @@ export const buttonStyles = css`
 
 const Button = styled.button<IButtonProps>`
   ${buttonStyles}
-  ${(props: IButtonProps) =>
-    props.secondary
+  ${({ secondary, link }: IButtonProps) =>
+    secondary
       ? css`
           background: white;
           color: orange;
+        `
+      : link
+      ? css`
+          color: #1890ff;
+          background: transparent;
+          height: auto;
+          width: auto;
+          filter: none;
+          text-shadow: none;
+          font-weight: 400;
+          font-size: 14px;
         `
       : css`
           background: linear-gradient(91.97deg, #f8a170 14.73%, #ffcd61 97.52%);

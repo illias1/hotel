@@ -1,11 +1,13 @@
 import React from "react";
-import { Form, Input, Button, Checkbox } from "antd";
+import { Form, Input } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { IAuthenticationState, StyledForm } from ".";
+import { IAuthenticationState, IReusableAuthenticatorData, StyledForm } from ".";
+import Button from "../../atoms/Button";
 
 type IAuthenticatorUIProps = {
   setAuthenticationState: React.Dispatch<React.SetStateAction<IAuthenticationState>>;
   handleSubmit: (data: any) => void;
+  reusableData: IReusableAuthenticatorData;
 };
 
 export interface ILoginFormResult {
@@ -16,15 +18,12 @@ export interface ILoginFormResult {
 const LoginAuthenticator: React.FC<IAuthenticatorUIProps> = ({
   setAuthenticationState,
   handleSubmit,
+  reusableData,
 }) => {
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
-  };
-
   return (
     <StyledForm
+      initialValues={{ email: reusableData.email }}
       name="normal_login"
-      className="login-form"
       layout="horizontal"
       onFinish={handleSubmit}
     >
@@ -53,18 +52,17 @@ const LoginAuthenticator: React.FC<IAuthenticatorUIProps> = ({
         <Input prefix={<LockOutlined />} type="password" />
       </Form.Item>
       <Form.Item>
-        <Button type="link" onClick={() => setAuthenticationState("forgotPassword")}>
-          Forgot password
-        </Button>
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit" className="login-form-button">
+        <Button type="submit" className="login-form-button">
           Log in
         </Button>
       </Form.Item>
-      Or
-      <Button onClick={() => setAuthenticationState("signUp")} type="link">
-        register now!
+      <Button link onClick={() => setAuthenticationState("forgotPassword")}>
+        Forgot password
+      </Button>
+      <br />
+      <br />
+      <Button onClick={() => setAuthenticationState("signUp")} link>
+        Register now!
       </Button>
     </StyledForm>
   );

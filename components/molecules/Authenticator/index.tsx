@@ -43,7 +43,7 @@ export type IAuthenticationState =
 
 const Authenticator: React.FC<IAuthenticator> = ({ children, loginCallback, t }) => {
   const [authenticationState, setAuthenticationState] =
-    React.useState<IAuthenticationState>("forgotPasswordSubmit");
+    React.useState<IAuthenticationState>("signUp");
   const [error, setError] = React.useState<IAmplifyError["code"] | undefined>(undefined);
   const [reusableData, setReusableData] = React.useState<IReusableAuthenticatorData>({
     email: "",
@@ -82,18 +82,23 @@ const Authenticator: React.FC<IAuthenticator> = ({ children, loginCallback, t })
         case "signIn":
           const loginData = data as ILoginFormResult;
           signIn(loginData);
+          break;
         case "signUp":
           const signupData = data as ISignupFormResult;
           signUp(signupData);
+          break;
         case "confirmSignUp":
           const confirmSignUpData = data as IConfirmSignUpFormResult;
           confirmSignUp(confirmSignUpData);
+          break;
         case "forgotPassword":
           const forgotPasswordData = data as IForgotPasswordFormResult;
           handleForgotPassword(forgotPasswordData);
+          break;
         case "forgotPasswordSubmit":
           const forgotPasswordSubmitData = data as IForgotPasswordSubmitFormResult;
           handleForgotPasswordSubmit(forgotPasswordSubmitData);
+          break;
         default:
           break;
       }
@@ -146,8 +151,8 @@ const Authenticator: React.FC<IAuthenticator> = ({ children, loginCallback, t })
   ) => {
     await Auth.forgotPasswordSubmit(
       forgotPasswordSubmit.email,
-      forgotPasswordSubmit.newPassword,
-      forgotPasswordSubmit.forgotPasswordVerificationCode
+      forgotPasswordSubmit.forgotPasswordVerificationCode,
+      forgotPasswordSubmit.newPassword
     );
     setAuthenticationState("signIn");
   };
@@ -166,6 +171,7 @@ const Authenticator: React.FC<IAuthenticator> = ({ children, loginCallback, t })
     case "signIn":
       return (
         <LoginAuthenticator
+          reusableData={reusableData}
           handleSubmit={handleSubmit}
           setAuthenticationState={setAuthenticationState}
         />
@@ -173,6 +179,7 @@ const Authenticator: React.FC<IAuthenticator> = ({ children, loginCallback, t })
     case "signUp":
       return (
         <SignupAuthenticator
+          t={t}
           error={error}
           handleSubmit={handleSubmit}
           setAuthenticationState={setAuthenticationState}
@@ -181,9 +188,23 @@ const Authenticator: React.FC<IAuthenticator> = ({ children, loginCallback, t })
     case "confirmSignUp":
       return <ConfirmSignUp reusableData={reusableData} t={t} handleSubmit={handleSubmit} />;
     case "forgotPassword":
-      return <ForgotPassword t={t} reusableData={reusableData} handleSubmit={handleSubmit} />;
+      return (
+        <ForgotPassword
+          setAuthenticationState={setAuthenticationState}
+          t={t}
+          reusableData={reusableData}
+          handleSubmit={handleSubmit}
+        />
+      );
     case "forgotPasswordSubmit":
-      return <ForgotPasswordSubmit reusableData={reusableData} t={t} handleSubmit={handleSubmit} />;
+      return (
+        <ForgotPasswordSubmit
+          setAuthenticationState={setAuthenticationState}
+          reusableData={reusableData}
+          t={t}
+          handleSubmit={handleSubmit}
+        />
+      );
     default:
       break;
   }
