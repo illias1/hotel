@@ -3,7 +3,6 @@ import ClockIcon from "./assets/icons/ClockIcon";
 import LockIcon from "./assets/icons/LockIcon";
 import NoSmokingIcon from "./assets/icons/NoSmoking";
 
-export const LOCAL_STORAGE_EMAIL = "email";
 export const LOCAL_STORAGE_SEARCH = "search";
 export const LOCAL_STORAGE_PEOPLE = "people";
 export const LOCAL_STORAGE_CHECK_IN = "check_in";

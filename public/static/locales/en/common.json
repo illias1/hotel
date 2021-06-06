@@ -71,6 +71,12 @@
       "checkIn": "Check-in",
       "checkOut": "Check-out"
     },
+    "name": {
+      "placeholder": "Name"
+    },
+    "phone": {
+      "placeholder": "Phone"
+    },
     "password": {
       "placeholder": "Password"
     },
