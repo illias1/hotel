@@ -63,7 +63,7 @@ export interface IHotelWithNumberPrice extends IHotel {
   roomTypes: IRoomTypeWithNumberPrice[];
 }
 
-const deeperLevelFiller = (hotel: IIncompleteHotel): IHotel => ({
+const deeperLevelFiller = (hotel: IIncompleteHotel): IHotelWithNumberPrice => ({
   name: `db.${hotel.id}.name`,
   description: `db.${hotel.id}.description`,
   ...hotel,
@@ -72,6 +72,8 @@ const deeperLevelFiller = (hotel: IIncompleteHotel): IHotel => ({
     hotelId: hotel.id,
     attributes: roomType.attributes.map((attr) => `db.attributes.${attr}`),
     name: `db.${hotel.id}.rooms.${roomType.id}`,
+    priceRegularNumber: 0,
+    priceWeekendNumber: 0,
     rooms: roomType.rooms.map((room) => ({
       roomTypeId: roomType.id,
       ...room,
@@ -79,7 +81,7 @@ const deeperLevelFiller = (hotel: IIncompleteHotel): IHotel => ({
   })),
 });
 
-export const DATA: Record<IHotelName, IHotel> = {
+export const DATA: Record<IHotelName, IHotelWithNumberPrice> = {
   ifach: deeperLevelFiller(ifach),
   galeon: deeperLevelFiller(galeon),
   mayor: deeperLevelFiller(mayor),

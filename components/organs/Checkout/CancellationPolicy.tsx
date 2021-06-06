@@ -14,13 +14,13 @@ const CancellationPolicy: React.FC<ICancellationPolicyProps> = ({ t }) => {
   return (
     <Space margin="5px 24px">
       <H3>Cancellation Policy</H3>
-      <SmallText>
+      <div>
         {t("pages.checkout.policies")
           .split("\n")
           .map((line, i) => (
-            <p key={i}>{line}</p>
+            <SmallText key={i}>{line}</SmallText>
           ))}
-      </SmallText>
+      </div>
       <Divider />
 
       <SmallText>{t("pages.checkout.agreement")}</SmallText>

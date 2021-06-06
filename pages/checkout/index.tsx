@@ -20,7 +20,7 @@ import { ISessionReservation } from "../api/stripe-session";
 import SomethingWentWrong from "../../components/organs/Wrong";
 import { Flex } from "../../components/atoms/Section";
 import LeftChevronIcon from "../../assets/icons/LeftChevron";
-import { H1, H2, H4, Paragraph } from "../../components/atoms/Typography";
+import { H1, H2, H3, H4, Paragraph, Text } from "../../components/atoms/Typography";
 import RoomsEnum from "../../components/organs/Checkout/RoomsEnum";
 import YourTrip from "../../components/organs/Checkout/YourTrip";
 import CancellationPolicy from "../../components/organs/Checkout/CancellationPolicy";
@@ -59,7 +59,7 @@ const Checkout: React.FC = () => {
     // @ts-ignore
     fetch(...args).then((res) => res.json())
   );
-
+  console.log("data", data);
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -129,26 +129,47 @@ const Checkout: React.FC = () => {
         title="Please login first"
         visible={isModalVisible}
         onCancel={closeModal}
-        footer={[
-          <Button key="back" onClick={closeModal}>
-            Back
-          </Button>,
-        ]}
+        footer={null}
       >
         <Authenticator
+          t={t}
           loginCallback={(user) => {
             setUser(getCookieUser(user));
             closeModal();
           }}
         />
       </Modal>
-      <Header isAlsoBigScreens text="" title="Confirm and pay" >
-        <div style={{color: "transparent"}}>f</div>
+      <Header isAlsoBigScreens text="" title="Confirm and pay">
+        <div style={{ color: "transparent" }}>f</div>
       </Header>
 
       <RoomsEnum availableRoomType={data.booking} t={t} />
       <Divider />
       <YourTrip t={t} availableRoomType={data.booking} />
+      <Divider />
+      <Space margin="5px 24px">
+        <H3>Price details</H3>
+        {data.booking.total.map(({ price, quantity }, index) => (
+          <Flex key={index}>
+            <Text>
+              {price} € x {quantity} night(s){" "}
+              {data.booking.total.length > 1 &&
+                price == data.booking.total.map((a) => a.price).sort((a, b) => b - a)[0] &&
+                "(weekend)"}
+            </Text>
+            <Text>{price * quantity} €</Text>
+          </Flex>
+        ))}
+        <Space margin="20px 0 0 0">
+          <Flex>
+            <Text primary>Total</Text>
+            <Text primary>
+              {data.booking.total.reduce((prev, { quantity, price }) => prev + quantity * price, 0)}{" "}
+              €
+            </Text>
+          </Flex>
+        </Space>
+      </Space>
       <Divider />
       <CancellationPolicy t={t} />
       <Divider />
@@ -162,7 +183,7 @@ const Checkout: React.FC = () => {
                 placeholder="Your additional request"
                 value={customerNote}
                 onChange={(e) => setCustomerNote(e.target.value)}
-                autoSize
+                rows={3}
               />
             </Space>
             <Space margin="16px 24px">
@@ -176,13 +197,8 @@ const Checkout: React.FC = () => {
         )}
       </div>
       <Flex justify="center">
-        <p style={{ color: "red" }}>{checkoutError}</p>
+        <Paragraph style={{ color: "red" }}>{checkoutError}</Paragraph>
       </Flex>
-      {/* {paymentStages.map((stage) => (
-        <div key={stage}>
-          <p>{stage}</p>
-        </div>
-      ))} */}
       <Footer t={t} />
     </>
   );

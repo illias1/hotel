@@ -100,7 +100,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               checkIn: booking.checkIn,
               reservation: reservationId,
               roomTypeId: booking.id,
-              roomID: booking.availableRoom[0].id,
+              roomID: booking.availableRoom.id,
               people: booking.people,
               status: BookingStatus.PENDING,
             },

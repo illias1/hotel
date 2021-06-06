@@ -5,7 +5,7 @@ import { TFunction } from "next-i18next";
 import styled from "styled-components";
 import { IAvailableRoomType } from "../../../utils/reservation/checkAvailabilities";
 import { Space } from "../../atoms/Layout";
-import { H3, Paragraph } from "../../atoms/Typography";
+import { H3, Paragraph, Text } from "../../atoms/Typography";
 
 type IYourTripProps = {
   availableRoomType: IAvailableRoomType;
@@ -26,21 +26,17 @@ const YourTrip: React.FC<IYourTripProps> = ({ availableRoomType, t }) => {
   return (
     <Space margin="5px 24px">
       <H3>Your trip</H3>
+      <Space margin="20px 0 10px 0">
+        <Flex align="center">
+          <Text primary>Dates</Text>
+          <Text primary>Guests</Text>
+        </Flex>
+      </Space>
       <Flex align="center">
-        <div>
-          Dates
-          <Paragraph>
-            {checkIn} - {checkOut}
-          </Paragraph>
-        </div>
-        Edit
-      </Flex>
-      <Flex align="center">
-        <div>
-          Guests
-          <Paragraph>{people}</Paragraph>
-        </div>
-        Edit
+        <Text>
+          {checkIn} - {checkOut}
+        </Text>
+        <Text>{people}</Text>
       </Flex>
     </Space>
   );

@@ -17,6 +17,14 @@ export const H5 = styled.h5`
 `;
 export const Paragraph = styled.p``;
 
+export const Text = styled.div<{ primary?: boolean }>`
+  font-size: 16px;
+  line-height: 29px;
+  color: ${({ primary }) => (primary ? "black" : "rgb(113, 113, 113)")};
+  font-weight: ${({ primary }) => (primary ? 800 : 500)};
+  display: inline;
+`;
+
 export const SmallText = styled.p`
   font-size: 12px;
   line-height: 16px;

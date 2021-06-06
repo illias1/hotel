@@ -3,13 +3,22 @@ import { DATA, IHotel, IRoom, IRoomType } from ".";
 export const getAllRoomTypes = () =>
   Object.values(DATA).reduce(
     (accumulated, hotel) => [...accumulated, ...hotel.roomTypes],
-    [] as IRoomType[]
+    [] as []
   );
 
-export const getRoomTypeById = (roomTypeId: string): IRoomType | undefined => {
+export const getRoomTypeById = (roomTypeId: string) => {
   const allRoomTypesArray = getAllRoomTypes();
 
   return allRoomTypesArray.find((roomType) => roomType.id === roomTypeId);
+};
+
+export const getRoomTypeByPriceId = (stripePriceId: string) => {
+  const allRoomTypesArray = getAllRoomTypes();
+
+  return allRoomTypesArray.find(
+    ({ priceRegular, priceWeekend }) =>
+      priceRegular === stripePriceId || priceWeekend === stripePriceId
+  );
 };
 
 export const getHotelByRoomTypeId = (roomTypeId: string): IHotel => {

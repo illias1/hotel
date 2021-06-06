@@ -8,7 +8,7 @@ import { client } from "../api";
 import { IRoom, IRoomType, IRoomTypeWithNumberPrice } from "../db";
 import { getAllRoomsFromRoomTypesArray, getAllRoomTypes, getRoomTypeById } from "../db/utils";
 import { validateDate, ValidationError } from "../parseCheckoutUrl";
-import { getPrices } from "../payment";
+import { getCheckoutLineItems, getPrices, ICheckoutLineItems } from "../payment";
 
 export interface ISearchQuery {
   people: string;
@@ -20,6 +20,7 @@ export interface IAvailableRoomType extends IRoomTypeWithNumberPrice {
   checkIn: string;
   checkOut: string;
   people: number;
+  total?: { price: number; quantity: number }[];
 }
 
 export const validateSearchQuery = (query: ISearchQuery) => {
@@ -43,6 +44,7 @@ export const checkAvailabilities = async (
     roomTypeIds ? roomTypeIds.includes(roomType.id) : roomType.peopleCount >= peopleCount
   );
   const rooms = getAllRoomsFromRoomTypesArray(validRoomTypes);
+
   const { data } = await client(process.env.ADMIN_SECRET).query<
     RoomBookingQuery,
     RoomBookingQueryVariables
@@ -78,9 +80,10 @@ export const checkAvailabilities = async (
   const prices = await getPrices(stripeKey);
 
   const availableRoomTypes = {} as Record<string, IAvailableRoomType>;
-  validRooms.forEach((room) => {
+  validRooms.forEach(async (room) => {
     const roomTypeId = room.roomTypeId;
     const roomType = getRoomTypeById(roomTypeId);
+    const checkoutLineItems = getCheckoutLineItems({ id: roomType.id, checkIn, checkOut });
     availableRoomTypes[roomTypeId] = {
       ...roomType,
       availableRoom: room,
@@ -89,6 +92,7 @@ export const checkAvailabilities = async (
       checkOut: checkOut,
       priceRegularNumber: prices[roomType.priceRegular],
       priceWeekendNumber: prices[roomType.priceWeekend],
+      total: checkoutLineItems.map(({ quantity, price }) => ({ quantity, price: prices[price] })),
     };
   });
   return Object.values(availableRoomTypes).sort((a, b) => b.hotelId.localeCompare(a.hotelId));

@@ -19,7 +19,7 @@ const CheckoutFooter: React.FC<ICheckoutFooterProps> = ({ t }) => {
       <Translation />
       <Paragraph>© 2021 Alquileres la Morada, Inc.</Paragraph>
       <Link href="/privacy">
-        <a>Privacy</a>
+        <a style={{ marginRight: 20 }}>Privacy</a>
       </Link>
       <Link href="/terms">
         <a>Terms</a>

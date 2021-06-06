@@ -10,7 +10,7 @@ type IBookRoomButtonProps = {
   roomType: IAvailableRoomType;
 };
 
-const StyledBookRoomButton = styled.a`
+export const StyledBookRoomButton = styled.a`
   ${buttonStyles}
   display: flex;
   justify-content: center;

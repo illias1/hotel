@@ -2,18 +2,22 @@ var cache = require("memory-cache");
 import Stripe from "stripe";
 
 import { PRICES_CACHE_TIMEOUT } from "../constants";
-import { IRoomType } from "./db";
+import { DATA, IRoomType } from "./db";
 
-import { getAllRoomTypes, getRoomTypeById } from "./db/utils";
+import { getAllRoomTypes, getRoomTypeById, getRoomTypeByPriceId } from "./db/utils";
 import { ValidationError } from "./parseCheckoutUrl";
 import { IAvailableRoomType } from "./reservation/checkAvailabilities";
 
-type ICheckoutLineItems = {
+export type ICheckoutLineItems = {
   price: string;
   quantity: number;
 }[];
 
-export const getCheckoutLineItems = ({ id, checkIn, checkOut }: IAvailableRoomType) => {
+export const getCheckoutLineItems = ({
+  id,
+  checkIn,
+  checkOut,
+}: Pick<IAvailableRoomType, "checkIn" | "checkOut" | "id">): ICheckoutLineItems => {
   const checkoutLineItems: ICheckoutLineItems = [];
   const roomType = getRoomTypeById(id);
   if (roomType) {
@@ -83,6 +87,11 @@ export const getPrices = async (stripeKey: string) => {
   stripeResponse.data.forEach((stripePrice) => {
     prices[stripePrice.id] = stripePrice.unit_amount / 100;
     cache.put(stripePrice.id, stripePrice.unit_amount / 100, PRICES_CACHE_TIMEOUT);
+    const roomType = getRoomTypeByPriceId(stripePrice.id);
+    const priceType =
+      roomType.priceRegular === stripePrice.id ? "priceRegularNumber" : "priceWeekendNumber";
+    roomType[priceType] = stripePrice.unit_amount / 100;
   });
+
   return prices;
 };
