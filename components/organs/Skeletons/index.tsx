@@ -2,7 +2,6 @@ import React from "react";
 import { Skeleton, Row, Col } from "antd";
 import { ImageWrapper, RoomCardWrapper } from "../../molecules/BookRoomCard";
 import { Space } from "../../atoms/Layout";
-import { SelectsWrapper } from "../../molecules/StayInfoSelect/components";
 import StayInfoSelect from "../../molecules/StayInfoSelect";
 import { SearchInfoSelect } from "../../../pages/search";
 
