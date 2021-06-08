@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
-import { Select } from "antd";
+import { Col, Form, Row, Select } from "antd";
 import moment from "moment";
 
 import Button from "../../atoms/Button";
@@ -12,7 +12,7 @@ import {
   LOCAL_STORAGE_PEOPLE,
   LOCAL_STORAGE_SEARCH,
 } from "../../../constants";
-import { GuestSelect, SelectsWrapper } from "./components";
+import { StyledSelect } from "../../atoms/Select";
 
 const { Option } = Select;
 
@@ -22,91 +22,80 @@ type IStayInfoSelectProps = {
 };
 
 type IFormInputs = {
-  checkIn: string;
-  checkOut: string;
-  peopleCount: number;
-};
-
-const initialForm: IFormInputs = {
-  checkIn: "",
-  checkOut: "",
-  peopleCount: 0,
+  dates: [any, any];
+  people: number;
 };
 
 const StayInfoSelect: React.FC<IStayInfoSelectProps> = ({ first, maxPeople }) => {
   const router = useRouter();
   const { t } = useTranslation();
-  const [form, setForm] = React.useState<IFormInputs>(initialForm);
-  const [valid, setValid] = React.useState<boolean>(false);
-  React.useEffect(() => {
-    if (form.peopleCount && form.checkOut && form.checkIn) {
-      setValid(true);
-    }
-  }, [form.checkIn, form.checkOut, form.peopleCount]);
+  const [form] = Form.useForm<IFormInputs>();
+
+  const handleSubmit = (form: IFormInputs) => {
+    const { dates, people } = form;
+    const checkIn = dates[0]._d.toISOString().substring(0, 10);
+    const checkOut = dates[1]._d.toISOString().substring(0, 10);
+    localStorage.setItem(LOCAL_STORAGE_CHECK_IN, checkIn);
+    localStorage.setItem(LOCAL_STORAGE_CHECK_OUT, checkOut);
+    localStorage.setItem(LOCAL_STORAGE_PEOPLE, String(people));
+    const searchQuery = `/search?people=${people}&checkIn=${checkIn}&checkOut=${checkOut}${
+      first ? `&first=${first}` : ""
+    }`;
+    localStorage.setItem(LOCAL_STORAGE_SEARCH, searchQuery);
+    router.push(searchQuery);
+  };
 
   React.useEffect(() => {
-    if (typeof window !== "undefined" && "localStorage" in window) {
-      const checkIn = localStorage.getItem(LOCAL_STORAGE_CHECK_IN);
-      const checkOut = localStorage.getItem(LOCAL_STORAGE_CHECK_OUT);
-      const peopleCount = localStorage.getItem(LOCAL_STORAGE_PEOPLE);
-      [
-        [checkIn, "checkIn"],
-        [checkOut, "checkOut"],
-        [peopleCount, "peopleCount"],
-      ].forEach((prop) => {
-        if (prop[0]) {
-          setForm((prev) => ({ ...prev, [prop[1]]: prop[0] }));
-        }
+    const checkIn = localStorage.getItem(LOCAL_STORAGE_CHECK_IN);
+    const checkOut = localStorage.getItem(LOCAL_STORAGE_CHECK_OUT);
+    const people = localStorage.getItem(LOCAL_STORAGE_PEOPLE);
+    if (checkIn && checkOut && people) {
+      form.setFieldsValue({
+        dates: [moment(checkIn), moment(checkOut)],
+        people: Number(people),
       });
-      console.log(form);
     }
   }, []);
 
   return (
-    <>
-      <SelectsWrapper>
-        <GuestSelect
-          placeholder="Guests"
-          value={form.peopleCount}
-          bordered={false}
-          size="small"
-          onChange={(peopleCount: number) => {
-            localStorage.setItem(LOCAL_STORAGE_PEOPLE, String(peopleCount));
-            setForm({ ...form, peopleCount });
-          }}
-        >
-          {Array.from({ length: 6 }, (_, i) => (
-            <Option key={i + 1} value={i + 1}>
-              {i + 1} {i + 1 === maxPeople && " - this room's limit"}
-            </Option>
-          ))}
-        </GuestSelect>
-        <StyledRangePicker
-          value={[moment(form.checkIn), moment(form.checkOut)]}
-          placeholder={[t("input.date.checkIn"), t("input.date.checkOut")]}
-          suffixIcon=""
-          onChange={(_, [checkIn, checkOut]) => {
-            localStorage.setItem(LOCAL_STORAGE_CHECK_IN, checkIn);
-            localStorage.setItem(LOCAL_STORAGE_CHECK_OUT, checkOut);
-            setForm({ ...form, checkOut, checkIn });
-          }}
-        />
-      </SelectsWrapper>
-      <Button
-        onClick={() => {
-          const searchQuery = `/search?people=${form.peopleCount}&checkIn=${
-            form.checkIn
-          }&checkOut=${form.checkOut}${first ? `&first=${first}` : ""}`;
-          if (typeof window !== "undefined" && "localStorage" in window) {
-            localStorage.setItem(LOCAL_STORAGE_SEARCH, searchQuery);
-          }
-          router.push(searchQuery);
-        }}
-        disabled={!valid}
-      >
-        {t("pages.home.buttons.search")}
-      </Button>
-    </>
+    <Form form={form} name="stayInfoSelect" layout="horizontal" onFinish={handleSubmit}>
+      <Row gutter={16}>
+        <Col xs={24} sm={8}>
+          <Form.Item
+            name="people"
+            rules={[
+              {
+                required: true,
+                message: "",
+              },
+            ]}
+          >
+            <StyledSelect placeholder="Guests" bordered={false} size="small">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <Option key={i} value={i}>
+                  {i} {i === maxPeople && " - this room's limit"}
+                </Option>
+              ))}
+            </StyledSelect>
+          </Form.Item>
+        </Col>
+        <Col xs={24} sm={16}>
+          <Form.Item
+            name="dates"
+            rules={[
+              {
+                type: "array",
+                required: true,
+                message: "",
+              },
+            ]}
+          >
+            <StyledRangePicker placeholder={[t("input.date.checkIn"), t("input.date.checkOut")]} />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Button type="submit">{t("pages.home.buttons.search")}</Button>
+    </Form>
   );
 };
 
