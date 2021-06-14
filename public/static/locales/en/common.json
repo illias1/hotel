@@ -106,6 +106,15 @@
     "checkout": {
       "policies": "GUARANTEE CREDIT CARD 100PCT STAY \n Cancel Policy \n Cancellation is possible free of charge up to 3 days before arrival. A later cancellation of the stay, no-show or later changes will however result in a 100 percent charge of the booked stay. CHF 590.00 effective July 12, 2021, 3 PM (hotel local time) \n Room 2 Superior Lake Double Room",
       "agreement": "By selecting the button below, I agree to the House Rules, Safety Disclosures, Cancellation Policy, Airbnb’s social-distancing and other COVID-19-related guidelines, and the Guest Refund Policy. I also agree to pay the total amount shown, which includes Occupancy Taxes and Service Fees. Airbnb now collects and remits government-imposed Occupancy Taxes in this location."
+    },
+    "room": {
+      "rules": {
+        "check_in_after_3_00_pm": "Check-in: After 3:00 PM",
+        "checkout_11_00_am": "Checkout: 11:00 AM",
+        "self_check_in_with_smart_lock": "Self check-in with smart lock",
+        "no_pets": "No pets",
+        "no_smoking": "No smoking"
+      }
     }
   }
 }

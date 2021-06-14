@@ -14,23 +14,23 @@ export const PRICES_CACHE_TIMEOUT = 1000 * 60 * 60;
 
 export const houseRules = [
   {
-    name: "Check-in: After 3:00 PM",
+    name: "pages.room.rules.check_in_after_3_00_pm",
     icon: <ClockIcon />,
   },
   {
-    name: "Checkout: 11:00 AM",
+    name: "pages.room.rules.checkout_11_00_am",
     icon: <ClockIcon />,
   },
   {
-    name: "Self check-in with smart lock",
+    name: "pages.room.rules.self_check_in_with_smart_lock",
     icon: <LockIcon />,
   },
   {
-    name: "No pets",
+    name: "pages.room.rules.no_pets",
     icon: <BanIcon />,
   },
   {
-    name: "No smoking",
+    name: "pages.room.rules.no_smoking",
     icon: <NoSmokingIcon />,
   },
 ];
