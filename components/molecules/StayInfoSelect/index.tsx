@@ -30,6 +30,7 @@ const StayInfoSelect: React.FC<IStayInfoSelectProps> = ({ first, maxPeople }) =>
   const router = useRouter();
   const { t } = useTranslation();
   const [form] = Form.useForm<IFormInputs>();
+  const [clicked, setClicked] = React.useState<boolean>(false)
 
   const handleSubmit = (form: IFormInputs) => {
     const { dates, people } = form;
@@ -38,9 +39,8 @@ const StayInfoSelect: React.FC<IStayInfoSelectProps> = ({ first, maxPeople }) =>
     localStorage.setItem(LOCAL_STORAGE_CHECK_IN, checkIn);
     localStorage.setItem(LOCAL_STORAGE_CHECK_OUT, checkOut);
     localStorage.setItem(LOCAL_STORAGE_PEOPLE, String(people));
-    const searchQuery = `/search?people=${people}&checkIn=${checkIn}&checkOut=${checkOut}${
-      first ? `&first=${first}` : ""
-    }`;
+    const searchQuery = `/search?people=${people}&checkIn=${checkIn}&checkOut=${checkOut}${first ? `&first=${first}` : ""
+      }`;
     localStorage.setItem(LOCAL_STORAGE_SEARCH, searchQuery);
     router.push(searchQuery);
   };
@@ -94,7 +94,7 @@ const StayInfoSelect: React.FC<IStayInfoSelectProps> = ({ first, maxPeople }) =>
           </Form.Item>
         </Col>
       </Row>
-      <Button type="submit">{t("pages.home.buttons.search")}</Button>
+      <Button loading={clicked} onClick={() => { setClicked(true) }} htmlType="submit">{t("pages.home.buttons.search")}</Button>
     </Form>
   );
 };
