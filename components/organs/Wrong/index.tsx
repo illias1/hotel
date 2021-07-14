@@ -1,4 +1,7 @@
 import React from "react";
+import Link from "next/link";
+import { Result } from "antd";
+
 import { PageWrapper } from "../../atoms/Layout";
 
 type ISomethingWentWrongProps = {
@@ -8,7 +11,15 @@ type ISomethingWentWrongProps = {
 const SomethingWentWrong: React.FC<ISomethingWentWrongProps> = ({ message }) => {
   return (
     <PageWrapper>
-      <div>{message ? message : "Something went wrong"}</div>
+      <Result
+        status="500"
+        title={message ? message : "Sorry, something went wrong."}
+        extra={
+          <Link href="/">
+            <a>Back Home</a>
+          </Link>
+        }
+      />
     </PageWrapper>
   );
 };
