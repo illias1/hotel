@@ -139,7 +139,7 @@ const SocialShare: React.FC = () => {
         <H5>Social Media</H5>
         <Row style={{ marginBottom: 20 }}>
           {socialMediaIcons(url, { marginRight: 20 }).map((icon) => (
-            <Col span={12}>
+            <Col key={icon.name} span={12}>
               <Flex justify="start" align="center">
                 {icon.icon}
                 {icon.name}
@@ -151,7 +151,7 @@ const SocialShare: React.FC = () => {
         <H5>Messaging & Email</H5>
         <Row style={{ marginBottom: 20 }}>
           {messagingIcons(url, { marginRight: 20 }).map((icon) => (
-            <Col span={12}>
+            <Col key={icon.name}  span={12}>
               <Flex justify="start" align="center">
                 {icon.icon}
                 {icon.name}
