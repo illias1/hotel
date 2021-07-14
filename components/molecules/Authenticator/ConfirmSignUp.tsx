@@ -48,7 +48,7 @@ const ConfirmSignUp: React.FC<IConfirmSignUpProps> = ({ handleSubmit, t, reusabl
       >
         <Input prefix={<CodeOutlined />} placeholder="1234" />
       </Form.Item>
-      <Button type="submit">{t("pages.authenticator.confirmSignUp")}</Button>
+      <Button htmlType="submit">{t("pages.authenticator.confirmSignUp")}</Button>
     </StyledForm>
   );
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import { Button as AntButton } from 'antd'
 
 type IButtonProps = {
   secondary?: boolean;
@@ -23,7 +24,7 @@ export const buttonStyles = css`
   filter: drop-shadow(0px 10px 40px rgba(248, 161, 112, 0.2));
 `;
 
-const Button = styled.button<IButtonProps>`
+const Button = styled(AntButton) <IButtonProps>`
   ${buttonStyles}
   ${({ secondary, link }: IButtonProps) =>
     secondary
@@ -32,7 +33,7 @@ const Button = styled.button<IButtonProps>`
           color: orange;
         `
       : link
-      ? css`
+        ? css`
           color: #1890ff;
           background: transparent;
           height: auto;
@@ -42,7 +43,7 @@ const Button = styled.button<IButtonProps>`
           font-weight: 400;
           font-size: 14px;
         `
-      : css`
+        : css`
           background: linear-gradient(91.97deg, #f8a170 14.73%, #ffcd61 97.52%);
           color: white;
         `};

@@ -52,7 +52,7 @@ const LoginAuthenticator: React.FC<IAuthenticatorUIProps> = ({
         <Input prefix={<LockOutlined />} type="password" />
       </Form.Item>
       <Form.Item>
-        <Button type="submit" className="login-form-button">
+        <Button htmlType="submit" className="login-form-button">
           Log in
         </Button>
       </Form.Item>

@@ -47,7 +47,7 @@ const ForgotPassword: React.FC<IForgotPasswordProps> = ({
         >
           <Input prefix={<MailOutlined />} />
         </Form.Item>
-        <Button type="submit">{t("pages.authenticator.forgotPassword")}</Button>
+        <Button htmlType="submit">{t("pages.authenticator.forgotPassword")}</Button>
         <Space margin="20px 0 0 0">
           <Button link onClick={() => setAuthenticationState("signIn")}>
             Back to login

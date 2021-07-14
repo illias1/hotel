@@ -166,7 +166,7 @@ const SignupAuthenticator: React.FC<IAuthenticatorUIProps> = ({
         </Checkbox>
       </Form.Item>
       <Form.Item {...tailFormItemLayout}>
-        <Button type="submit">Register</Button>
+        <Button htmlType="submit">Register</Button>
       </Form.Item>
       {error === "UsernameExistsException" && (
         <>
