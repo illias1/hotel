@@ -3,6 +3,7 @@ import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 const httpsLink = (AdminSecret: string) =>
   createHttpLink({
     uri: "https://alquileres.hasura.app/v1/graphql",
+    // uri: "http://localhost:8080/v1/graphql",
     headers: {
       "x-hasura-admin-secret": AdminSecret,
     },
@@ -10,6 +11,7 @@ const httpsLink = (AdminSecret: string) =>
 export const client = (AdminSecret: string) =>
   new ApolloClient({
     uri: "https://alquileres.hasura.app/v1/graphql",
+    // uri: "http://localhost:8080/v1/graphql",
     cache: new InMemoryCache(),
     link: httpsLink(AdminSecret),
   });

@@ -6,6 +6,7 @@ import { MailOutlined, LockOutlined, CodeOutlined } from "@ant-design/icons";
 import { IAuthenticationState, IReusableAuthenticatorData, StyledForm } from ".";
 import Button from "../../atoms/Button";
 import { Space } from "../../atoms/Layout";
+import EmailIFormItem from "./components/EmailIFormItem";
 
 type IForgotPasswordSubmitProps = {
   t: TFunction;
@@ -33,26 +34,11 @@ const ForgotPasswordSubmit: React.FC<IForgotPasswordSubmitProps> = ({
       name="ForgotPasswordSubmit"
       onFinish={handleSubmit}
     >
-      <Form.Item
-        name="email"
-        label="E-mail"
-        rules={[
-          {
-            type: "email",
-            message: "The input is not valid E-mail!",
-          },
-          {
-            required: true,
-            message: "Please input your E-mail!",
-          },
-        ]}
-      >
-        <Input prefix={<MailOutlined />} />
-      </Form.Item>
+      <EmailIFormItem t={t} />
       <Form.Item
         name="newPassword"
-        label="New password"
-        help="Should have at least 6 characters"
+        label={t("pages.authenticator.labels.newPassword")}
+        help={t("pages.authenticator.help.password")}
         rules={[
           {
             required: true,
@@ -65,7 +51,7 @@ const ForgotPasswordSubmit: React.FC<IForgotPasswordSubmitProps> = ({
       </Form.Item>
       <Form.Item
         name="forgotPasswordVerificationCode"
-        label="Verification code"
+        label={t("pages.authenticator.labels.verificationCode")}
         rules={[
           {
             required: true,

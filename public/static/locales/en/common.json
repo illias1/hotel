@@ -84,6 +84,11 @@
       "placeholder": "Email"
     }
   },
+  "errors": {
+    "invalidEmail": "The input is not valid E-mail!",
+    "verificationCodeRequired": "Please input the verification code!",
+    "emailRequired": "Please input your E-mail!"
+  },
   "pages": {
     "authenticator": {
       "signIn": "Sign In",
@@ -95,7 +100,16 @@
       "forgotPassword": "Forgot Password",
       "codeVerified": "Your code was verified, logging you in ...",
       "sendAgain": "Send verification code again",
-      "emailNotVerified": "Your email is not verified."
+      "emailNotVerified": "Your email is not verified.",
+      "backToLogin": "Back to login",
+      "labels": {
+        "email": "E-mail",
+        "verificationCode": "Verification code",
+        "newPassword": "New password"
+      },
+      "help": {
+        "password": "Should have at least 6 characters"
+      }
     },
     "home": {
       "title": "Find perfect place to stay in Calpe",

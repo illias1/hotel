@@ -9,22 +9,18 @@ import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import StayInfoSelect from "../../../../components/molecules/StayInfoSelect";
 import { houseRules, REVALIDATE_PERIOD } from "../../../../constants";
-import { displayPrice } from "../../../../utils/general";
 import { getPrices } from "../../../../utils/payment";
 import { PageWrapper, Space } from "../../../../components/atoms/Layout";
-import PhotoSlider from "../../../../components/molecules/Slider";
 import { H1, H4, H5, Label, LI } from "../../../../components/atoms/Typography";
 import { Center, Flex, Section } from "../../../../components/atoms/Section";
 import AttributeIcon from "../../../../assets/icons/Attribute";
 import DownChevronIcon from "../../../../assets/icons/DownChevron";
 import UpChevronIcon from "../../../../assets/icons/UpChevron";
 import Map from "../../../../components/organs/Map";
-import ExternalLinkIcon from "../../../../assets/icons/ExternalLink";
 import RoomBookArea from "../../../../components/organs/RoomBookArea";
 import SocialShare from "../../../../components/molecules/SocialShare";
 import Header from "../../../../components/molecules/Header";
 import PhotoGallery from "../../../../components/molecules/Galery";
-import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
 import IconTextList from "../../../../components/organs/IconsTextList";
 
 type IRoomProps = {
@@ -39,7 +35,7 @@ type IRoomPath = {
   hotelId: IHotelName;
 };
 
-interface IAvailability {
+export interface IAvailability {
   checkIn: string;
   checkOut: string;
   people: number;
@@ -48,19 +44,12 @@ type ICheckDates = {
   checkIn: string;
   checkOut: string;
 };
-const initialCheckDates: ICheckDates = {
-  checkIn: "",
-  checkOut: "",
-};
 
 const HotelPage: React.FC<IRoomProps> = ({ roomType, error, priceRegular, priceWeekend }) => {
-  const [checkDates, setCheckDates] = React.useState<ICheckDates>(initialCheckDates);
   const [availability, setAvailability] = React.useState<IAvailability>(null);
-  const [bookingForm, setBookingForm] = React.useState<any>({});
   const [amenities, setAmenities] = React.useState<string[]>(roomType.attributes.slice(0, 4));
   const router = useRouter();
   const { t } = useTranslation();
-  const screens = useBreakpoint();
 
   if (error) {
     return <div>Error happened {error}</div>;
@@ -74,7 +63,6 @@ const HotelPage: React.FC<IRoomProps> = ({ roomType, error, priceRegular, priceW
       });
     }
   }, [router.query]);
-  console.log("avail", availability);
 
   return (
     <PageWrapper isRoomPage={Boolean(availability)}>
@@ -123,22 +111,18 @@ const HotelPage: React.FC<IRoomProps> = ({ roomType, error, priceRegular, priceW
             <H4>House rules</H4>
             <IconTextList t={t} list={houseRules} />
             <Divider />
-            <H5>Choose another dates?</H5>
-            <StayInfoSelect maxPeople={roomType.peopleCount} first={roomType.id} />
           </Col>
-          {Boolean(availability) && (
-            <Col flex={1} style={{ marginLeft: "8%" }}>
-              <RoomBookArea
-                roomType={{
-                  ...roomType,
-                  ...availability,
-                  availableRoom: null,
-                  priceRegularNumber: priceRegular,
-                  priceWeekendNumber: priceWeekend,
-                }}
-              />
-            </Col>
-          )}
+          <Col xs={0} md={8} flex={1} style={{ marginLeft: "8%" }}>
+            <RoomBookArea
+              roomType={{
+                ...roomType,
+                ...availability,
+                availableRoom: null,
+                priceRegularNumber: priceRegular,
+                priceWeekendNumber: priceWeekend,
+              }}
+            />
+          </Col>
         </Row>
       </Space>
     </PageWrapper>

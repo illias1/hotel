@@ -22,15 +22,15 @@ const ConfirmSignUp: React.FC<IConfirmSignUpProps> = ({ handleSubmit, t, reusabl
     <StyledForm name="confirmSignUp" layout="horizontal" onFinish={handleSubmit}>
       <Form.Item
         name="email"
-        label="E-mail"
+        label={t("pages.authenticator.labels.email")}
         rules={[
           {
             type: "email",
-            message: "The input is not valid E-mail!",
+            message: t("errors.invalidEmail"),
           },
           {
             required: true,
-            message: "Please input your E-mail!",
+            message: t("errors.emailRequired"),
           },
         ]}
       >
@@ -38,11 +38,11 @@ const ConfirmSignUp: React.FC<IConfirmSignUpProps> = ({ handleSubmit, t, reusabl
       </Form.Item>
       <Form.Item
         name="verificationCode"
-        label="Verification code"
+        label={t("pages.authenticator.labels.verificationCode")}
         rules={[
           {
             required: true,
-            message: "Please input the verification code!",
+            message: t("errors.verificationCodeRequired"),
           },
         ]}
       >

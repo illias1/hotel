@@ -16,7 +16,21 @@ const commonAttributes = [
 export const mayor: IIncompleteHotel = {
   id: "mayor",
   address: "Calle Navío, 9",
-  images: ["https://via.placeholder.com/300"],
+  images: [
+    "https://ik.imagekit.io/alquileres/Plaza_Mayor/IMG20210602133511_PljmHjlH2H.jpg",
+    "https://ik.imagekit.io/alquileres/Plaza_Mayor/IMG20210602133558_aLBOF0mtV4.jpg",
+    "https://ik.imagekit.io/alquileres/Plaza_Mayor/IMG20210602133654_uTroNKZ3kD.jpg",
+    "https://ik.imagekit.io/alquileres/Plaza_Mayor/IMG20210602133415_BsY9iPmY5.jpg",
+    "https://ik.imagekit.io/alquileres/Plaza_Mayor/IMG20210602133438_LiV81-nC-.jpg",
+    "https://ik.imagekit.io/alquileres/Plaza_Mayor/IMG20210602133346_1kZ-h4X1pO.jpg",
+    "https://ik.imagekit.io/alquileres/Plaza_Mayor/IMG20210602133558_GzDoo5umj.jpg",
+    "https://ik.imagekit.io/alquileres/Plaza_Mayor/IMG20210602133415_G48TDmoUb.jpg",
+    "https://ik.imagekit.io/alquileres/Plaza_Mayor/IMG20210602133415_G48TDmoUb.jpg",
+    "https://ik.imagekit.io/alquileres/Plaza_Mayor/IMG20210602133346_E18ArOGb7.jpg",
+    "https://ik.imagekit.io/alquileres/Plaza_Mayor/IMG20210602133543_E-EZU-NzS3.jpg",
+    "https://ik.imagekit.io/alquileres/Plaza_Mayor/IMG20210602133400_037Rnfupi.jpg",
+    "https://ik.imagekit.io/alquileres/Plaza_Mayor/IMG20210602133438_mZkBysia1.jpg",
+  ],
   roomTypes: [
     {
       id: "mayor_1_a",

@@ -33,15 +33,15 @@ const ForgotPassword: React.FC<IForgotPasswordProps> = ({
       >
         <Form.Item
           name="email"
-          label="E-mail"
+          label={t("pages.authenticator.labels.email")}
           rules={[
             {
               type: "email",
-              message: "The input is not valid E-mail!",
+              message: t("errors.invalidEmail"),
             },
             {
               required: true,
-              message: "Please input your E-mail!",
+              message: t("errors.emailRequired"),
             },
           ]}
         >
@@ -50,7 +50,7 @@ const ForgotPassword: React.FC<IForgotPasswordProps> = ({
         <Button htmlType="submit">{t("pages.authenticator.forgotPassword")}</Button>
         <Space margin="20px 0 0 0">
           <Button link onClick={() => setAuthenticationState("signIn")}>
-            Back to login
+            {t("pages.authenticator.backToLogin")}
           </Button>
         </Space>
       </StyledForm>
